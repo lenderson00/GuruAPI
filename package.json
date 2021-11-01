@@ -1,0 +1,11 @@
+{
+  "name": "guruapi",
+  "version": "1.0.0",
+  "description": "Backend APIs for Genshin Guru Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Oliveira",
+  "license": "ISC"
+}
