@@ -8,7 +8,7 @@ export class AddArtifactController implements Controller {
         
         const requiredFields = ['set', 'type', 'level', 'mainstat', 'substats']
         for (const field of requiredFields) {
-            if (request.body[field] == undefined) {
+            if (!request.body[field]) {
                 return badRequest(new MissingParamError(field))
             }
         }
@@ -21,7 +21,7 @@ export class AddArtifactController implements Controller {
 }
 
 export interface Request {
-    body: {
+    body?: {
         set?: string
         type?: string
         level?: number

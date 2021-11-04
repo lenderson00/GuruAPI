@@ -22,9 +22,7 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.statusCode).toBe(400);
         expect(httpResponse.body).toEqual(new MissingParamError('set'));
     })
-})
 
-describe ('Add Artifact Controller', () => {
     test('Should return 400 if no type is provided', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
@@ -43,9 +41,7 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.statusCode).toBe(400);
         expect(httpResponse.body).toEqual(new MissingParamError('type'));
     })
-})
 
-describe ('Add Artifact Controller', () => {
     test('Should return 400 if no level is provided', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
@@ -64,9 +60,7 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.statusCode).toBe(400);
         expect(httpResponse.body).toEqual(new MissingParamError('level'));
     })
-})
 
-describe ('Add Artifact Controller', () => {
     test('Should return 400 if no mainstat is provided', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
@@ -85,9 +79,7 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.statusCode).toBe(400);
         expect(httpResponse.body).toEqual(new MissingParamError('mainstat'));
     })
-})
 
-describe ('Add Artifact Controller', () => {
     test('Should return 400 if no substat is provided', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
