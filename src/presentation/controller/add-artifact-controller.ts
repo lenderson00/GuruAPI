@@ -1,5 +1,5 @@
-import { allLevels, allSets, allTypes } from "../../data/artifact/combinations";
-import { Level, Set, Type } from "../../data/artifact/enums";
+import { allLevels, allowedMainStats, allSets, allTypes, MainStatsByType } from "../../data/artifact/combinations";
+import { Level, MainStat, Set, Type } from "../../data/artifact/enums";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { badRequest } from "../helpers/http-helper";
 import { Controller } from "../protocols/controller";
@@ -18,6 +18,7 @@ export class AddArtifactController implements Controller {
         if (!allSets.includes(request.body.set as Set)) return badRequest(new InvalidParamError('set'))
         if (!allTypes.includes(request.body.type as Type)) return badRequest(new InvalidParamError('type'))
         if (!allLevels.includes(request.body.level as Level)) return badRequest(new InvalidParamError('level'))
+        if (!allowedMainStats[request.body.type as Type].includes(request.body.mainstat as never)) return badRequest(new InvalidParamError('mainstat'))
               
         return {
             statusCode: 200,
