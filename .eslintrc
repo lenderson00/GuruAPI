@@ -11,6 +11,7 @@
     ],
     "rules": {
       "no-unsafe-optional-chaining": "off",
-      "no-nonoctal-decimal-escape": "off"
+      "no-nonoctal-decimal-escape": "off",
+      "no-non-null-assertion": "off"
     }
   }
