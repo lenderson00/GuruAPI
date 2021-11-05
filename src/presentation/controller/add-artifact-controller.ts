@@ -6,7 +6,7 @@ import { HttpResponse } from "../protocols/http";
 export class AddArtifactController implements Controller {
     handle (request: Request): HttpResponse {
         
-        const requiredFields = ['set', 'type', 'level', 'mainstat', 'substats']
+        const requiredFields: Array<keyof Request["body"]>  = ['set', 'type', 'level', 'mainstat', 'substats']
         for (const field of requiredFields) {
             if (!request.body[field]) {
                 return badRequest(new MissingParamError(field))
@@ -21,7 +21,7 @@ export class AddArtifactController implements Controller {
 }
 
 export interface Request {
-    body?: {
+    body: {
         set?: string
         type?: string
         level?: number
