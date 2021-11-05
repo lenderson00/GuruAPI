@@ -1,5 +1,5 @@
-import { allSets } from "../../data/artifact/combinations";
-import { Set } from "../../data/artifact/enums";
+import { allLevels, allSets, allTypes } from "../../data/artifact/combinations";
+import { Level, Set, Type } from "../../data/artifact/enums";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { badRequest } from "../helpers/http-helper";
 import { Controller } from "../protocols/controller";
@@ -14,10 +14,10 @@ export class AddArtifactController implements Controller {
                 return badRequest(new MissingParamError(field))
             }
         }
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         
         if (!allSets.includes(request.body.set as Set)) return badRequest(new InvalidParamError('set'))
+        if (!allTypes.includes(request.body.type as Type)) return badRequest(new InvalidParamError('type'))
+        if (!allLevels.includes(request.body.level as Level)) return badRequest(new InvalidParamError('level'))
               
         return {
             statusCode: 200,
