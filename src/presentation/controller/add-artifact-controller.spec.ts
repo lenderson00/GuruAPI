@@ -147,7 +147,7 @@ describe ('Add Artifact Controller', () => {
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
-            level: 999,
+            level: 999, // <= invalid level
             mainstat: Stats.HPFlat,
             substats: [
                 {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
@@ -161,13 +161,13 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.body).toEqual(new InvalidParamError('level'));
     })
 
- /*     test('Should return 400 if set is invalid', () => {
+     test('Should return 400 if mainstat is invalid', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
             level: 20,
-            mainstat: Stats.HPFlat,
+            mainstat: "invalid_mainstat",
             substats: [
                 {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
                 {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
@@ -180,7 +180,7 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.body).toEqual(new InvalidParamError('mainstat'));
     })
 
-    test('Should return 400 if set is invalid', () => {
+/*     test('Should return 400 if set is invalid', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
             set: Sets.AP,
