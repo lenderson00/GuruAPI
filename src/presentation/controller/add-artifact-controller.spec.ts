@@ -1,4 +1,6 @@
-import { MissingParamError } from "../errors";
+import { Stats } from "fs";
+import { Sets } from "../../data/artifact/enums";
+import { InvalidParamError, MissingParamError } from "../errors";
 import { AddArtifactController } from "./add-artifact-controller"
 
 // Should return 400 if missing required params
@@ -98,11 +100,109 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.statusCode).toBe(400);
         expect(httpResponse.body).toEqual(new MissingParamError('substats'));
     })
+
+
+    // Set, type, mainstat and substats should be part of their enums
+
+    test('Should return 400 if set is invalid', () => {
+        const sut = new AddArtifactController();
+        const httpRequest = { body: {
+            set: "invalid_set",
+            type: 'any_type',
+            level: 20,
+            mainstat: 'any_stat',
+            substats: [
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0}
+            ]
+        }};
+        const httpResponse = sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(400);
+        expect(httpResponse.body).toEqual(new InvalidParamError('set'));
+    })
+
+/*     test('Should return 400 if set is invalid', () => {
+        const sut = new AddArtifactController();
+        const httpRequest = { body: {
+            set: Sets.AP,
+            type: 'any_type',
+            level: 20,
+            mainstat: 'any_stat',
+            substats: [
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0}
+            ]
+        }};
+        const httpResponse = sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(400);
+        expect(httpResponse.body).toEqual(new InvalidParamError('type'));
+    }) */
+
+ /*    test('Should return 400 if set is invalid', () => {
+        const sut = new AddArtifactController();
+        const httpRequest = { body: {
+            set: 'any_set',
+            type: 'any_type',
+            level: 20,
+            mainstat: 'any_stat',
+            substats: [
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0}
+            ]
+        }};
+        const httpResponse = sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(400);
+        expect(httpResponse.body).toEqual(new InvalidParamError('level'));
+    })
+
+    test('Should return 400 if set is invalid', () => {
+        const sut = new AddArtifactController();
+        const httpRequest = { body: {
+            set: 'any_set',
+            type: 'any_type',
+            level: 20,
+            mainstat: 'any_stat',
+            substats: [
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0}
+            ]
+        }};
+        const httpResponse = sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(400);
+        expect(httpResponse.body).toEqual(new InvalidParamError('mainstat'));
+    })
+
+    test('Should return 400 if set is invalid', () => {
+        const sut = new AddArtifactController();
+        const httpRequest = { body: {
+            set: 'any_set',
+            type: 'any_type',
+            level: 20,
+            mainstat: 'any_stat',
+            substats: [
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0},
+                {substat: 'any_stat', value: 0}
+            ]
+        }};
+        const httpResponse = sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(400);
+        expect(httpResponse.body).toEqual(new InvalidParamError('substats'));
+    }) */
 })
 
 
 
-// Set, type, mainstat and substats should be part of their enums
+
 
 // Type, mainstat and substat must obey combination parameters
 
