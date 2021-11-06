@@ -142,7 +142,7 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.body).toEqual(new InvalidParamError('type'));
     })
 
-   test('Should return 400 if level is invalid', () => {
+    test('Should return 400 if level is invalid', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
             set: Sets.AP,
@@ -161,7 +161,7 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.body).toEqual(new InvalidParamError('level'));
     })
 
-     test('Should return 400 if mainstat is invalid', () => {
+    test('Should return 400 if mainstat is invalid', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
             set: Sets.AP,
@@ -180,7 +180,45 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.body).toEqual(new InvalidParamError('mainstat'));
     })
 
-/*     test('Should return 400 if set is invalid', () => {
+    test('Should return 400 if any substat is invalid', () => {
+        const sut = new AddArtifactController();
+        const httpRequest = { body: {
+            set: Sets.AP,
+            type: Types.Flower,
+            level: 20,
+            mainstat: Stats.HPFlat,
+            substats: [
+                {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
+                {substat: "invalid_substat", value: upgradeTiers.ATK[0]},
+                {substat: Stats.DEF, value: upgradeTiers["DEF%"][0]},
+                {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]}
+            ]
+        }};
+        const httpResponse = sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(400);
+        expect(httpResponse.body).toEqual(new InvalidParamError('substats'));
+    }) 
+
+    test('Should return 400 if any substat value is invalid', () => {
+        const sut = new AddArtifactController();
+        const httpRequest = { body: {
+            set: Sets.AP,
+            type: Types.Flower,
+            level: 20,
+            mainstat: Stats.HPFlat,
+            substats: [
+                {substat: Stats.ATK, value: 0},
+                {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
+                {substat: Stats.DEF, value: upgradeTiers["DEF%"][0]},
+                {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]}
+            ]
+        }};
+        const httpResponse = sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(400);
+        expect(httpResponse.body).toEqual(new InvalidParamError('substat value'));
+    })
+
+    test('Should return 400 if more than 4 substats are provided', () => {
         const sut = new AddArtifactController();
         const httpRequest = { body: {
             set: Sets.AP,
@@ -191,25 +229,12 @@ describe ('Add Artifact Controller', () => {
                 {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
                 {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
                 {substat: Stats.DEF, value: upgradeTiers["DEF%"][0]},
-                {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]}
+                {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]},
+                {substat: Stats.EM, value: upgradeTiers["Elemental Mastery"][0]},
             ]
         }};
         const httpResponse = sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new InvalidParamError('substats'));
-    }) */
+        expect(httpResponse.body).toEqual(new InvalidParamError('# of substats'));
+    })
 })
-
-
-
-
-
-// Type, mainstat and substat must obey combination parameters
-
-// Level should be from 0 to 20
-
-// Substats values should obey possible combinations n times - where n is RoundDown(Level / 4, 0)
-
-// Substats should have lenght <= 4
-
-// OK scenario
