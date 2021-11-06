@@ -1,5 +1,6 @@
-import { allLevels, allowedMainStats, allSets, allTypes, MainStatsByType } from "../../data/artifact/combinations";
-import { Level, MainStat, Set, Type } from "../../data/artifact/enums";
+import { upgradeTiers } from "../../data/artifact/chances";
+import { allLevels, allowedMainStats, allowedSubStats, allSets, allTypes } from "../../data/artifact/combinations";
+import { Level, MainStat, Set, SubStat, SubStats, Type } from "../../data/artifact/enums";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { badRequest } from "../helpers/http-helper";
 import { Controller } from "../protocols/controller";
@@ -19,7 +20,14 @@ export class AddArtifactController implements Controller {
         if (!allTypes.includes(request.body.type as Type)) return badRequest(new InvalidParamError('type'))
         if (!allLevels.includes(request.body.level as Level)) return badRequest(new InvalidParamError('level'))
         if (!allowedMainStats[request.body.type as Type].includes(request.body.mainstat as never)) return badRequest(new InvalidParamError('mainstat'))
-              
+        if (request.body.substats!.length > 4) return badRequest(new InvalidParamError('# of substats'))
+
+        for (const sub of request.body.substats!) {
+            if (!allowedSubStats[request.body.mainstat as MainStat].includes(sub.substat as SubStat)) return badRequest(new InvalidParamError('substats'))
+            if (!upgradeTiers[sub.substat as SubStat].includes(sub.value)) return badRequest(new InvalidParamError('substat value'))
+        }
+        
+
         return {
             statusCode: 200,
             body: null
