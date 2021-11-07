@@ -4,7 +4,8 @@
   "description": "Backend APIs for Genshin Guru Website",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand", 
+    "start": "sucrase-node index.ts",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
@@ -16,8 +17,8 @@
   "author": "Eric Oliveira",
   "license": "ISC",
   "devDependencies": {
-    "@types/lodash": "^4.14.176",
     "@types/jest": "^27.0.2",
+    "@types/lodash": "^4.14.176",
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "@typescript-eslint/parser": "^5.3.0",
@@ -26,6 +27,7 @@
     "husky": "^7.0.4",
     "jest": "^27.3.1",
     "lint-staged": "^11.2.6",
+    "sucrase": "^3.20.3",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4"

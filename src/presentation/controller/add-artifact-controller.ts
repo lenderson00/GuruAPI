@@ -27,7 +27,6 @@ export class AddArtifactController implements Controller {
             if (!upgradeTiers[sub.substat as SubStat].includes(sub.value)) return badRequest(new InvalidParamError('substat value'))
         }
         
-
         return {
             statusCode: 200,
             body: null
