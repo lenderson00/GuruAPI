@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { upgradeTiers } from "../../data/artifact/chances";
 import { allLevels, allowedMainStats, allowedSubStats, allSets, allTypes } from "../../data/artifact/combinations";
-import { Level, MainStat, Set, SubStat, SubStats, Type } from "../../data/artifact/enums";
+import { Level, MainStat, Set, SubStat, Type } from "../../data/artifact/enums";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { badRequest } from "../helpers/http-helper";
 import { Controller } from "../protocols/controller";
