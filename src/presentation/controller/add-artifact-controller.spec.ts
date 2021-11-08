@@ -1,5 +1,3 @@
-
-import { add } from "lodash";
 import { upgradeTiers } from "../../data/artifact/chances";
 import { Sets, Stats, Types } from "../../data/artifact/enums";
 import { AddArtifactDB } from "../../data/artifact/protocols/add-artifact-DB";
