@@ -1,9 +1,11 @@
+import { Level, MainStat, Set, SubStat, Type } from "../../../data/artifact/enums"
+
 export type AddArtifactParams = {
-    set: string
-    type: string
-    level: number
-    mainstat: string
-    substats: {substat: string, value: number}[]
+    set: Set
+    type: Type
+    level: Level
+    mainstat: MainStat
+    substats: {substat: SubStat, value: number}[]
 }
 
 export type AddArtifactResult = boolean

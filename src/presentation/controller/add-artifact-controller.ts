@@ -10,6 +10,12 @@ import { AddArtifactParams, AddArtifactResult } from "../../domain/artifact/usec
 import { AddArtifactDB } from "../../data/artifact/protocols/add-artifact-DB"
 
 export class AddArtifactController implements Controller {
+    private readonly addArtifactDB: AddArtifactDB
+    
+    constructor (addArtifactDB: AddArtifactDB) {
+        this.addArtifactDB = addArtifactDB
+    }
+    
     async handle (request: Request): Promise<HttpResponse> {
         
         const requiredFields: Array<keyof Request["body"]>  = ['set', 'type', 'level', 'mainstat', 'substats']
@@ -45,7 +51,8 @@ export class AddArtifactController implements Controller {
             return badRequest(new InvalidParamError(`Invalid # of rolls: ${rolls}`));
         }
         
-        return ok(true);
+        const isOk: AddArtifactResult = await this.addArtifactDB.add(request.body as AddArtifactParams);
+        return ok(isOk);
     }
     
 }
