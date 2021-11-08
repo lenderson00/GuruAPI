@@ -1,13 +1,29 @@
+
+import { add } from "lodash";
 import { upgradeTiers } from "../../data/artifact/chances";
 import { Sets, Stats, Types } from "../../data/artifact/enums";
+import { AddArtifactDB } from "../../data/artifact/protocols/add-artifact-DB";
+import { AddArtifactResult } from "../../domain/artifact/usecases/add-artifact";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { AddArtifactController } from "./add-artifact-controller"
 
-// Should return 400 if missing required params
+const makeSut = () => {
+    const addArtifactStub: AddArtifactDB = {
+         add: async (data) => {
+            return new Promise((res) => res(true as AddArtifactResult))
+        }
+    }
+   
+    const sut = new AddArtifactController(addArtifactStub)
+    return { sut, addArtifactStub }
+}
 
 describe ('Add Artifact Controller', () => {
+    
+    // Should return 400 if missing required params
+
     test('Should return 400 if no set is provided', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             /* set: 'any_set', */
             type: 'any_type',
@@ -26,7 +42,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if no type is provided', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: 'any_set',
             /* type: 'any_type', */
@@ -45,7 +61,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if no level is provided', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: 'any_set',
             type: 'any_type',
@@ -64,7 +80,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if no mainstat is provided', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: 'any_set',
             type: 'any_type',
@@ -83,7 +99,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if no substat is provided', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: 'any_set',
             type: 'any_type',
@@ -105,7 +121,7 @@ describe ('Add Artifact Controller', () => {
     // Set, type, mainstat and substats should be part of their enums
     
     test('Should return 400 if set is invalid', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: "invalid_set",
             type: Types.Flower,
@@ -124,7 +140,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if type is invalid', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: Sets.AP,
             type: "invalid_type",
@@ -143,7 +159,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if level is invalid', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
@@ -162,7 +178,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if mainstat is invalid', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
@@ -181,7 +197,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if any substat is invalid', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
@@ -200,7 +216,7 @@ describe ('Add Artifact Controller', () => {
     }) 
     
     test('Should return 400 if any substat value is invalid', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
@@ -219,7 +235,7 @@ describe ('Add Artifact Controller', () => {
     })
     
     test('Should return 400 if more than 4 substats are provided', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
@@ -239,7 +255,7 @@ describe ('Add Artifact Controller', () => {
     })
 
     test('Should return 400 if substats values indicate more than 5 upgrade rolls', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
@@ -257,8 +273,27 @@ describe ('Add Artifact Controller', () => {
         expect(httpResponse.body).toEqual(new InvalidParamError('Invalid # of rolls: 8'));
     })
 
+    test('Should call AddArtifactDB with correct data', async () => {
+        const { sut, addArtifactStub } = makeSut();
+        const addArtifactSpy = jest.spyOn(addArtifactStub, 'add')
+        const httpRequest = { body: {
+            set: Sets.AP,
+            type: Types.Flower,
+            level: 20,
+            mainstat: Stats.HPFlat,
+            substats: [
+                {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
+                {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
+                {substat: Stats.DEF, value: upgradeTiers["DEF%"][0]},
+                {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]},
+            ]
+        }};
+        await sut.handle(httpRequest);
+        expect(addArtifactSpy).toHaveBeenCalledWith(httpRequest.body);
+    })
+
     test('Should return 200 if valid data is provided', async () => {
-        const sut = new AddArtifactController();
+        const { sut } = makeSut();
         const httpRequest = { body: {
             set: Sets.AP,
             type: Types.Flower,
