@@ -1,6 +1,7 @@
 import { AddArtifactParams } from "../../domain/artifact/usecases/add-artifact";
-import { mainStatValues } from "./chances";
+import { mainStatValues, upgradeTiers } from "./chances";
 import { Level, MainStat, Set, SubStat, Type } from "./enums";
+import { dfltWeights, ScoreWeightMap } from "./scoring";
 
 export class Artifact {
     private _set: Set;
@@ -9,6 +10,11 @@ export class Artifact {
     private _mainstat: MainStat;
     private _mainstatValue: undefined|number = undefined;
     private _substats: { substat: SubStat; value: number; }[];
+
+    private _scoreWeights: ScoreWeightMap = dfltWeights;
+    private _score: number | undefined;
+    private _scoreMainstat: number | undefined;
+    private _scoreSubstats: number | undefined;
     
     constructor (params: AddArtifactParams) {
         this._set = params.set
@@ -56,6 +62,40 @@ export class Artifact {
     }
     public set substats(value: { substat: SubStat; value: number; }[]) {
         this._substats = value;
+    }
+    public get scoreWeights(): ScoreWeightMap {
+        return this._scoreWeights;
+    }
+    public set scoreWeights(value: ScoreWeightMap) {
+        this._scoreWeights = value;
+    }
+    public get score(): number {
+        if (this._score) return this._score;
+        this._score = this.scoreMainstat + this.scoreSubstats
+        return this._score
+    }
+    public set score(value: number) {
+        this._score = value;
+    }
+    private get scoreMainstat(): number {
+        if (this._scoreMainstat) return this._scoreMainstat;
+        this._scoreMainstat = this._scoreWeights.mainStatWeight[this._mainstat] * this.mainstatValue / mainStatValues[this._mainstat][1]
+        return this._scoreMainstat;
+    }
+    private set scoreMainstat(value: number) {
+        this._scoreMainstat = value;
+    }
+    private get scoreSubstats(): number {
+        if (this._scoreSubstats) return this._scoreSubstats;
+        let sumWeight = 0
+        this._substats.forEach((sub) => {
+            sumWeight += this._scoreWeights.subStatWeight[sub.substat] * sub.value / upgradeTiers[sub.substat][3]
+        })
+        this._scoreSubstats = sumWeight
+        return this._scoreSubstats;
+    }
+    private set scoreSubstats(value: number) {
+        this._scoreSubstats = value;
     }
 
 }
