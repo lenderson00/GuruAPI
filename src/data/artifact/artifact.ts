@@ -55,6 +55,7 @@ export class Artifact {
     }
     public set mainstatValue(value: number) {
         this._mainstatValue = value;
+        // ADJUST LEVEL BASED ON VALUE
         this._level = Math.round(20*(value-mainStatValues[this._mainstat][0]/(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0]))) as Level
     }
     public get substats(): { substat: SubStat; value: number; }[] {

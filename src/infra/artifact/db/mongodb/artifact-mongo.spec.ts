@@ -40,7 +40,7 @@ describe('Artifact-Mongo', () => {
     })
 
     describe('add()', () => {
-        test('Should return an account on success', async () => {
+        test('Should return true on success', async () => {
             jest.setTimeout(20000);
             const sut = makeSut()
             const addArtifactParams = mockAddArtifactParams()
