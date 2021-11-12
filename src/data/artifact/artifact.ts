@@ -1,6 +1,7 @@
 import { AddArtifactParams } from "../../domain/artifact/usecases/add-artifact";
 import { mainStatValues, upgradeTiers } from "./chances";
 import { Level, MainStat, Set, SubStat, Type } from "./enums";
+import { AddArtifactRepoParams } from "./protocols/add-artifact-repo";
 import { dfltWeights, ScoreWeightMap } from "./scoring";
 
 export class Artifact {
@@ -22,6 +23,27 @@ export class Artifact {
         this._level = params.level
         this._mainstat = params.mainstat
         this._substats = params.substats
+    }
+
+    public async createRepoData (): Promise<AddArtifactRepoParams> {
+        const date = new Date
+        return {
+            set: this.set,
+            type: this.type,
+            level: this.level,
+            mainstat: this.mainstat,
+            mainstatValue: this.mainstatValue,
+            substats: this.substats,
+            scoreDflt: this.score,
+            scoreMainstatDflt: this.scoreMainstat,
+            scoreSubstatsDflt: this.scoreSubstats,
+            scoreLvl20Min: 0, // TO DO
+            scoreLvl20Avg: 0, // TO DO
+            scoreLvl20Max: 0, // TO DO
+            scoreLvl20SD: 0, // TO DO
+            dtAdded: date.toUTCString(),
+            dtModified: date.toUTCString(),
+        }
     }
 
     // GETTERS AND SETTERS

@@ -1,4 +1,4 @@
-import { addArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../../../../data/artifact/protocols/add-artifact-Repo"
+import { addArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../../../../data/artifact/protocols/add-artifact-repo"
 import { MongoHelper } from "./mongo-helper";
 
 export class ArtifactMongo implements addArtifactRepo {

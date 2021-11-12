@@ -12,11 +12,15 @@ export type AddArtifactRepoParams = {
     mainstat: MainStat
     mainstatValue?: number
     substats: {substat: SubStat, value: number}[]
-    scoreDflt?: undefined
-    scoreMainstatDflt?: undefined
-    scoreSubstatsDflt?: undefined
-    dtAdded?: Date
-    dtModified?: Date
+    scoreDflt: number
+    scoreMainstatDflt: number
+    scoreSubstatsDflt: number
+    scoreLvl20Min: number
+    scoreLvl20Avg: number
+    scoreLvl20Max: number
+    scoreLvl20SD: number
+    dtAdded: string
+    dtModified: string
     user?: string
     char?: Character
 }

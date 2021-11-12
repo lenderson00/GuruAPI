@@ -6,7 +6,7 @@ import { AddArtifactController } from "./add-artifact-controller"
 
 const makeSut = () => {
     const addArtifactStub: AddArtifact = {
-         add: async (data) => {
+        add: async (data) => {
             return new Promise((res) => res(true as AddArtifactResult))
         }
     }

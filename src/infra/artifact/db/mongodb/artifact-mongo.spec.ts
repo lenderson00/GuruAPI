@@ -2,25 +2,35 @@ import { Collection } from "mongodb";
 import { ArtifactMongo } from "./artifact-mongo";
 import { MongoHelper } from "./mongo-helper";
 import env from "../../../../main/config/env"
-import { AddArtifactParams } from "../../../../domain/artifact/usecases/add-artifact";
 import { Sets, Stats, Types } from "../../../../data/artifact/enums";
 import { upgradeTiers } from "../../../../data/artifact/chances";
+import { AddArtifactRepoParams } from "../../../../data/artifact/protocols/add-artifact-repo";
 
 const makeSut = () : ArtifactMongo => {
     return new ArtifactMongo()
 }
 
-const mockAddArtifactParams = (): AddArtifactParams => ({
+const mockAddArtifactParams = (): AddArtifactRepoParams => ({
     set: Sets.AP,
     type: Types.Flower,
     level: 20,
     mainstat: Stats.HPFlat,
+    mainstatValue: 4780,
     substats: [
         {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
         {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
         {substat: Stats.DEF, value: upgradeTiers["DEF%"][0]},
         {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]},
-    ]
+    ],
+    scoreDflt: 0,
+    scoreMainstatDflt: 0,
+    scoreSubstatsDflt: 0,
+    scoreLvl20Min: 0,
+    scoreLvl20Avg: 0,
+    scoreLvl20Max: 0,
+    scoreLvl20SD: 0,
+    dtAdded: "any_date",
+    dtModified: "any_date",
 })
 
 let artifactCollection: Collection

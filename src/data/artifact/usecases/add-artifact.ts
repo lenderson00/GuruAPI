@@ -1,5 +1,6 @@
 import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../../domain/artifact/usecases/add-artifact";
-import { addArtifactRepo } from "../protocols/add-artifact-Repo"
+import { Artifact } from "../artifact";
+import { addArtifactRepo } from "../protocols/add-artifact-repo"
 
 export class AddArtifactDB implements AddArtifact {
     private readonly addArtifactRepo: addArtifactRepo
@@ -9,8 +10,9 @@ export class AddArtifactDB implements AddArtifact {
     }
     
     async add (data: AddArtifactParams): Promise<AddArtifactResult> {
-        
-        const isValid: AddArtifactResult = await this.addArtifactRepo.add(data)
+        const artifact = new Artifact(data)
+        const repoData = await artifact.createRepoData()
+        const isValid: AddArtifactResult = await this.addArtifactRepo.add(repoData)
         return isValid
     }
 }
