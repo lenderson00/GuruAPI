@@ -78,7 +78,7 @@ export class Artifact {
     public set score(value: number) {
         this._score = value;
     }
-    private get scoreMainstat(): number {
+    public get scoreMainstat(): number {
         if (this._scoreMainstat) return this._scoreMainstat;
         this._scoreMainstat = this._scoreWeights.mainStatWeight[this._mainstat] * this.mainstatValue / mainStatValues[this._mainstat][1]
         return this._scoreMainstat;
@@ -86,7 +86,7 @@ export class Artifact {
     private set scoreMainstat(value: number) {
         this._scoreMainstat = value;
     }
-    private get scoreSubstats(): number {
+    public get scoreSubstats(): number {
         if (this._scoreSubstats) return this._scoreSubstats;
         let sumWeight = 0
         this._substats.forEach((sub) => {

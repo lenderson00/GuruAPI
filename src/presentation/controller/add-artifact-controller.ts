@@ -6,14 +6,12 @@ import { badRequest, ok } from "../helpers/http-helper";
 import { Controller } from "../protocols/controller";
 import { HttpResponse } from "../protocols/http";
 import substatsValues from "../../data/artifact/gen-substat-values-possibilities.json"
-import { AddArtifactParams, AddArtifactResult } from "../../domain/artifact/usecases/add-artifact"
-import { AddArtifactDB } from "../../data/artifact/protocols/add-artifact-DB"
-
+import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../domain/artifact/usecases/add-artifact"
 export class AddArtifactController implements Controller {
-    private readonly addArtifactDB: AddArtifactDB
+    private readonly addArtifact: AddArtifact
     
-    constructor (addArtifactDB: AddArtifactDB) {
-        this.addArtifactDB = addArtifactDB
+    constructor (addArtifact: AddArtifact) {
+        this.addArtifact = addArtifact
     }
     
     async handle (request: Request): Promise<HttpResponse> {
@@ -51,12 +49,11 @@ export class AddArtifactController implements Controller {
             return badRequest(new InvalidParamError(`Invalid # of rolls: ${rolls}`));
         }
         
-        const isOk: AddArtifactResult = await this.addArtifactDB.add(request.body as AddArtifactParams);
+        const isOk: AddArtifactResult = await this.addArtifact.add(request.body as AddArtifactParams);
         return ok(isOk);
     }
     
 }
-
 export interface Request {
     body: {
         set?: string

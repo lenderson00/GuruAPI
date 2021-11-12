@@ -1,11 +1,10 @@
-import { AddArtifactDB } from "../../../../data/artifact/protocols/add-artifact-DB";
-import { AddArtifactParams, AddArtifactResult } from "../../../../domain/artifact/usecases/add-artifact";
+import { addArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../../../../data/artifact/protocols/add-artifact-Repo"
 import { MongoHelper } from "./mongo-helper";
 
-export class ArtifactMongo implements AddArtifactDB {
-    async add (data: AddArtifactParams): Promise<AddArtifactResult> {
+export class ArtifactMongo implements addArtifactRepo {
+    async add (artifactData: AddArtifactRepoParams): Promise<AddArtifactRepoResult> {
         const artifactCollection = MongoHelper.getCollection('artifacts')
-        const result = await artifactCollection.insertOne(data)
+        const result = await artifactCollection.insertOne(artifactData)
         return result.insertedId !== null
     }
 }

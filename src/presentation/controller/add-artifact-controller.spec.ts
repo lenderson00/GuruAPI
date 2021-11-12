@@ -1,12 +1,11 @@
 import { upgradeTiers } from "../../data/artifact/chances";
 import { Sets, Stats, Types } from "../../data/artifact/enums";
-import { AddArtifactDB } from "../../data/artifact/protocols/add-artifact-DB";
-import { AddArtifactResult } from "../../domain/artifact/usecases/add-artifact";
+import { AddArtifact, AddArtifactResult } from "../../domain/artifact/usecases/add-artifact";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { AddArtifactController } from "./add-artifact-controller"
 
 const makeSut = () => {
-    const addArtifactStub: AddArtifactDB = {
+    const addArtifactStub: AddArtifact = {
          add: async (data) => {
             return new Promise((res) => res(true as AddArtifactResult))
         }
