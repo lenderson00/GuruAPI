@@ -1,3 +1,4 @@
+import { throwError } from "../../../../tests/mocks/test-helper"
 import { AddArtifactParams } from "../../../domain/artifact/usecases/add-artifact"
 import { upgradeTiers } from "../chances"
 import { MainStats, Sets, Stats, SubStats, Types } from "../enums"
@@ -35,5 +36,12 @@ describe ('Add-Artifact-DB Usecase', () => {
         expect(addArtifactRepoStub.params.level).toEqual(AddArtifactParams.level)
         expect(addArtifactRepoStub.params.mainstat).toEqual(AddArtifactParams.mainstat)
         expect(addArtifactRepoStub.params.substats).toEqual(AddArtifactParams.substats)
+    })
+
+    test('Should throw if AddArtifactRepo throws', async () => {
+        const { sut, addArtifactRepoStub } = makeSut()
+        jest.spyOn(addArtifactRepoStub, 'add').mockImplementationOnce(throwError)
+        const promise = sut.add(mockAddAccountParams())
+        await expect(promise).rejects.toThrow()
     })
 })
