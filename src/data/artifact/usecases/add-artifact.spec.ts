@@ -25,6 +25,7 @@ const mockAddAccountParams = (): AddArtifactParams => ({
 })
 
 describe ('Add-Artifact-DB Usecase', () => {
+    
     test('Should call AddArtifactRepo with correct values', async () => {
         const { sut, addArtifactRepoStub } = makeSut()
         const AddArtifactParams = mockAddAccountParams()
