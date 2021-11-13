@@ -15,7 +15,6 @@ export class AddArtifactController implements Controller {
     }
     
     async handle (request: Request): Promise<HttpResponse> {
-        
         const requiredFields: Array<keyof Request["body"]>  = ['set', 'type', 'level', 'mainstat', 'substats']
         for (const field of requiredFields) {
             if (!request.body[field]) {
@@ -48,7 +47,6 @@ export class AddArtifactController implements Controller {
         if (rolls > 5) {
             return badRequest(new InvalidParamError(`Invalid # of rolls: ${rolls}`));
         }
-        
         const isOk: AddArtifactResult = await this.addArtifact.add(request.body as AddArtifactParams);
         return ok(isOk);
     }
