@@ -1,7 +1,7 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
 import { AddArtifactParams } from "../../../domain/artifact/usecases/add-artifact"
 import { upgradeTiers } from "../chances"
-import { MainStats, Sets, Stats, SubStats, Types } from "../enums"
+import { Sets, Stats, Types } from "../enums"
 import { AddArtifactDB } from "./add-artifact"
 import { addArtifactRepoSpy } from "./mock-artifact-db"
 
@@ -43,5 +43,11 @@ describe ('Add-Artifact-DB Usecase', () => {
         jest.spyOn(addArtifactRepoStub, 'add').mockImplementationOnce(throwError)
         const promise = sut.add(mockAddAccountParams())
         await expect(promise).rejects.toThrow()
+    })
+
+    test('Should return true on success', async () => {
+        const { sut } = makeSut()
+        const isValid = await sut.add(mockAddAccountParams())
+        expect(isValid).toBe(true)
     })
 })
