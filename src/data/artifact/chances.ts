@@ -274,38 +274,66 @@ export const subStatChances: TypeMainSubChanceMap = {
   },
 };
 
+const subsValuesTop: Record<SubStats, number> =
+  {
+    [Stats.HPFlat]: 298.8,
+    [Stats.HP]: 105/18,
+    [Stats.ATKFlat]: 19.45,
+    [Stats.ATK]: 105/18,
+    [Stats.DEFFlat]: 23.214,
+    [Stats.DEF]: 7.2895,
+    [Stats.CR]: 3.8878,
+    [Stats.CD]: 7.775,
+    [Stats.ER]: 6.476,
+    [Stats.EM]: 23.333,
+  };
+
+export const subsRoundDecimal: Record<SubStats, boolean> =
+{
+  [Stats.HPFlat]: false,
+  [Stats.HP]: true,
+  [Stats.ATKFlat]: false,
+  [Stats.ATK]: true,
+  [Stats.DEFFlat]: false,
+  [Stats.DEF]: true,
+  [Stats.CR]: true,
+  [Stats.CD]: true,
+  [Stats.ER]: true,
+  [Stats.EM]: false,
+};
+
 export const upgradeTiers: Record<SubStats, [number, number, number, number]> =
   {
-    [Stats.HPFlat]: [209, 239, 269, 299],
-    [Stats.HP]: [4.1, 4.7, 5.3, 5.8],
-    [Stats.ATKFlat]: [14, 16, 18, 19],
-    [Stats.ATK]: [4.1, 4.7, 5.3, 5.8],
-    [Stats.DEFFlat]: [16, 19, 21, 23],
-    [Stats.DEF]: [5.1, 5.8, 6.6, 7.3],
-    [Stats.CR]: [2.7, 3.1, 3.5, 3.9],
-    [Stats.CD]: [5.4, 6.2, 7.0, 7.8],
-    [Stats.ER]: [4.5, 5.2, 5.8, 6.5],
-    [Stats.EM]: [16, 19, 21, 23],
+    [Stats.HPFlat]: [subsValuesTop[Stats.HPFlat]*0.7, subsValuesTop[Stats.HPFlat]*0.8, subsValuesTop[Stats.HPFlat]*0.9, subsValuesTop[Stats.HPFlat]],
+    [Stats.HP]: [subsValuesTop[Stats.HP]*0.7, subsValuesTop[Stats.HP]*0.8, subsValuesTop[Stats.HP]*0.9, subsValuesTop[Stats.HP]],
+    [Stats.ATKFlat]: [subsValuesTop[Stats.ATKFlat]*0.7, subsValuesTop[Stats.ATKFlat]*0.8, subsValuesTop[Stats.ATKFlat]*0.9, subsValuesTop[Stats.ATKFlat]],
+    [Stats.ATK]: [subsValuesTop[Stats.ATK]*0.7, subsValuesTop[Stats.ATK]*0.8, subsValuesTop[Stats.ATK]*0.9, subsValuesTop[Stats.ATK]],
+    [Stats.DEFFlat]: [subsValuesTop[Stats.DEFFlat]*0.7, subsValuesTop[Stats.DEFFlat]*0.8, subsValuesTop[Stats.DEFFlat]*0.9, subsValuesTop[Stats.DEFFlat]],
+    [Stats.DEF]: [subsValuesTop[Stats.DEF]*0.7, subsValuesTop[Stats.DEF]*0.8, subsValuesTop[Stats.DEF]*0.9, subsValuesTop[Stats.DEF]],
+    [Stats.CR]: [subsValuesTop[Stats.CR]*0.7, subsValuesTop[Stats.CR]*0.8, subsValuesTop[Stats.CR]*0.9, subsValuesTop[Stats.CR]],
+    [Stats.CD]: [subsValuesTop[Stats.CD]*0.7, subsValuesTop[Stats.CD]*0.8, subsValuesTop[Stats.CD]*0.9, subsValuesTop[Stats.CD]],
+    [Stats.ER]: [subsValuesTop[Stats.ER]*0.7, subsValuesTop[Stats.ER]*0.8, subsValuesTop[Stats.ER]*0.9, subsValuesTop[Stats.ER]],
+    [Stats.EM]: [subsValuesTop[Stats.EM]*0.7, subsValuesTop[Stats.EM]*0.8, subsValuesTop[Stats.EM]*0.9, subsValuesTop[Stats.EM]],
   };
 
   export const mainStatValues: Record<MainStats, [number, number]> =
   {
     [Stats.HPFlat]: [717, 4780],
-    [Stats.HP]: [7, 46.6],
-    [Stats.ATKFlat]: [47, 311],
-    [Stats.ATK]: [7, 46.6],
-    [Stats.DEF]: [9, 58.3],
-    [Stats.CR]: [5, 31.1],
-    [Stats.CD]: [9, 62.2],
-    [Stats.ER]: [8, 51.8],
-    [Stats.EM]: [28, 187],
-    [Stats.HB]: [5, 35.9],
-    [Stats.Pyro]: [7, 46.6],
-    [Stats.Electro]: [7, 46.6],
-    [Stats.Cryo]: [7, 46.6],
-    [Stats.Hydro]: [7, 46.6],
-    [Stats.Anemo]: [7, 46.6],
-    [Stats.Geo]: [7, 46.6],
-    //[Stats.Dendro]:  [7, 46.6],
-    [Stats.Physical]: [9, 58.3],
+    [Stats.HP]: [6.993, 46.62],
+    [Stats.ATKFlat]: [46.68, 311.2],
+    [Stats.ATK]: [6.993, 46.62],
+    [Stats.DEF]: [8.742, 58.28],
+    [Stats.CR]: [4.6625, 31.0833],
+    [Stats.CD]: [9.325, 62.167],
+    [Stats.ER]: [7.77, 51.8],
+    [Stats.EM]: [28, 186.667],
+    [Stats.HB]: [5.38, 35.8667],
+    [Stats.Pyro]: [6.993, 46.62],
+    [Stats.Electro]: [6.993, 46.62],
+    [Stats.Cryo]: [6.993, 46.62],
+    [Stats.Hydro]: [6.993, 46.62],
+    [Stats.Anemo]: [6.993, 46.62],
+    [Stats.Geo]: [6.993, 46.62],
+    //[Stats.Dendro]:  [6.993, 46.62],
+    [Stats.Physical]: [8.742, 58.28],
   };

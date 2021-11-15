@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "sucrase-node src/main/server.ts",
+    "pilot": "sucrase-node src/data/artifact/sub-values-test.ts",
+    "gen:subvalues": "sucrase-node src/data/artifact/gen-substat-values-possibilities.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",

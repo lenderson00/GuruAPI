@@ -72,13 +72,13 @@ export class Artifact {
         this._mainstat = value;
     }
     public get mainstatValue(): number {
-        if (this._mainstatValue) return this._mainstatValue;
-        return Math.round((this._level/20)*(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0]) - mainStatValues[this._mainstat][0])
+        if (this._mainstatValue) return this._mainstatValue
+        return (this._level/20)*(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])+mainStatValues[this._mainstat][0]
     }
     public set mainstatValue(value: number) {
         this._mainstatValue = value;
         // ADJUST LEVEL BASED ON VALUE
-        this._level = Math.round(20*(value-mainStatValues[this._mainstat][0]/(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0]))) as Level
+        this._level = Math.round(20*(value-mainStatValues[this._mainstat][0])/(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])) as Level
     }
     public get substats(): { substat: SubStat; value: number; }[] {
         return this._substats;
