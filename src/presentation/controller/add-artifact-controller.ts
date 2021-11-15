@@ -6,7 +6,7 @@ import { badRequest, ok } from "../helpers/http-helper";
 import { Controller } from "../protocols/controller";
 import { HttpResponse } from "../protocols/http";
 import substatsValues from "../../data/artifact/gen-substat-values-possibilities.json"
-import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../domain/artifact/usecases/add-artifact"
+import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
 export class AddArtifactController implements Controller {
     private readonly addArtifact: AddArtifact
     

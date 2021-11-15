@@ -1,4 +1,4 @@
-import { AddArtifactParams } from "../../domain/artifact/usecases/add-artifact";
+import { AddArtifactParams } from "../../domain/artifact/usecases/crud-artifact";
 import { mainStatValues, upgradeTiers } from "./chances";
 import { Level, MainStat, Set, SubStat, Type } from "./enums";
 import { AddArtifactRepoParams } from "./protocols/add-artifact-repo";

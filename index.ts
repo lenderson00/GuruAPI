@@ -1,7 +1,7 @@
 import { Artifact } from "./src/data/artifact/artifact";
 import { upgradeTiers } from "./src/data/artifact/chances";
 import { Level, Sets, Stats, Types, MainStat } from "./src/data/artifact/enums";
-import { AddArtifactParams } from "./src/domain/artifact/usecases/add-artifact";
+import { AddArtifactParams } from "./src/domain/artifact/usecases/crud-artifact";
 
 const data = {
     set: Sets.AP,

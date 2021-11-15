@@ -1,4 +1,4 @@
-import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../../domain/artifact/usecases/add-artifact";
+import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../../domain/artifact/usecases/crud-artifact";
 import { Artifact } from "../artifact";
 import { addArtifactRepo } from "../protocols/add-artifact-repo"
 
