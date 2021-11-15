@@ -1,6 +1,6 @@
 import { DelArtifactRepo, DelArtifactRepoResult } from "../../data/artifact/protocols/del-artifact-repo";
 import { InvalidParamError, MissingParamError } from "../errors";
-import { badRequest, ok } from "../helpers/http-helper";
+import { badRequest, ok, serverError } from "../helpers/http-helper";
 import { Controller, HttpResponse } from "../protocols";
 
 export class DelArtifactController implements Controller {
@@ -11,10 +11,15 @@ export class DelArtifactController implements Controller {
     }
 
     async handle (req: Request): Promise<HttpResponse> {
-        if (!req.params.id) return badRequest(new MissingParamError('id'))
-        const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del({ id: req.params.id })
-        if (!isOK) return badRequest(new InvalidParamError('id'))
-        return ok(true)
+        try {
+            if (!req.params.id) return badRequest(new MissingParamError('id'))
+            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del({ id: req.params.id })
+            if (!isOK) return badRequest(new InvalidParamError('id'))
+            return ok(true)
+        } catch (error) {
+            return serverError(error as Error)
+        }
+        
     }
 }
 
