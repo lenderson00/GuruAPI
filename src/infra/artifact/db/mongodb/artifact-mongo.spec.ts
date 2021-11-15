@@ -41,21 +41,31 @@ describe('Artifact-Mongo', () => {
       })
     
     afterAll(async () => {
-        await MongoHelper.disconnect()
-      })
-
-    beforeEach(async () => {
         artifactCollection = MongoHelper.getCollection('artifacts')
         await artifactCollection.deleteMany({})
+        await MongoHelper.disconnect()
     })
+
+    /* beforeEach(async () => {
+        artifactCollection = MongoHelper.getCollection('artifacts')
+        await artifactCollection.deleteMany({})
+    }) */
 
     describe('add()', () => {
         test('Should return true on success', async () => {
-            jest.setTimeout(20000);
             const sut = makeSut()
             const addArtifactParams = mockAddArtifactParams()
             const isValid = await sut.add(addArtifactParams)
             expect(isValid).toBe(true)
         })
-      })
+    })
+
+    /* describe('del()', () => {
+        test('Should return true on success', async () => {
+            const sut = makeSut()
+            const id = 'valid_id'
+            const isValid = await sut.del(id)
+            expect(isValid).toBe(true)
+        })
+    }) */
 })

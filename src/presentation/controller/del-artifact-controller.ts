@@ -13,7 +13,7 @@ export class DelArtifactController implements Controller {
     async handle (req: Request): Promise<HttpResponse> {
         try {
             if (!req.params.id) return badRequest(new MissingParamError('id'))
-            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del({ id: req.params.id })
+            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del(req.params.id)
             if (!isOK) return badRequest(new InvalidParamError('id'))
             return ok(true)
         } catch (error) {

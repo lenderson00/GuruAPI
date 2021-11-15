@@ -31,7 +31,7 @@ describe ('Delete Artifact Controller', () => {
         const delArtifactSpy = jest.spyOn(delArtifactStub, 'del')
         const httpRequest: Request = { params: {id: 'any_id'} }
         await sut.handle(httpRequest);
-        expect(delArtifactSpy).toHaveBeenCalledWith({ id: httpRequest.params.id });
+        expect(delArtifactSpy).toHaveBeenCalledWith(httpRequest.params.id);
     })
 
     test('Should return 400 if id is invalid', async () => {
