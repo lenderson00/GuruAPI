@@ -1,5 +1,5 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
-import { AddArtifactParams } from "../../../domain/artifact/usecases/add-artifact"
+import { AddArtifactParams } from "../../../domain/artifact/usecases/crud-artifact"
 import { upgradeTiers } from "../chances"
 import { Sets, Stats, Types } from "../enums"
 import { AddArtifactDB } from "./add-artifact"
