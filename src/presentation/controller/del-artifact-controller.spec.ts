@@ -1,9 +1,7 @@
-import { reject } from "lodash"
 import { throwError } from "../../../tests/mocks/test-helper"
 import { DelArtifactRepo } from "../../data/artifact/protocols/del-artifact-repo"
 import { DelArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError, MissingParamError } from "../errors"
-import { ServerError } from "../errors/server-error"
+import { InvalidParamError, MissingParamError, ServerError } from "../errors"
 import { serverError } from "../helpers/http-helper"
 import { DelArtifactController, Request } from "./del-artifact-controller"
 
@@ -38,7 +36,7 @@ describe ('Delete Artifact Controller', () => {
 
     test('Should return 400 if id is invalid', async () => {
         const { sut, delArtifactStub } = makeSut();
-        jest.spyOn(delArtifactStub, 'del').mockReturnValueOnce(new Promise((resolve, reject) => resolve(false)))
+        jest.spyOn(delArtifactStub, 'del').mockReturnValueOnce(new Promise((resolve) => resolve(false)))
         const httpRequest: Request = { params: {id: 'invalid_id'} }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.body).toEqual(new InvalidParamError('id'))
