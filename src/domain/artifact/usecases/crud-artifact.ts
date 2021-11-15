@@ -13,6 +13,4 @@ export type AddArtifactParams = {
 
 export type AddArtifactResult = boolean
 
-export type DelArtifactParams = {params: {id: string } }
-
 export type DelArtifactResult = boolean

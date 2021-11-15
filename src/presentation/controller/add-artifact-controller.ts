@@ -29,6 +29,7 @@ export class AddArtifactController implements Controller {
         if (request.body.substats!.length > 4) return badRequest(new InvalidParamError('# of substats'))
 
         // TS workaround to allow for substat values indexing
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const sv: { [key: string]: { [key2: number|string]: any} } = substatsValues;
         let rolls = 0;
 
