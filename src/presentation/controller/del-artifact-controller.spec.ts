@@ -1,9 +1,7 @@
-import { reject } from "lodash"
 import { throwError } from "../../../tests/mocks/test-helper"
 import { DelArtifactRepo } from "../../data/artifact/protocols/del-artifact-repo"
 import { DelArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError, MissingParamError } from "../errors"
-import { ServerError } from "../errors/server-error"
+import { InvalidParamError, MissingParamError, ServerError } from "../errors"
 import { serverError } from "../helpers/http-helper"
 import { DelArtifactController, Request } from "./del-artifact-controller"
 
