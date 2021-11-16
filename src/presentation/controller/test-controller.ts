@@ -1,5 +1,3 @@
-import { MissingParamError } from "../errors"
-import { badRequest, ok } from "../helpers/http-helper"
 import { Controller, HttpResponse } from "../protocols"
 
 export class TestController implements Controller {
