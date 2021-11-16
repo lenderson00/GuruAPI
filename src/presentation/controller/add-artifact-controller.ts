@@ -15,26 +15,26 @@ export class AddArtifactController implements Controller {
     }
     
     async handle (request: Request): Promise<HttpResponse> {
-        const requiredFields: Array<keyof Request["body"]>  = ['set', 'type', 'level', 'mainstat', 'substats']
+        const requiredFields: Array<keyof Request>  = ['set', 'type', 'level', 'mainstat', 'substats']
         for (const field of requiredFields) {
-            if (!request.body[field]) {
+            if (!request[field]) {
                 return badRequest(new MissingParamError(field))
             }
         }
         
-        if (!allSets.includes(request.body.set as Set)) return badRequest(new InvalidParamError('set'))
-        if (!allTypes.includes(request.body.type as Type)) return badRequest(new InvalidParamError('type'))
-        if (!allLevels.includes(request.body.level as Level)) return badRequest(new InvalidParamError('level'))
-        if (!allowedMainStats[request.body.type as Type].includes(request.body.mainstat as never)) return badRequest(new InvalidParamError('mainstat'))
-        if (request.body.substats!.length > 4) return badRequest(new InvalidParamError('# of substats'))
+        if (!allSets.includes(request.set as Set)) return badRequest(new InvalidParamError('set'))
+        if (!allTypes.includes(request.type as Type)) return badRequest(new InvalidParamError('type'))
+        if (!allLevels.includes(request.level as Level)) return badRequest(new InvalidParamError('level'))
+        if (!allowedMainStats[request.type as Type].includes(request.mainstat as never)) return badRequest(new InvalidParamError('mainstat'))
+        if (request.substats!.length > 4) return badRequest(new InvalidParamError('# of substats'))
 
         // TS workaround to allow for substat values indexing
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const sv: { [key: string]: { [key2: number|string]: any} } = substatsValues;
         let rolls = 0;
 
-        for (const sub of request.body.substats!) {
-            if (!allowedSubStats[request.body.mainstat as MainStat].includes(sub.substat as SubStat)) return badRequest(new InvalidParamError(`substat: ${sub.substat}`))
+        for (const sub of request.substats!) {
+            if (!allowedSubStats[request.mainstat as MainStat].includes(sub.substat as SubStat)) return badRequest(new InvalidParamError(`substat: ${sub.substat}`))
             let found: number|undefined = undefined;
             rollLoop: for (let i = 1; i < 7; i++) {
                 found = sv[sub.substat][i].includes(sub.value) || found
@@ -48,17 +48,15 @@ export class AddArtifactController implements Controller {
         if (rolls > 5) {
             return badRequest(new InvalidParamError(`Invalid # of rolls: ${rolls}`));
         }
-        const isOk: AddArtifactResult = await this.addArtifact.add(request.body as AddArtifactParams);
+        const isOk: AddArtifactResult = await this.addArtifact.add(request as AddArtifactParams);
         return ok(isOk);
     }
     
 }
 export interface Request {
-    body: {
-        set?: string
-        type?: string
-        level?: number
-        mainstat?: string
-        substats?: {substat: string, value: number}[]
-    }
+    set?: string
+    type?: string
+    level?: number
+    mainstat?: string
+    substats?: {substat: string, value: number}[]
 }

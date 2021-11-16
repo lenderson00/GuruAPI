@@ -36,10 +36,10 @@ describe('Login Routes', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
-                {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
-                {substat: Stats.DEF, value: upgradeTiers["DEF%"][0]},
-                {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]},
+                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
+                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
             ]
         })
         .expect(200)

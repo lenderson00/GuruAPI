@@ -8,7 +8,6 @@ export class DelArtifactController implements Controller {
 
     constructor (delArtifactRepo: DelArtifactRepo) {
         this.delArtifactRepo = delArtifactRepo;
-        console.log('Criou o DelController')
     }
 
     async handle (req: Request): Promise<HttpResponse> {
