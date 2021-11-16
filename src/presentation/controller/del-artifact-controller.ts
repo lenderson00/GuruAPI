@@ -8,12 +8,14 @@ export class DelArtifactController implements Controller {
 
     constructor (delArtifactRepo: DelArtifactRepo) {
         this.delArtifactRepo = delArtifactRepo;
+        console.log('Criou o DelController')
     }
 
     async handle (req: Request): Promise<HttpResponse> {
         try {
-            if (!req.params.id) return badRequest(new MissingParamError('id'))
-            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del(req.params.id)
+            const { id } = req
+            if (!id) return badRequest(new MissingParamError('id'))
+            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del(id)
             if (!isOK) return badRequest(new InvalidParamError('id'))
             return ok(true)
         } catch (error) {
@@ -23,4 +25,6 @@ export class DelArtifactController implements Controller {
     }
 }
 
-export interface Request { params: { id?: string } }
+export type Request = {
+    id?: string
+}

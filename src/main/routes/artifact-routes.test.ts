@@ -1,6 +1,5 @@
 import { MongoHelper } from '../../infra/artifact/db/mongodb/mongo-helper'
 import { setupApp } from '../config/app'
-
 import { Collection } from 'mongodb'
 import { Express } from 'express'
 import request from 'supertest'
