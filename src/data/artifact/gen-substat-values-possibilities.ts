@@ -12,11 +12,11 @@ for (const key in upgradeTiers) {
         for (let index = 1; index < 7; index++) {
             if (subsRoundDecimal[key as SubStats])
                 subPossible[key][index] = new BaseN(element, index).toArray()  // Calculate all probabilities n times
-                    .map(x => -Math.round(-x.reduce((p,c) => p+c)*10)/10)  // Sum all rolls, round them on 2nd decimal
+                    .map(x => Math.round(x.reduce((p,c) => p+c)*10)/10)  // Sum all rolls, round them on 2nd decimal
                         .filter((item: number, index: number, array: number[]) => array.findIndex((t: number) => t === item) === index);  // and remove duplicates
             else
                 subPossible[key][index] = new BaseN(element, index).toArray()  // Calculate all probabilities n times
-                    .map(x => -Math.round(-x.reduce((p,c) => p+c)))  // Sum all rolls, round them on 2nd decimal
+                    .map(x => Math.round(x.reduce((p,c) => p+c)))  // Sum all rolls, round them on 2nd decimal
                         .filter((item: number, index: number, array: number[]) => array.findIndex((t: number) => t === item) === index);  // and remove duplicates
         }
         

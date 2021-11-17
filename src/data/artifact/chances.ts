@@ -274,18 +274,40 @@ export const subStatChances: TypeMainSubChanceMap = {
   },
 };
 
+export const mainStatValues: Record<MainStats, [number, number]> =
+{
+  [Stats.HPFlat]: [717, 4780],
+  [Stats.HP]: [7, 420/9],
+  [Stats.ATKFlat]: [420/9, 2800/9],
+  [Stats.ATK]: [7, 420/9],
+  [Stats.DEF]: [35/4, 525/9],
+  [Stats.CR]: [42/9, 280/9],
+  [Stats.CD]: [9.325, 62.167], // Empirical evidence: 35.8657143 < [1] < 35.87090909
+  [Stats.ER]: [7.77, 51.8], 
+  [Stats.EM]: [28, 1680/9],
+  [Stats.HB]: [269/50, 538/15], // Empirical evidence: 62.166667 (doesn't work if ending with 6) < [1] < 62.1739130
+  [Stats.Pyro]: [7, 420/9],
+  [Stats.Electro]: [7, 420/9],
+  [Stats.Cryo]: [7, 420/9],
+  [Stats.Hydro]: [7, 420/9],
+  [Stats.Anemo]: [7, 420/9],
+  [Stats.Geo]: [7, 420/9],
+  //[Stats.Dendro]:  [7, 420/9],
+  [Stats.Physical]: [35/4, 525/9],
+};
+
 const subsValuesTop: Record<SubStats, number> =
   {
-    [Stats.HPFlat]: 298.8,
-    [Stats.HP]: 105/18,
-    [Stats.ATKFlat]: 19.45,
-    [Stats.ATK]: 105/18,
-    [Stats.DEFFlat]: 23.214,
-    [Stats.DEF]: 7.2895,
-    [Stats.CR]: 3.8878,
-    [Stats.CD]: 7.775,
-    [Stats.ER]: 6.476,
-    [Stats.EM]: 23.333,
+    [Stats.HPFlat]: mainStatValues[Stats.HPFlat][1]/16,
+    [Stats.HP]: mainStatValues[Stats.HP][1]/8,
+    [Stats.ATKFlat]: mainStatValues[Stats.ATKFlat][1]/16,
+    [Stats.ATK]: mainStatValues[Stats.ATK][1]/8,
+    [Stats.DEFFlat]: 23.166666, // Empirical evidence: 23.148148 < x < 23.1666667
+    [Stats.DEF]: mainStatValues[Stats.DEF][1]/8,
+    [Stats.CR]: mainStatValues[Stats.CR][1]/8,
+    [Stats.CD]: mainStatValues[Stats.CD][1]/8,
+    [Stats.ER]: mainStatValues[Stats.ER][1]/8,
+    [Stats.EM]: mainStatValues[Stats.EM][1]/8,
   };
 
 export const subsRoundDecimal: Record<SubStats, boolean> =
@@ -314,26 +336,4 @@ export const upgradeTiers: Record<SubStats, [number, number, number, number]> =
     [Stats.CD]: [subsValuesTop[Stats.CD]*0.7, subsValuesTop[Stats.CD]*0.8, subsValuesTop[Stats.CD]*0.9, subsValuesTop[Stats.CD]],
     [Stats.ER]: [subsValuesTop[Stats.ER]*0.7, subsValuesTop[Stats.ER]*0.8, subsValuesTop[Stats.ER]*0.9, subsValuesTop[Stats.ER]],
     [Stats.EM]: [subsValuesTop[Stats.EM]*0.7, subsValuesTop[Stats.EM]*0.8, subsValuesTop[Stats.EM]*0.9, subsValuesTop[Stats.EM]],
-  };
-
-  export const mainStatValues: Record<MainStats, [number, number]> =
-  {
-    [Stats.HPFlat]: [717, 4780],
-    [Stats.HP]: [6.993, 46.62],
-    [Stats.ATKFlat]: [46.68, 311.2],
-    [Stats.ATK]: [6.993, 46.62],
-    [Stats.DEF]: [8.742, 58.28],
-    [Stats.CR]: [4.6625, 31.0833],
-    [Stats.CD]: [9.325, 62.167],
-    [Stats.ER]: [7.77, 51.8],
-    [Stats.EM]: [28, 186.667],
-    [Stats.HB]: [5.38, 35.8667],
-    [Stats.Pyro]: [6.993, 46.62],
-    [Stats.Electro]: [6.993, 46.62],
-    [Stats.Cryo]: [6.993, 46.62],
-    [Stats.Hydro]: [6.993, 46.62],
-    [Stats.Anemo]: [6.993, 46.62],
-    [Stats.Geo]: [6.993, 46.62],
-    //[Stats.Dendro]:  [6.993, 46.62],
-    [Stats.Physical]: [8.742, 58.28],
   };
