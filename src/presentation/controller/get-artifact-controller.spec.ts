@@ -13,7 +13,7 @@ const makeSut = () => {
     return { sut, getArtifactStub }
 }
 
-describe ('Delete Artifact Controller', () => {
+describe ('Get Artifact Controller', () => {
 
     test('Should return 400 if no id is provided', async () => {
         const { sut } = makeSut();
@@ -21,5 +21,13 @@ describe ('Delete Artifact Controller', () => {
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(400);
         expect(httpResponse.body).toEqual(new MissingParamError('id'));
+    })
+
+    test('Should call GetArtifact with correct data', async () => {
+        const { sut, getArtifactStub } = makeSut();
+        const delArtifactSpy = jest.spyOn(getArtifactStub, 'get')
+        const httpRequest: Request = { id: 'any_id'}
+        await sut.handle(httpRequest);
+        expect(delArtifactSpy).toHaveBeenCalledWith({ id: httpRequest.id });
     })
 })
