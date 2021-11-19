@@ -23,7 +23,7 @@ export type GetArtifactParams = {
     id: string
 }
 
-export type GetArtifactResult = {
+export type GetArtifactResult = false | {
     set: Set
     type: Type
     level: Level
