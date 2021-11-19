@@ -1,6 +1,6 @@
-import { GetArtifact } from "../../domain/artifact/usecases/crud-artifact";
+import { GetArtifact, GetArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
 import { MissingParamError } from "../errors";
-import { badRequest } from "../helpers/http-helper";
+import { badRequest, ok } from "../helpers/http-helper";
 import { Controller, HttpResponse } from "../protocols";
 
 export class GetArtifactController implements Controller {
@@ -11,7 +11,10 @@ export class GetArtifactController implements Controller {
     }
 
     async handle (req: Request): Promise<HttpResponse> {
-        return badRequest(new MissingParamError('id'))
+        const { id } = req
+        if (!id) return badRequest(new MissingParamError('id'))
+        const result: GetArtifactResult = await this.getArtifact.get({id})
+        return ok(result)
     }
 }
 
