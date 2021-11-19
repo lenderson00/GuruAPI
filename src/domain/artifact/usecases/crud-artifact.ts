@@ -14,3 +14,22 @@ export type AddArtifactParams = {
 export type AddArtifactResult = boolean
 
 export type DelArtifactResult = boolean
+
+export interface GetArtifact {
+    get: (data: GetArtifactParams) => Promise<GetArtifactResult>
+}
+
+export type GetArtifactParams = {
+    id: string
+}
+
+export type GetArtifactResult = {
+    set: Set
+    type: Type
+    level: Level
+    mainstat: MainStat
+    mainstatValue: number
+    substats: {substat: SubStat, value: number}[]
+    score: number
+}
+
