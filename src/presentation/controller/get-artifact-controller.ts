@@ -2,6 +2,7 @@ import { GetArtifact, GetArtifactResult } from "../../domain/artifact/usecases/c
 import { InvalidParamError, MissingParamError } from "../errors";
 import { badRequest, ok, serverError } from "../helpers/http-helper";
 import { Controller, HttpResponse } from "../protocols";
+import _ from "lodash/fp";
 
 export class GetArtifactController implements Controller {
     private readonly getArtifact: GetArtifact
@@ -15,7 +16,7 @@ export class GetArtifactController implements Controller {
             const { id } = req
             if (!id) return badRequest(new MissingParamError('id'))
             const result: GetArtifactResult = await this.getArtifact.get({id})
-            if (!result) return badRequest(new InvalidParamError('id'))
+            if (_.isEmpty(result)) return badRequest(new InvalidParamError('id'))
             return ok(result)
         } catch (error) {
             return serverError(error as Error)

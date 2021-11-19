@@ -37,9 +37,10 @@ describe ('Get Artifact Controller', () => {
 
     test('Should return 400 if id is invalid', async () => {
         const { sut, getArtifactStub } = makeSut();
-        jest.spyOn(getArtifactStub, 'get').mockReturnValueOnce(new Promise((resolve) => resolve(false)))
+        jest.spyOn(getArtifactStub, 'get').mockReturnValueOnce(new Promise((resolve) => resolve({})))
         const httpRequest: Request = { id: 'invalid_id' }
         const httpResponse = await sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(400);
         expect(httpResponse.body).toEqual(new InvalidParamError('id'))
     })
 
