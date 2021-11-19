@@ -14,7 +14,8 @@
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
     "lint": "eslint . --ext .ts",
-    "lint-and-fix": "eslint . --ext .ts --fix"
+    "lint-and-fix": "eslint . --ext .ts --fix",
+    "jest:clearcache": "jest --clearCache"
   },
   "author": "Eric Oliveira",
   "license": "ISC",

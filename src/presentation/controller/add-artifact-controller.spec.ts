@@ -125,10 +125,10 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0])},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
             ]
         };
         const httpResponse = await sut.handle(httpRequest);
@@ -144,10 +144,10 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0])},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
             ]
         };
         const httpResponse = await sut.handle(httpRequest);
@@ -163,10 +163,10 @@ describe ('Add Artifact Controller', () => {
             level: 999, // <= invalid level
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0])},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
             ]
         };
         const httpResponse = await sut.handle(httpRequest);
@@ -182,10 +182,10 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.CD, // Only Stats.HP is allowed for Type Flower!
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0])},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
             ]
         };
         const httpResponse = await sut.handle(httpRequest);
@@ -201,10 +201,10 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
-                {substat: 'invalid_substat', value: -Math.round(-upgradeTiers.ATK[0])},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+                {substat: 'invalid_substat', value: Math.round(upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
             ]
         };
         const httpResponse = await sut.handle(httpRequest);
@@ -220,9 +220,9 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0])},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
                 {substat: Stats.DEFFlat, value: 0}
             ]
         };
@@ -239,11 +239,11 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0])},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
-                {substat: Stats.EM, value: -Math.round(-upgradeTiers["Elemental Mastery"][0])},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
+                {substat: Stats.EM, value: Math.round(upgradeTiers["Elemental Mastery"][0])},
             ]
         };
         const httpResponse = await sut.handle(httpRequest);
@@ -259,10 +259,10 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*3*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0]*3)},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*3*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0]*3)}
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*3*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*3*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0]*3)}
             ]
         };
         const httpResponse = await sut.handle(httpRequest);
@@ -279,10 +279,10 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0])},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0])},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
             ]
         };
         await sut.handle(httpRequest);
@@ -297,10 +297,10 @@ describe ('Add Artifact Controller', () => {
             level: 20,
             mainstat: Stats.HPFlat,
             substats: [
-                {substat: Stats.ATK, value: -Math.round(-upgradeTiers["ATK%"][0]*2*10)/10},
-                {substat: Stats.ATKFlat, value: -Math.round(-upgradeTiers.ATK[0]*3)},
-                {substat: Stats.DEF, value: -Math.round(-upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEFFlat, value: -Math.round(-upgradeTiers.DEF[0])},
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
+                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+                {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
             ]
         };
         const httpResponse = await sut.handle(httpRequest);
