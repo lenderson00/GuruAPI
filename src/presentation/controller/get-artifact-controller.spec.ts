@@ -1,5 +1,7 @@
+import { throwError } from "../../../tests/mocks/test-helper"
 import { GetArtifact, GetArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError, MissingParamError } from "../errors"
+import { InvalidParamError, MissingParamError, ServerError } from "../errors"
+import { serverError } from "../helpers/http-helper"
 import { GetArtifactController, Request } from "./get-artifact-controller"
 
 const makeSut = () => {
@@ -37,5 +39,13 @@ describe ('Get Artifact Controller', () => {
         const httpRequest: Request = { id: 'invalid_id' }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.body).toEqual(new InvalidParamError('id'))
+    })
+
+    test('Should return 500 if GetArtifact throws', async () => {
+        const { sut, getArtifactStub } = makeSut();
+        jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(throwError)
+        const httpRequest: Request = { id: 'invalid_id' }
+        const httpResponse = await sut.handle(httpRequest);
+        expect(httpResponse).toEqual(serverError(new ServerError()))
     })
 })
