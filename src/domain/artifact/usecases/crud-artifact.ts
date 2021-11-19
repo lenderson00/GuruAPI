@@ -1,4 +1,5 @@
 import { Level, MainStat, Set, SubStat, Type } from "../../../data/artifact/enums"
+import { GetArtifactRepoResult } from "../../../data/artifact/protocols/get-artifact-repo"
 export interface AddArtifact {
     add: (data: AddArtifactParams) => Promise<AddArtifactResult>
 }
@@ -23,13 +24,5 @@ export type GetArtifactParams = {
     id: string
 }
 
-export type GetArtifactResult = false | {
-    set: Set
-    type: Type
-    level: Level
-    mainstat: MainStat
-    mainstatValue: number
-    substats: {substat: SubStat, value: number}[]
-    score: number
-}
+export type GetArtifactResult = GetArtifactRepoResult
 

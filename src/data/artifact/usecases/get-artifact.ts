@@ -13,7 +13,7 @@ export class GetArtifactDB implements GetArtifact {
     
     async get (data: GetArtifactParams): Promise<GetArtifactResult> {
         
-        const result = this.getArtifactRepo.get(data)
+        const result = await this.getArtifactRepo.get(data)
         return result
     }
 }

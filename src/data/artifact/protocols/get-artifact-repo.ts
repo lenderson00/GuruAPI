@@ -9,7 +9,7 @@ export type GetArtifactRepoParams = {
     id: string
 }
 
-export type GetArtifactRepoResult = {
+export type GetArtifactRepoResult = Record<string,never> | {
     set: Set
     type: Type
     level: Level
