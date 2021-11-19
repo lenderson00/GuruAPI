@@ -29,10 +29,10 @@ describe ('Get Artifact Controller', () => {
 
     test('Should call GetArtifact with correct data', async () => {
         const { sut, getArtifactStub } = makeSut();
-        const delArtifactSpy = jest.spyOn(getArtifactStub, 'get')
+        const gelArtifactSpy = jest.spyOn(getArtifactStub, 'get')
         const httpRequest: Request = { id: 'any_id'}
         await sut.handle(httpRequest);
-        expect(delArtifactSpy).toHaveBeenCalledWith({ id: httpRequest.id });
+        expect(gelArtifactSpy).toHaveBeenCalledWith({ id: httpRequest.id });
     })
 
     test('Should return 400 if id is invalid', async () => {
