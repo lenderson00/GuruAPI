@@ -1,4 +1,5 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
+import { GetArtifactRepoParams } from "../protocols/get-artifact-repo"
 import { GetArtifactDB } from "./get-artifact"
 import { getArtifactRepoSpy } from "./mock-artifact-db"
 
@@ -24,5 +25,13 @@ describe ('Get-Artifact-DB Usecase', () => {
         const id = { id: "valid_id" }
         const promise = sut.get(id)
         await expect(promise).rejects.toThrow()
+    })
+
+    test('Should return false if id was not found', async () => {
+        const { sut, getArtifactRepoStub } = makeSut()
+        jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(async (id: GetArtifactRepoParams) => new Promise((res) => res({})))
+        const id = { id: "valid_id" }
+        const response = await sut.get(id)
+        expect(response).toStrictEqual({})
     })
 })
