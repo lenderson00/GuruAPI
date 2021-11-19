@@ -20,7 +20,6 @@ export class GetArtifactController implements Controller {
         } catch (error) {
             return serverError(error as Error)
         }
-        
     }
 }
 
