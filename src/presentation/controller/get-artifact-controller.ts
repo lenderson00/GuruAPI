@@ -16,7 +16,7 @@ export class GetArtifactController implements Controller {
             const { ids } = req
             if (!ids) return badRequest(new MissingParamError('ids'))
             const result: GetArtifactResult = await this.getArtifact.get({ids})
-            if (_.isEmpty(result)) return badRequest(new InvalidParamError('ids'))
+            if (result.found.length === 0) return badRequest(new InvalidParamError('ids'))
             return ok(result)
         } catch (error) {
             return serverError(error as Error)

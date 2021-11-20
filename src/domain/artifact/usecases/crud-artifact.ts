@@ -1,4 +1,4 @@
-import { Level, MainStat, Set, SubStat, Type } from "../../../data/artifact/enums"
+import { Level, MainStat, Set, SubStat, Type } from "../../../data/artifact/utils/enums"
 export interface AddArtifact {
     add: (data: AddArtifactParams) => Promise<AddArtifactResult>
 }
@@ -24,37 +24,40 @@ export type GetArtifactParams = {
     ids: string[]
 }
 
-export type GetArtifactResult = Record<string,never> | {
-    set: Set
-    type: Type
-    level: Level
-    mainstat: MainStat
-    mainstatValue: number
-    substats: {substat: SubStat, value: number}[]
-    score: number
+export type GetArtifactResult = {
+    found: Record<string,never>[] | [{
+        set: Set
+        type: Type
+        level: Level
+        mainstat: MainStat
+        mainstatValue: number
+        substats: {substat: SubStat, value: number}[]
+        score: number
+    }]
+    notFound: string[]
 }
 
 export type GetFullArtifactParams = {
     ids: string[]
 }
 
-export type GetFullArtifactResult = Record<string,never> | {
-    set: Set
-    type: Type
-    level: Level
-    mainstat: MainStat
-    mainstatValue: number
-    substats: {substat: SubStat, value: number}[]
-    score: number
-    scoreMainstat: number
-    scoreSubstats: number
-    scoreLvl20Min: number
-    scoreLvl20Avg: number
-    scoreLvl20Max: number
-    scoreLvl20SD: number
-    dtAdded: Date
-    dtModified: Date
+export type GetFullArtifactResult = {
+    found: Record<string,never>[] | {
+        set: Set
+        type: Type
+        level: Level
+        mainstat: MainStat
+        mainstatValue: number
+        substats: {substat: SubStat, value: number}[]
+        score: number
+        scoreMainstat: number
+        scoreSubstats: number
+        scoreLvl20Min: number
+        scoreLvl20Avg: number
+        scoreLvl20Max: number
+        scoreLvl20SD: number
+        dtAdded: Date
+        dtModified: Date
+    }[]
+    notFound: string[]
 }
-
-
-

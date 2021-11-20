@@ -68,4 +68,13 @@ describe('Artifact-Mongo', () => {
             expect(isValid).toBe(true)
         })
     }) */
+
+    describe('get()', () => {
+        test('Should return true on success', async () => {
+            const sut = makeSut()
+            const addArtifactParams = mockAddArtifactParams()
+            const isValid = await sut.add(addArtifactParams)
+            expect(isValid).toBe(true)
+        })
+    })
 })

@@ -9,10 +9,10 @@ import { GetArtifactController, Request } from "./get-artifact-controller"
 const makeSut = () => {
     const getArtifactStub: GetArtifact = {
         get: async () => {
-            return new Promise((res) => res({} as GetArtifactResult))
+            return new Promise((res) => res({found: [], notFound: []} as GetArtifactResult))
         },
         getFull: async () => {
-            return new Promise((res) => res({} as GetFullArtifactResult))
+            return new Promise((res) => res({found: [], notFound: []} as GetFullArtifactResult))
         }
     }
    
@@ -40,7 +40,7 @@ describe ('Get Artifact Controller', () => {
 
     test('Should return 400 if id is invalid', async () => {
         const { sut, getArtifactStub } = makeSut();
-        jest.spyOn(getArtifactStub, 'get').mockReturnValueOnce(new Promise((resolve) => resolve({})))
+        jest.spyOn(getArtifactStub, 'get').mockReturnValueOnce(new Promise(resolve => resolve({found: [], notFound: ['invalid_id']})))
         const httpRequest: Request = { ids: ['invalid_id'] }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(400);
@@ -57,19 +57,23 @@ describe ('Get Artifact Controller', () => {
 
     test('Should return 200 if successful', async () => {
         const { sut, getArtifactStub } = makeSut();
-        jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(async () => new Promise((res) => res({
-            set: Sets.AP,
-            type: Types.Flower,
-            level: 20,
-            mainstat: Stats.ATKFlat,
-            mainstatValue: 311,
-            substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3])}],
-            score: 200
-        })))
+        jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(async () => new Promise((res) => res(
+            {found: [{
+                set: Sets.AP,
+                type: Types.Flower,
+                level: 20,
+                mainstat: Stats.ATKFlat,
+                mainstatValue: 311,
+                substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3])}],
+                score: 200
+                }],
+            notFound: []
+            }
+        )))
         const httpRequest = { ids: ['valid_id'] }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(200);
-        expect(httpResponse.body).toEqual({
+        expect(httpResponse.body).toEqual({found: [{
             set: Sets.AP,
             type: Types.Flower,
             level: 20,
@@ -77,6 +81,8 @@ describe ('Get Artifact Controller', () => {
             mainstatValue: 311,
             substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3])}],
             score: 200
+        }],
+        notFound: []
         });
     })
 })

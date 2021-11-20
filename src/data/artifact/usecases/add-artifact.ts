@@ -1,11 +1,11 @@
 import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../../domain/artifact/usecases/crud-artifact";
 import { Artifact } from "../utils/artifact";
-import { addArtifactRepo } from "../protocols/add-artifact-repo"
+import { AddArtifactRepo } from "../protocols/add-artifact-repo"
 
 export class AddArtifactDB implements AddArtifact {
-    private readonly addArtifactRepo: addArtifactRepo
+    private readonly addArtifactRepo: AddArtifactRepo
 
-    constructor (addArtifactRepo: addArtifactRepo) {
+    constructor (addArtifactRepo: AddArtifactRepo) {
         this.addArtifactRepo = addArtifactRepo
     }
     

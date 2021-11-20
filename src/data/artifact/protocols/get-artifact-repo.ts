@@ -4,7 +4,6 @@ export interface GetArtifactRepo {
 
 export type GetArtifactRepoParams = {
     ids: string[]
-    fields: string[]
 }
 
 export type GetArtifactRepoResult = Record<string, unknown>

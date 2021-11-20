@@ -1,9 +1,9 @@
 import { upgradeTiers } from "../utils/chances"
 import { Sets, Types, Stats } from "../utils/enums"
-import { addArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../protocols/add-artifact-repo"
-import { getArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult } from "../protocols/get-artifact-repo"
+import { AddArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../protocols/add-artifact-repo"
+import { GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult } from "../protocols/get-artifact-repo"
 
-export class addArtifactRepoSpy implements addArtifactRepo {
+export class addArtifactRepoSpy implements AddArtifactRepo {
     params!: AddArtifactRepoParams
     result = true
     
@@ -13,7 +13,7 @@ export class addArtifactRepoSpy implements addArtifactRepo {
     }
 }
 
-export class getArtifactRepoSpy implements getArtifactRepo {
+export class getArtifactRepoSpy implements GetArtifactRepo {
     
     params!: GetArtifactRepoParams
     result = true
