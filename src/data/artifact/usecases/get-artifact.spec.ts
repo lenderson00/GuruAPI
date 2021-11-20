@@ -14,24 +14,25 @@ describe ('Get-Artifact-DB Usecase', () => {
     test('Should call GetArtifactRepo with correct values', async () => {
         const { sut, getArtifactRepoStub } = makeSut()
         const gelArtifactSpy = jest.spyOn(getArtifactRepoStub, 'get')
-        const id = { id: "valid_id" }
-        await sut.get(id)
-        expect(gelArtifactSpy).toHaveBeenCalledWith(id)
+        const ids = { ids: ["valid_id"], fields: ['set', 'type', 'level', 'mainstat', 'mainstatValue', 'substats', 'score'] }
+        await sut.get(ids)
+        expect(gelArtifactSpy).toHaveBeenCalledWith(ids)
     })
 
     test('Should throw if GetArtifactRepo throws', async () => {
         const { sut, getArtifactRepoStub } = makeSut()
         jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(throwError)
-        const id = { id: "valid_id" }
-        const promise = sut.get(id)
+        const ids = { ids: ["valid_id"] }
+        const promise = sut.get(ids)
         await expect(promise).rejects.toThrow()
     })
 
-    test('Should return false if id was not found', async () => {
+    test('Should return empty object if id was not found', async () => {
         const { sut, getArtifactRepoStub } = makeSut()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(async (id: GetArtifactRepoParams) => new Promise((res) => res({})))
-        const id = { id: "valid_id" }
-        const response = await sut.get(id)
+        const ids = { ids: ["valid_id"] }
+        const response = await sut.get(ids)
         expect(response).toStrictEqual({})
     })
 })

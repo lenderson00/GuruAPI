@@ -1,7 +1,7 @@
 import { upgradeTiers } from "../chances"
 import { Sets, Types, Stats } from "../enums"
 import { addArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../protocols/add-artifact-repo"
-import { getArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult, GetFullArtifactRepoResult } from "../protocols/get-artifact-repo"
+import { getArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult } from "../protocols/get-artifact-repo"
 
 export class addArtifactRepoSpy implements addArtifactRepo {
     params!: AddArtifactRepoParams
@@ -31,7 +31,7 @@ export class getArtifactRepoSpy implements getArtifactRepo {
         }))))
     }
 
-    async getFull (artifactData: GetArtifactRepoParams): Promise<GetFullArtifactRepoResult> {
+    async getFull (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResult> {
         this.params = artifactData
         return new Promise((res) => res(new Promise((res) => res({
             set: Sets.AP,

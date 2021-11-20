@@ -1,5 +1,4 @@
 import { Level, MainStat, Set, SubStat, Type } from "../../../data/artifact/enums"
-import { GetArtifactRepoResult } from "../../../data/artifact/protocols/get-artifact-repo"
 export interface AddArtifact {
     add: (data: AddArtifactParams) => Promise<AddArtifactResult>
 }
@@ -18,11 +17,44 @@ export type DelArtifactResult = boolean
 
 export interface GetArtifact {
     get: (data: GetArtifactParams) => Promise<GetArtifactResult>
+    getFull: (data: GetFullArtifactParams) => Promise<GetFullArtifactResult>
 }
 
 export type GetArtifactParams = {
-    id: string
+    ids: string[]
 }
 
-export type GetArtifactResult = GetArtifactRepoResult
+export type GetArtifactResult = Record<string,never> | {
+    set: Set
+    type: Type
+    level: Level
+    mainstat: MainStat
+    mainstatValue: number
+    substats: {substat: SubStat, value: number}[]
+    score: number
+}
+
+export type GetFullArtifactParams = {
+    ids: string[]
+}
+
+export type GetFullArtifactResult = Record<string,never> | {
+    set: Set
+    type: Type
+    level: Level
+    mainstat: MainStat
+    mainstatValue: number
+    substats: {substat: SubStat, value: number}[]
+    score: number
+    scoreMainstat: number
+    scoreSubstats: number
+    scoreLvl20Min: number
+    scoreLvl20Avg: number
+    scoreLvl20Max: number
+    scoreLvl20SD: number
+    dtAdded: Date
+    dtModified: Date
+}
+
+
 

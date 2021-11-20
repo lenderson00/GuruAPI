@@ -1,38 +1,10 @@
-import { Level, MainStat, SubStat, Type, Set } from "../enums"
-
 export interface getArtifactRepo {
     get: (artifactData: GetArtifactRepoParams) => Promise<GetArtifactRepoResult>
-    getFull: (artifactData: GetArtifactRepoParams) => Promise<GetFullArtifactRepoResult>
 }
 
 export type GetArtifactRepoParams = {
-    id: string
+    ids: string[]
+    fields: string[]
 }
 
-export type GetArtifactRepoResult = Record<string,never> | {
-    set: Set
-    type: Type
-    level: Level
-    mainstat: MainStat
-    mainstatValue: number
-    substats: {substat: SubStat, value: number}[]
-    score: number
-}
-
-export type GetFullArtifactRepoResult = {
-    set: Set
-    type: Type
-    level: Level
-    mainstat: MainStat
-    mainstatValue: number
-    substats: {substat: SubStat, value: number}[]
-    score: number
-    scoreMainstat: number
-    scoreSubstats: number
-    scoreLvl20Min: number
-    scoreLvl20Avg: number
-    scoreLvl20Max: number
-    scoreLvl20SD: number
-    dtAdded: Date
-    dtModified: Date
-}
+export type GetArtifactRepoResult = Record<string, unknown>

@@ -13,10 +13,10 @@ export class GetArtifactController implements Controller {
 
     async handle (req: Request): Promise<HttpResponse> {
         try {
-            const { id } = req
-            if (!id) return badRequest(new MissingParamError('id'))
-            const result: GetArtifactResult = await this.getArtifact.get({id})
-            if (_.isEmpty(result)) return badRequest(new InvalidParamError('id'))
+            const { ids } = req
+            if (!ids) return badRequest(new MissingParamError('ids'))
+            const result: GetArtifactResult = await this.getArtifact.get({ids})
+            if (_.isEmpty(result)) return badRequest(new InvalidParamError('ids'))
             return ok(result)
         } catch (error) {
             return serverError(error as Error)
@@ -25,5 +25,5 @@ export class GetArtifactController implements Controller {
 }
 
 export type Request = {
-    id?: string
+    ids?: string[]
 }

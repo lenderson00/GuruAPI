@@ -1,8 +1,5 @@
-import { GetArtifact, GetArtifactParams, GetArtifactResult } from "../../../domain/artifact/usecases/crud-artifact"
-import { Artifact } from "../artifact"
-import { upgradeTiers } from "../chances"
-import { Sets, Stats, Types } from "../enums"
-import { getArtifactRepo } from "../protocols/get-artifact-repo"
+import { GetArtifact, GetArtifactParams, GetArtifactResult, GetFullArtifactParams, GetFullArtifactResult } from "../../../domain/artifact/usecases/crud-artifact"
+import { getArtifactRepo, GetArtifactRepoParams } from "../protocols/get-artifact-repo"
 
 export class GetArtifactDB implements GetArtifact {
     private readonly getArtifactRepo: getArtifactRepo
@@ -11,9 +8,16 @@ export class GetArtifactDB implements GetArtifact {
         this.getArtifactRepo = getArtifactRepo
     }
     
-    async get (data: GetArtifactParams): Promise<GetArtifactResult> {
-        
-        const result = await this.getArtifactRepo.get(data)
+    async get (ids: GetArtifactParams): Promise<GetArtifactResult> {
+        const getRepoData: GetArtifactRepoParams = {
+            ...ids,
+            fields: ['set', 'type', 'level', 'mainstat', 'mainstatValue', 'substats', 'score']
+        }
+        const result = await this.getArtifactRepo.get(getRepoData) as GetArtifactResult
         return result
+    }
+
+    async getFull (ids: GetFullArtifactParams): Promise<GetFullArtifactResult> {
+        return {}
     }
 }
