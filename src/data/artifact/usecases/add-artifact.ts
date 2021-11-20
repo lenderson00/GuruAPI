@@ -1,5 +1,5 @@
 import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../../domain/artifact/usecases/crud-artifact";
-import { Artifact } from "../artifact";
+import { Artifact } from "../utils/artifact";
 import { addArtifactRepo } from "../protocols/add-artifact-repo"
 
 export class AddArtifactDB implements AddArtifact {

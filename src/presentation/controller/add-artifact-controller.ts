@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { allLevels, allowedMainStats, allowedSubStats, allSets, allTypes } from "../../data/artifact/combinations";
-import { Level, MainStat, Set, SubStat, Type } from "../../data/artifact/enums";
+import { allLevels, allowedMainStats, allowedSubStats, allSets, allTypes } from "../../data/artifact/utils/combinations";
+import { Level, MainStat, Set, SubStat, Type } from "../../data/artifact/utils/enums";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { badRequest, ok } from "../helpers/http-helper";
 import { Controller } from "../protocols/controller";
 import { HttpResponse } from "../protocols/http";
-import substatsValues from "../../data/artifact/gen-substat-values-possibilities.json"
+import substatsValues from "../../data/artifact/utils/gen-substat-values-possibilities.json"
 import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
 export class AddArtifactController implements Controller {
     private readonly addArtifact: AddArtifact

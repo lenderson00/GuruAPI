@@ -3,8 +3,8 @@ import { setupApp } from '../config/app'
 import { Collection } from 'mongodb'
 import { Express } from 'express'
 import request from 'supertest'
-import { Sets, Stats, Types } from '../../data/artifact/enums'
-import { upgradeTiers } from '../../data/artifact/chances'
+import { Sets, Stats, Types } from '../../data/artifact/utils/enums'
+import { upgradeTiers } from '../../data/artifact/utils/chances'
 import env from '../config/env'
 
 let accountCollection: Collection

@@ -1,5 +1,5 @@
-import { upgradeTiers } from "../chances"
-import { Sets, Types, Stats } from "../enums"
+import { upgradeTiers } from "../utils/chances"
+import { Sets, Types, Stats } from "../utils/enums"
 import { addArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../protocols/add-artifact-repo"
 import { getArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult } from "../protocols/get-artifact-repo"
 

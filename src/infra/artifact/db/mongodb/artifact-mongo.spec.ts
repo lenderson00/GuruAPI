@@ -2,8 +2,8 @@ import { Collection } from "mongodb";
 import { ArtifactMongo } from "./artifact-mongo";
 import { MongoHelper } from "./mongo-helper";
 import env from "../../../../main/config/env"
-import { Sets, Stats, Types } from "../../../../data/artifact/enums";
-import { upgradeTiers } from "../../../../data/artifact/chances";
+import { Sets, Stats, Types } from "../../../../data/artifact/utils/enums";
+import { upgradeTiers } from "../../../../data/artifact/utils/chances";
 import { AddArtifactRepoParams } from "../../../../data/artifact/protocols/add-artifact-repo";
 
 const makeSut = () : ArtifactMongo => {

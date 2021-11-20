@@ -1,5 +1,5 @@
-import { upgradeTiers } from "../../data/artifact/chances";
-import { Sets, Stats, Types } from "../../data/artifact/enums";
+import { upgradeTiers } from "../../data/artifact/utils/chances";
+import { Sets, Stats, Types } from "../../data/artifact/utils/enums";
 import { AddArtifact, AddArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { AddArtifactController } from "./add-artifact-controller"

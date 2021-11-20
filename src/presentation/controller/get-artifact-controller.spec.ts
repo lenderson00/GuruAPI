@@ -1,6 +1,6 @@
 import { throwError } from "../../../tests/mocks/test-helper"
-import { upgradeTiers } from "../../data/artifact/chances"
-import { Sets, Stats, Types } from "../../data/artifact/enums"
+import { upgradeTiers } from "../../data/artifact/utils/chances"
+import { Sets, Stats, Types } from "../../data/artifact/utils/enums"
 import { GetArtifact, GetArtifactResult, GetFullArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
 import { InvalidParamError, MissingParamError, ServerError } from "../errors"
 import { serverError } from "../helpers/http-helper"
