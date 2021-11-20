@@ -38,7 +38,7 @@ let artifactCollection: Collection
 describe('Artifact-Mongo', () => {
     beforeAll(async () => {
         await MongoHelper.connect(env.mongoUrl)
-      })
+    })
     
     afterAll(async () => {
         artifactCollection = MongoHelper.getCollection('artifacts')

@@ -1,4 +1,4 @@
-export interface getArtifactRepo {
+export interface GetArtifactRepo {
     get: (artifactData: GetArtifactRepoParams) => Promise<GetArtifactRepoResult>
 }
 

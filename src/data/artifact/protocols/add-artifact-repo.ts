@@ -1,7 +1,7 @@
-import { Level, MainStat, Set, SubStat, Type } from "../enums"
+import { Level, MainStat, Set, SubStat, Type } from "../utils/enums"
 import { Character } from "../../character/character"
 
-export interface addArtifactRepo {
+export interface AddArtifactRepo {
     add: (artifactData: AddArtifactRepoParams) => Promise<AddArtifactRepoResult>
 }
 
