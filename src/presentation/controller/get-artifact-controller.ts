@@ -2,7 +2,6 @@ import { GetArtifact, GetArtifactResult } from "../../domain/artifact/usecases/c
 import { InvalidParamError, MissingParamError } from "../errors";
 import { badRequest, ok, serverError } from "../helpers/http-helper";
 import { Controller, HttpResponse } from "../protocols";
-import _ from "lodash/fp";
 
 export class GetArtifactController implements Controller {
     private readonly getArtifact: GetArtifact
