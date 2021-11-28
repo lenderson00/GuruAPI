@@ -1,5 +1,4 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
-import { GetArtifactRepoParams } from "../protocols/get-artifact-repo"
 import { upgradeTiers } from "../utils/chances"
 import { Sets, Stats, Types } from "../utils/enums"
 import { GetArtifactDB } from "./get-artifact"
@@ -31,7 +30,7 @@ describe ('Get-Artifact-DB Usecase', () => {
 
     test('Should return empty array on Found and id on notFound if no id was found', async () => {
         const { sut, getArtifactRepoStub } = makeSut()
-        jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(async (id: GetArtifactRepoParams) => new Promise((res) => res([])))
+        jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(async () => new Promise((res) => res([])))
         const ids = { ids: ["valid_id"] }
         const response = await sut.get(ids)
         expect(response).toEqual({found: [], notFound: ["valid_id"]})
