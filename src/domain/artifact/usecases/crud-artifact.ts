@@ -32,7 +32,7 @@ export type GetArtifactResult = {
     mainstat: MainStat
     mainstatValue: number
     substats: {substat: SubStat, value: number}[]
-    score: number
+    scoreDflt: number
 }
 
 export type GetArtifactResults = {
@@ -52,13 +52,13 @@ export type GetFullArtifactResult = {
         mainstat: MainStat
         mainstatValue: number
         substats: {substat: SubStat, value: number}[]
-        score: number
-        scoreMainstat: number
-        scoreSubstats: number
-        scoreLvl20Min: number
-        scoreLvl20Avg: number
-        scoreLvl20Max: number
-        scoreLvl20SD: number
+        scoreDflt: number
+        scoreDfltMainstat: number
+        scoreDfltSubstats: number
+        scoreDfltLvl20Min: number
+        scoreDfltLvl20Avg: number
+        scoreDfltLvl20Max: number
+        scoreDfltLvl20SD: number
         dtAdded: Date
         dtModified: Date
     }[]

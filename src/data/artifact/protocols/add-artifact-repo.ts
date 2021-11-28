@@ -13,12 +13,12 @@ export type AddArtifactRepoParams = {
     mainstatValue?: number
     substats: {substat: SubStat, value: number}[]
     scoreDflt: number
-    scoreMainstatDflt: number
-    scoreSubstatsDflt: number
-    scoreLvl20Min?: number
-    scoreLvl20Avg?: number
-    scoreLvl20Max?: number
-    scoreLvl20SD?: number
+    scoreDfltMainstat: number
+    scoreDfltSubstats: number
+    scoreDfltLvl20Min?: number
+    scoreDfltLvl20Avg?: number
+    scoreDfltLvl20Max?: number
+    scoreDfltLvl20SD?: number
     dtAdded: string
     dtModified: string
     user?: string
