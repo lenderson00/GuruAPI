@@ -71,6 +71,7 @@ describe('Artifact-Mongo', () => {
 
     describe('get()', () => {
         beforeAll(async () => {
+            await artifactCollection.deleteMany({})
             const fakeArtifact = mockAddArtifactParams()
             const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
             await artifactCollection.insertOne(insertedArtifact)
@@ -84,6 +85,13 @@ describe('Artifact-Mongo', () => {
             const sut = makeSut()
             const result = await sut.get({ ids: ['123456789012345678901234'] })
             expect(result.length).toBe(1)
+        })        
+
+        test('Should return empty array if id was not found', async () => {
+            const sut = makeSut()
+            const result = await sut.get({ ids: ['012345678901234567890123'] }) // invalid ID
+            expect(result).toEqual([])
         })
     })
 })
+3-3
