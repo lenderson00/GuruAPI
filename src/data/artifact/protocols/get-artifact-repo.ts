@@ -6,4 +6,4 @@ export type GetArtifactRepoParams = {
     ids: string[]
 }
 
-export type GetArtifactRepoResult = Record<string, unknown>
+export type GetArtifactRepoResult = Array<Record<string, unknown>>

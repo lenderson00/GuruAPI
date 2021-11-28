@@ -1,5 +1,7 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
 import { GetArtifactRepoParams } from "../protocols/get-artifact-repo"
+import { upgradeTiers } from "../utils/chances"
+import { Sets, Stats, Types } from "../utils/enums"
 import { GetArtifactDB } from "./get-artifact"
 import { getArtifactRepoSpy } from "./mock-artifact-db"
 
@@ -14,7 +16,7 @@ describe ('Get-Artifact-DB Usecase', () => {
     test('Should call GetArtifactRepo with correct values', async () => {
         const { sut, getArtifactRepoStub } = makeSut()
         const gelArtifactSpy = jest.spyOn(getArtifactRepoStub, 'get')
-        const ids = { ids: ["valid_id"], fields: ['set', 'type', 'level', 'mainstat', 'mainstatValue', 'substats', 'score'] }
+        const ids = { ids: ["valid_id"] }
         await sut.get(ids)
         expect(gelArtifactSpy).toHaveBeenCalledWith(ids)
     })
@@ -27,12 +29,29 @@ describe ('Get-Artifact-DB Usecase', () => {
         await expect(promise).rejects.toThrow()
     })
 
-    test('Should return empty object if id was not found', async () => {
+    test('Should return empty array on Found and id on notFound if no id was found', async () => {
         const { sut, getArtifactRepoStub } = makeSut()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(async (id: GetArtifactRepoParams) => new Promise((res) => res({})))
+        jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(async (id: GetArtifactRepoParams) => new Promise((res) => res([])))
         const ids = { ids: ["valid_id"] }
         const response = await sut.get(ids)
-        expect(response).toStrictEqual({})
+        expect(response).toEqual({found: [], notFound: ["valid_id"]})
+    })
+
+    test('Should return correct data if just some ids were found', async () => {
+        const { sut } = makeSut()
+        const ids = { ids: ["invalid_id1","valid_id","invalid_id2"] }
+        const response = await sut.get(ids)
+        expect(response).toEqual({
+            found: [{
+                id: 'valid_id',
+                set: Sets.AP,
+                type: Types.Flower,
+                level: 20,
+                mainstat: Stats.ATKFlat,
+                mainstatValue: 311,
+                substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
+                score: 200
+            }],
+            notFound: ["invalid_id1","invalid_id2"]})
     })
 })

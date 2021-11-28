@@ -1,4 +1,4 @@
-import { Collection } from "mongodb";
+import { Collection, ObjectId } from "mongodb";
 import { ArtifactMongo } from "./artifact-mongo";
 import { MongoHelper } from "./mongo-helper";
 import env from "../../../../main/config/env"
@@ -38,11 +38,11 @@ let artifactCollection: Collection
 describe('Artifact-Mongo', () => {
     beforeAll(async () => {
         await MongoHelper.connect(env.mongoUrl)
+        artifactCollection = MongoHelper.getCollection('artifacts')
     })
     
     afterAll(async () => {
-        artifactCollection = MongoHelper.getCollection('artifacts')
-        await artifactCollection.deleteMany({})
+        /* await artifactCollection.deleteMany({}) */
         await MongoHelper.disconnect()
     })
 
@@ -70,11 +70,20 @@ describe('Artifact-Mongo', () => {
     }) */
 
     describe('get()', () => {
-        test('Should return true on success', async () => {
+        beforeAll(async () => {
+            const fakeArtifact = mockAddArtifactParams()
+            const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
+            await artifactCollection.insertOne(insertedArtifact)
+        })
+
+        afterAll(async () => {
+            await artifactCollection.deleteMany({})
+        })
+
+        test('Should read an artifact document by id', async () => {
             const sut = makeSut()
-            const addArtifactParams = mockAddArtifactParams()
-            const isValid = await sut.add(addArtifactParams)
-            expect(isValid).toBe(true)
+            const result = await sut.get({ ids: ['123456789012345678901234'] })
+            expect(result.length).toBe(1)
         })
     })
 })

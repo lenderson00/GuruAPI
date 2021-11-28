@@ -6,7 +6,7 @@ const getDBConnectionString = () => {
 }
 
 export default {
-    mongoUrl: /* 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000' */ /* process.env.MONGO_URL || */ getDBConnectionString(),
+    mongoUrl: 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000' /* process.env.MONGO_URL || */ /* getDBConnectionString() */,
     port: process.env.PORT || 5050
 }
 

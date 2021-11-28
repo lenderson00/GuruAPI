@@ -16,7 +16,7 @@ export type AddArtifactResult = boolean
 export type DelArtifactResult = boolean
 
 export interface GetArtifact {
-    get: (data: GetArtifactParams) => Promise<GetArtifactResult>
+    get: (data: GetArtifactParams) => Promise<GetArtifactResults>
     getFull: (data: GetFullArtifactParams) => Promise<GetFullArtifactResult>
 }
 
@@ -25,15 +25,18 @@ export type GetArtifactParams = {
 }
 
 export type GetArtifactResult = {
-    found: Record<string,never>[] | [{
-        set: Set
-        type: Type
-        level: Level
-        mainstat: MainStat
-        mainstatValue: number
-        substats: {substat: SubStat, value: number}[]
-        score: number
-    }]
+    id: string
+    set: Set
+    type: Type
+    level: Level
+    mainstat: MainStat
+    mainstatValue: number
+    substats: {substat: SubStat, value: number}[]
+    score: number
+}
+
+export type GetArtifactResults = {
+    found: GetArtifactResult[]
     notFound: string[]
 }
 

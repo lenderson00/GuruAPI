@@ -1,7 +1,7 @@
 import { throwError } from "../../../tests/mocks/test-helper"
 import { upgradeTiers } from "../../data/artifact/utils/chances"
 import { Sets, Stats, Types } from "../../data/artifact/utils/enums"
-import { GetArtifact, GetArtifactResult, GetFullArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
+import { GetArtifact, GetArtifactResults, GetFullArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
 import { InvalidParamError, MissingParamError, ServerError } from "../errors"
 import { serverError } from "../helpers/http-helper"
 import { GetArtifactController, Request } from "./get-artifact-controller"
@@ -9,7 +9,7 @@ import { GetArtifactController, Request } from "./get-artifact-controller"
 const makeSut = () => {
     const getArtifactStub: GetArtifact = {
         get: async () => {
-            return new Promise((res) => res({found: [], notFound: []} as GetArtifactResult))
+            return new Promise((res) => res({found: [], notFound: []} as GetArtifactResults))
         },
         getFull: async () => {
             return new Promise((res) => res({found: [], notFound: []} as GetFullArtifactResult))
@@ -57,29 +57,30 @@ describe ('Get Artifact Controller', () => {
 
     test('Should return 200 if successful', async () => {
         const { sut, getArtifactStub } = makeSut();
-        jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(async () => new Promise((res) => res(
-            {found: [{
+        jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(async () => new Promise((res) => res({
+            found: [{
+                id: 'valid_id',
                 set: Sets.AP,
                 type: Types.Flower,
                 level: 20,
                 mainstat: Stats.ATKFlat,
                 mainstatValue: 311,
-                substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3])}],
+                substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
                 score: 200
-                }],
+            }],
             notFound: []
-            }
-        )))
+        })))
         const httpRequest = { ids: ['valid_id'] }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(200);
         expect(httpResponse.body).toEqual({found: [{
+            id: 'valid_id',
             set: Sets.AP,
             type: Types.Flower,
             level: 20,
             mainstat: Stats.ATKFlat,
             mainstatValue: 311,
-            substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3])}],
+            substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
             score: 200
         }],
         notFound: []

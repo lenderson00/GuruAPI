@@ -1,4 +1,4 @@
-import { GetArtifact, GetArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
+import { GetArtifact, GetArtifactResults } from "../../domain/artifact/usecases/crud-artifact";
 import { InvalidParamError, MissingParamError } from "../errors";
 import { badRequest, ok, serverError } from "../helpers/http-helper";
 import { Controller, HttpResponse } from "../protocols";
@@ -14,7 +14,7 @@ export class GetArtifactController implements Controller {
         try {
             const { ids } = req
             if (!ids) return badRequest(new MissingParamError('ids'))
-            const result: GetArtifactResult = await this.getArtifact.get({ids})
+            const result: GetArtifactResults = await this.getArtifact.get({ids})
             if (result.found.length === 0) return badRequest(new InvalidParamError('ids'))
             return ok(result)
         } catch (error) {

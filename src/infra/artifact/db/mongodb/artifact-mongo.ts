@@ -19,6 +19,10 @@ export class ArtifactMongo implements AddArtifactRepo, DelArtifactRepo, GetArtif
     }
 
     async get (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResult> {
-        return new Promise(resolve => resolve({}))
+        const artifactCollection = MongoHelper.getCollection('artifacts')
+        const id: ObjectId[] = []
+        artifactData.ids.forEach((item) => id.push(new ObjectId(item)))
+        const result = await artifactCollection.find( { "_id": { $in: id } } ).toArray()
+        return result as GetArtifactRepoResult
     }
 }

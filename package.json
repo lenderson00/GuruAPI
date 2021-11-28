@@ -7,6 +7,7 @@
     "start": "sucrase-node src/main/server.ts",
     "pilot": "sucrase-node index.ts",
     "gen:subvalues": "sucrase-node src/data/artifact/gen-substat-values-possibilities.ts",
+    "clearjest": "jest --clearCache",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
@@ -31,7 +32,6 @@
     "eslint": "^8.1.0",
     "git-commit-msg-linter": "^3.2.8",
     "husky": "^7.0.4",
-    "jest": "^27.3.1",
     "lint-staged": "^11.2.6",
     "sucrase": "^3.20.3",
     "supertest": "^6.1.6",
@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "jest": "^27.3.1",
     "js-combinatorics": "^1.5.4",
     "lodash": "^4.17.21",
     "mongodb": "^4.1.4"
