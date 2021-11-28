@@ -36,6 +36,24 @@ describe ('Get-Artifact-DB Usecase', () => {
         expect(response).toEqual({found: [], notFound: ["valid_id"]})
     })
 
+    test('Should return empty array on notFound and data on Found if id was found', async () => {
+        const { sut } = makeSut()
+        const ids = { ids: ["valid_id"] }
+        const response = await sut.get(ids)
+        expect(response).toEqual({
+            found: [{
+                id: 'valid_id',
+                set: Sets.AP,
+                type: Types.Flower,
+                level: 20,
+                mainstat: Stats.ATKFlat,
+                mainstatValue: 311,
+                substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
+                score: 200
+            }],
+            notFound: []})
+    })
+
     test('Should return correct data if just some ids were found', async () => {
         const { sut } = makeSut()
         const ids = { ids: ["invalid_id1","valid_id","invalid_id2"] }
