@@ -19,10 +19,6 @@ export class GetArtifactDB implements GetArtifact {
         result.forEach(item => {
             const itemID = String(item.id)
             const index = adjustedResult.notFound.indexOf(itemID)
-            
-            console.log(`Item ID: ${typeof item.id}`)
-            console.log(`Equality2: ${itemID == adjustedResult.notFound[0]}`)
-            console.log(`Equality3: ${itemID === adjustedResult.notFound[0]}`)
             if (index > -1) adjustedResult.notFound.splice(index, 1)
             const found = _.pick(fields, item)
             adjustedResult.found.push(found as unknown as GetArtifactResult)

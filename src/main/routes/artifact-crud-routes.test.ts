@@ -46,11 +46,6 @@ describe('Artifact CRUD Routes', () => {
     await MongoHelper.disconnect()
   })
 
-  /* beforeEach(async () => {
-    artifactCollection = MongoHelper.getCollection('artifacts')
-    await artifactCollection.deleteMany({})
-  }) */
-
   describe('Add POST /artifact', () => {
     
     test('Should return 200 when adding artifact', async () => {
@@ -76,6 +71,7 @@ describe('Artifact CRUD Routes', () => {
     
     beforeAll(async () => {
       artifactCollection = MongoHelper.getCollection('artifacts')
+      await artifactCollection.deleteMany({})
       const fakeArtifact = mockAddArtifactParams()
       const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
       await artifactCollection.insertOne(insertedArtifact)
@@ -85,9 +81,6 @@ describe('Artifact CRUD Routes', () => {
       await request(app)
         .post('/api/artifact/get')
         .send({ ids: ['123456789012345678901234']})
-        /* .expect(400, {
-          error: 'test'
-        }) */
         .expect(200, {
           found: [{
             id: '123456789012345678901234',

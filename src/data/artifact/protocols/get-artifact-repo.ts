@@ -1,5 +1,3 @@
-import { keysIn } from "lodash"
-
 export interface GetArtifactRepo {
     get: (artifactData: GetArtifactRepoParams) => Promise<GetArtifactRepoResult>
 }
@@ -9,5 +7,6 @@ export type GetArtifactRepoParams = {
 }
 
 export type GetArtifactRepoResult = {
+    id: string,
     [key: string]: unknown
 }[]
