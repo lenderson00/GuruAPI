@@ -67,6 +67,23 @@ describe('Artifact CRUD Routes', () => {
     })
   })
 
+  describe('DELETE /artifact', () => {
+    
+    beforeAll(async () => {
+      artifactCollection = MongoHelper.getCollection('artifacts')
+      await artifactCollection.deleteMany({})
+      const fakeArtifact = mockAddArtifactParams()
+      const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
+      await artifactCollection.insertOne(insertedArtifact)
+    })
+    
+    test('Should return 200 when adding artifact', async () => {
+      await request(app)
+        .delete('/api/artifact/123456789012345678901234')
+        .expect(200)
+    })
+  })
+
   describe('Get POST /artifact', () => {
     
     beforeAll(async () => {
