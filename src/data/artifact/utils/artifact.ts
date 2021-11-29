@@ -35,12 +35,12 @@ export class Artifact {
             mainstatValue: this.mainstatValue,
             substats: this.substats,
             scoreDflt: this.score,
-            scoreMainstatDflt: this.scoreMainstat,
-            scoreSubstatsDflt: this.scoreSubstats,
-            scoreLvl20Min: 0, // TO DO
-            scoreLvl20Avg: 0, // TO DO
-            scoreLvl20Max: 0, // TO DO
-            scoreLvl20SD: 0, // TO DO
+            scoreDfltMainstat: this.scoreMainstat,
+            scoreDfltSubstats: this.scoreSubstats,
+            scoreDfltLvl20Min: 0, // TO DO
+            scoreDfltLvl20Avg: 0, // TO DO
+            scoreDfltLvl20Max: 0, // TO DO
+            scoreDfltLvl20SD: 0, // TO DO
             dtAdded: date.toUTCString(),
             dtModified: date.toUTCString(),
         }

@@ -1,7 +1,6 @@
 import { GetArtifact, GetArtifactParams, GetArtifactResult, GetArtifactResults, GetFullArtifactParams, GetFullArtifactResult } from "../../../domain/artifact/usecases/crud-artifact"
 import { GetArtifactRepo } from "../protocols/get-artifact-repo"
 import _ from "lodash/fp";
-import { PropertyPath } from "lodash";
 
 export class GetArtifactDB implements GetArtifact {
     private readonly getArtifactRepo: GetArtifactRepo
@@ -11,14 +10,19 @@ export class GetArtifactDB implements GetArtifact {
     }
     
     async get (ids: GetArtifactParams): Promise<GetArtifactResults> {
-        const fields = ['id','set', 'type', 'level', 'mainstat', 'mainstatValue', 'substats', 'score']
+        const fields = ['id','set', 'type', 'level', 'mainstat', 'mainstatValue', 'substats', 'scoreDflt']
         const result = await this.getArtifactRepo.get(ids)
         const adjustedResult: GetArtifactResults = {
             found: [],
             notFound: ids.ids,
         }
-        result.forEach((item) => {
-            const index = adjustedResult.notFound.indexOf(item.id as string)
+        result.forEach(item => {
+            const itemID = String(item.id)
+            const index = adjustedResult.notFound.indexOf(itemID)
+            
+            console.log(`Item ID: ${typeof item.id}`)
+            console.log(`Equality2: ${itemID == adjustedResult.notFound[0]}`)
+            console.log(`Equality3: ${itemID === adjustedResult.notFound[0]}`)
             if (index > -1) adjustedResult.notFound.splice(index, 1)
             const found = _.pick(fields, item)
             adjustedResult.found.push(found as unknown as GetArtifactResult)
@@ -27,6 +31,6 @@ export class GetArtifactDB implements GetArtifact {
     }
 
     async getFull (ids: GetFullArtifactParams): Promise<GetFullArtifactResult> {
-        return {found: [{}], notFound: []}
+        return {found: [], notFound: []}
     }
 }

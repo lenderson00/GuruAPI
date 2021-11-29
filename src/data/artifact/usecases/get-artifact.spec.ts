@@ -49,7 +49,7 @@ describe ('Get-Artifact-DB Usecase', () => {
                 mainstat: Stats.ATKFlat,
                 mainstatValue: 311,
                 substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
-                score: 200
+                scoreDflt: 200
             }],
             notFound: []})
     })
@@ -67,7 +67,7 @@ describe ('Get-Artifact-DB Usecase', () => {
                 mainstat: Stats.ATKFlat,
                 mainstatValue: 311,
                 substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
-                score: 200
+                scoreDflt: 200
             }],
             notFound: ["invalid_id1","invalid_id2"]})
     })
