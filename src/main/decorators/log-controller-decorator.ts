@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, HttpResponse } from '../../presentation/protocols'
 import { LogErrorRepository } from '../../data/db/log'
 

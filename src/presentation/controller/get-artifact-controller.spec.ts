@@ -57,7 +57,7 @@ describe ('Get Artifact Controller', () => {
 
     test('Should return 200 if successful', async () => {
         const { sut, getArtifactStub } = makeSut();
-        jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(async () => new Promise((res) => res({
+        const getResponse: GetArtifactResults = {
             found: [{
                 id: 'valid_id',
                 set: Sets.AP,
@@ -69,21 +69,11 @@ describe ('Get Artifact Controller', () => {
                 scoreDflt: 200
             }],
             notFound: []
-        })))
+        }
+        jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(async () => new Promise((res) => res(getResponse)))
         const httpRequest = { ids: ['valid_id'] }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(200);
-        expect(httpResponse.body).toEqual({found: [{
-            id: 'valid_id',
-            set: Sets.AP,
-            type: Types.Flower,
-            level: 20,
-            mainstat: Stats.ATKFlat,
-            mainstatValue: 311,
-            substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
-            scoreDflt: 200
-        }],
-        notFound: []
-        });
+        expect(httpResponse.body).toEqual(getResponse);
     })
 })

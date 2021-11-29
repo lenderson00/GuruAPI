@@ -1,4 +1,5 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
+import { GetArtifactResults } from "../../../domain/artifact/usecases/crud-artifact"
 import { upgradeTiers } from "../utils/chances"
 import { Sets, Stats, Types } from "../utils/enums"
 import { GetArtifactDB } from "./get-artifact"
@@ -9,6 +10,19 @@ const makeSut = () => {
     const sut = new GetArtifactDB(getArtifactRepoStub)
     return { sut, getArtifactRepoStub }
 }
+
+const makeFakeRepoResponse: GetArtifactResults = {
+    found: [{
+        id: 'valid_id',
+        set: Sets.AP,
+        type: Types.Flower,
+        level: 20,
+        mainstat: Stats.ATKFlat,
+        mainstatValue: 311,
+        substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
+        scoreDflt: 200
+    }],
+    notFound: []}
 
 describe ('Get-Artifact-DB Usecase', () => {
 
@@ -40,18 +54,7 @@ describe ('Get-Artifact-DB Usecase', () => {
         const { sut } = makeSut()
         const ids = { ids: ["valid_id"] }
         const response = await sut.get(ids)
-        expect(response).toEqual({
-            found: [{
-                id: 'valid_id',
-                set: Sets.AP,
-                type: Types.Flower,
-                level: 20,
-                mainstat: Stats.ATKFlat,
-                mainstatValue: 311,
-                substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
-                scoreDflt: 200
-            }],
-            notFound: []})
+        expect(response).toEqual(makeFakeRepoResponse)
     })
 
     test('Should return correct data if just some ids were found', async () => {
