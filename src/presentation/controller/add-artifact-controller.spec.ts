@@ -180,6 +180,13 @@ describe ('Add Artifact Controller', () => {
         expect(validateSpy).toHaveBeenCalledWith(httpRequest);
     })
 
+    test('Should return 400 if Validation returns an error', async () => {
+        const { sut, validationStub } = makeSut();
+        jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
+        const httpResponse = await sut.handle(makeFakeRequest());
+        expect(httpResponse.statusCode).toBe(400);
+    })
+
     test('Should return 200 if valid data is provided', async () => {
         const { sut } = makeSut();
         const httpRequest = makeFakeRequest();
