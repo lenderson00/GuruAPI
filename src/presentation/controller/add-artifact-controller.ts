@@ -20,16 +20,14 @@ export class AddArtifactController implements Controller {
     async handle (request: Request): Promise<HttpResponse> {
 
         const error = this.validation.validate(request)
-        if (error) {
-            return badRequest(error)
-        }
+        if (error) return badRequest(error)
 
-        const requiredFields: Array<keyof Request>  = ['set', 'type', 'level', 'mainstat', 'substats']
+        /* const requiredFields: Array<keyof Request>  = ['set', 'type', 'level', 'mainstat', 'substats']
         for (const field of requiredFields) {
             if (!request[field]) {
                 return badRequest(new MissingParamError(field))
             }
-        }
+        } */
         
         if (!allSets.includes(request.set as Set)) return badRequest(new InvalidParamError('set'))
         if (!allTypes.includes(request.type as Type)) return badRequest(new InvalidParamError('type'))
