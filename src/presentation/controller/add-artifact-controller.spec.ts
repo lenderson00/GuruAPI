@@ -31,8 +31,6 @@ const makeFakeRequest = (): Request => ({
 
 describe ('Add Artifact Controller', () => {
     
-
-    
     // Set, type, mainstat and substats should be part of their enums
     
     test('Should return 400 if set is invalid', async () => {
