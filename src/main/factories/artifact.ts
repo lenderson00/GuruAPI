@@ -4,12 +4,13 @@ import { ArtifactMongo } from "../../infra/artifact/db/mongodb/artifact-mongo"
 import { AddArtifactController } from "../../presentation/controller/add-artifact-controller"
 import { DelArtifactController } from "../../presentation/controller/del-artifact-controller"
 import { GetArtifactController } from "../../presentation/controller/get-artifact-controller"
+import { makeSignUpValidation } from "./controller/add-artifact-validation-controller"
 import { makeLogControllerDecorator } from "./decorators/log-controller-decorator-factory"
 
 export const makeAddArtifactController = () => {
     const addArtifactRepo = new ArtifactMongo()
     const addArtifact = new AddArtifactDB(addArtifactRepo)
-    const addArtifactController = new AddArtifactController(addArtifact)
+    const addArtifactController = new AddArtifactController(addArtifact, makeSignUpValidation())
     return makeLogControllerDecorator(addArtifactController)
 }
 
