@@ -11,7 +11,7 @@ const makeSut = (): isPartValidation<string> => {
 describe('isPartValidation Validation', () => {
   test('Should return a InvalidParamError if validation fails', () => {
     const sut = makeSut()
-    const error = sut.validate({ any_field: 'data4' })
+    const error = sut.validate({ [field]: 'data4' })
     expect(error).toEqual(new InvalidParamError(field))
   })
 
