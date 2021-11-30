@@ -7,14 +7,23 @@ import { Controller } from "../protocols/controller";
 import { HttpResponse } from "../protocols/http";
 import substatsValues from "../../data/artifact/utils/gen-substat-values-possibilities.json"
 import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
+import { Validation } from "../protocols";
 export class AddArtifactController implements Controller {
     private readonly addArtifact: AddArtifact
+    private readonly validation: Validation
     
-    constructor (addArtifact: AddArtifact) {
+    constructor (addArtifact: AddArtifact, validation: Validation) {
         this.addArtifact = addArtifact
+        this.validation = validation
     }
     
     async handle (request: Request): Promise<HttpResponse> {
+
+        const error = this.validation.validate(request)
+        if (error) {
+            return badRequest(error)
+        }
+
         const requiredFields: Array<keyof Request>  = ['set', 'type', 'level', 'mainstat', 'substats']
         for (const field of requiredFields) {
             if (!request[field]) {
