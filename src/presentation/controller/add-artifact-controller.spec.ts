@@ -1,3 +1,4 @@
+import { ValidationSpy } from "../../../tests/mocks/mock-validation";
 import { upgradeTiers } from "../../data/artifact/utils/chances";
 import { Sets, Stats, Type, Types } from "../../data/artifact/utils/enums";
 import { AddArtifact, AddArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
@@ -10,9 +11,9 @@ const makeSut = () => {
             return new Promise((res) => res(true as AddArtifactResult))
         }
     }
-   
-    const sut = new AddArtifactController(addArtifactStub)
-    return { sut, addArtifactStub }
+    const validationStub = new ValidationSpy()
+    const sut = new AddArtifactController(addArtifactStub, validationStub)
+    return { sut, addArtifactStub, validationStub }
 }
 
 const makeFakeRequest = (): Request => ({
@@ -169,6 +170,14 @@ describe ('Add Artifact Controller', () => {
         const httpRequest = makeFakeRequest();
         await sut.handle(httpRequest);
         expect(addArtifactSpy).toHaveBeenCalledWith(httpRequest);
+    })
+
+    test('Should call Validation with correct data', async () => {
+        const { sut, validationStub } = makeSut();
+        const validateSpy = jest.spyOn(validationStub, 'validate')
+        const httpRequest = makeFakeRequest();
+        await sut.handle(httpRequest);
+        expect(validateSpy).toHaveBeenCalledWith(httpRequest);
     })
 
     test('Should return 200 if valid data is provided', async () => {
