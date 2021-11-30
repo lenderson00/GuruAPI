@@ -31,53 +31,7 @@ const makeFakeRequest = (): Request => ({
 
 describe ('Add Artifact Controller', () => {
     
-    // Should return 400 if missing required params
 
-    test('Should return 400 if no set is provided', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        delete httpRequest.set;
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new MissingParamError('set'));
-    })
-    
-    test('Should return 400 if no type is provided', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        delete httpRequest.type;
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new MissingParamError('type'));
-    })
-    
-    test('Should return 400 if no level is provided', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        delete httpRequest.level;
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new MissingParamError('level'));
-    })
-    
-    test('Should return 400 if no mainstat is provided', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        delete httpRequest.mainstat;
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new MissingParamError('mainstat'));
-    })
-    
-    test('Should return 400 if no substat is provided', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        delete httpRequest.substats;
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new MissingParamError('substats'));
-    })
-    
     
     // Set, type, mainstat and substats should be part of their enums
     
