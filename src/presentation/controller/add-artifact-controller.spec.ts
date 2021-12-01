@@ -31,34 +31,7 @@ const makeFakeRequest = (): Request => ({
 
 describe ('Add Artifact Controller', () => {
     
-    // Set, type, mainstat and substats should be part of their enums
-    
-    test('Should return 400 if set is invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest()
-        httpRequest.set = 'invalid_set' as Sets
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new InvalidParamError('set'));
-    })
-    
-    test('Should return 400 if type is invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest()
-        httpRequest.type = 'invalid_type' as Type
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new InvalidParamError('type'));
-    })
-    
-    test('Should return 400 if level is invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest()
-        httpRequest.level = 999 // Only Stats.HP is allowed for Type Flower!
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new InvalidParamError('level'));
-    })
+    // Set, type, mainstat and substats should be part of their combinations
     
     test('Should return 400 if mainstat is invalid', async () => {
         const { sut } = makeSut();
