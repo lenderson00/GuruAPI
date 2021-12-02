@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { allowedMainStats, allowedSubStats } from "../../data/artifact/utils/combinations";
 import { MainStat, SubStat, Type } from "../../data/artifact/utils/enums";
 import { InvalidParamError } from "../../presentation/errors";
