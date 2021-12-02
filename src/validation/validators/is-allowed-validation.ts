@@ -32,7 +32,7 @@ export class isAllowedSubStatValidation implements Validation {
 export class isAllowedSubStatValueValidation implements Validation {
     validate (input: any): Error | null {
         const sv: { [key: string]: { [key2: number|string]: any} } = substatsValues;
-        let rolls = 0;
+        let upgrades = 0;
         let result = null
 
         input.substats.forEach((sub: { substat: SubStat; value: number; }, index: number) => {
@@ -40,15 +40,15 @@ export class isAllowedSubStatValueValidation implements Validation {
             rollLoop: for (let i = 1; i < 7; i++) {
                 found = sv[sub.substat][i].includes(sub.value) || found
                 if (found) {
-                    rolls += i-1;
+                    upgrades += i-1;
                     break rollLoop;
                 }
             }
             if (!found) result = new InvalidParamError(`substat ${index+1} value (${sub.value} for ${sub.substat})`)
         })
-        /* if (rolls > 5) {
-            result = new InvalidParamError(`Invalid # of rolls: ${rolls}`)
-        } */
+        const maxUpgradeRolls = Math.ceil(input.level/4)
+        if (upgrades > maxUpgradeRolls) result = new InvalidParamError(`Invalid # of upgrades: ${upgrades} (max: ${maxUpgradeRolls})`)
+
         return result
       }
 }
