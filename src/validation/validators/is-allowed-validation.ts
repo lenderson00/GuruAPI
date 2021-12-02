@@ -27,3 +27,10 @@ export class isAllowedSubStatValidation implements Validation {
         return result
       }
 }
+
+export class isAllowedSubStatValueValidation implements Validation {
+    validate (input: any): Error | null {
+        
+        return null
+      }
+}
