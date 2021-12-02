@@ -1,6 +1,6 @@
 import { InvalidParamError } from '../../presentation/errors'
 import { Stats, Types } from '../../data/artifact/utils/enums'
-import { isAllowedMainStatValidation, isAllowedSubStatValidation } from './is-allowed-validation'
+import { isAllowedMainStatValidation, isAllowedSubStatValidation, isAllowedSubStatValueValidation } from './is-allowed-validation'
 import { upgradeTiers } from '../../data/artifact/utils/chances'
 
 describe('isAllowedValidation', () => {
@@ -73,6 +73,22 @@ describe('isAllowedValidation', () => {
       const sut = new isAllowedSubStatValidation()
       const error = sut.validate({
         mainstat: Stats.HPFlat,
+        substats: [
+          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
+          {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
+          {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+          {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0]*2)},
+        ]
+      })
+      expect(error).toBeFalsy()
+    })
+  })
+
+  describe('isAllowedSubStatValueValidation', () => {
+    test('Should not return if validation succeeds', () => {
+      const sut = new isAllowedSubStatValueValidation()
+      const error = sut.validate({
+        level: 20,
         substats: [
           {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
           {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
