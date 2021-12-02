@@ -84,6 +84,7 @@ describe('isAllowedValidation', () => {
     })
   })
 
+
   describe('isAllowedSubStatValueValidation', () => {
     test('Should return a InvalidParamError if validation fails', () => {
       const sut = new isAllowedSubStatValueValidation()
@@ -97,6 +98,20 @@ describe('isAllowedValidation', () => {
         ]
       })
         expect(error).toEqual(new InvalidParamError('substat 3 value (7.7 for CRIT Rate%)'))
+    })
+
+    test('Should return a InvalidParamError if substats values indicate more than max upgrade rolls', () => {
+      const sut = new isAllowedSubStatValueValidation()
+      const error = sut.validate({
+        level: 20,
+        substats: [
+          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*3*10)/10},
+          {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
+          {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*3*10)/10},
+          {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0]*3)}
+        ]
+      })
+        expect(error).toEqual(new InvalidParamError('Invalid # of upgrades: 8 (max: 5)'))
     })
 
     test('Should not return if validation succeeds', () => {
