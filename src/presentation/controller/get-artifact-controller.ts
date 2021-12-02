@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { GetArtifact, GetArtifactResults } from "../../domain/artifact/usecases/crud-artifact";
 import { InvalidParamError } from "../errors";
 import { badRequest, ok, serverError } from "../helpers/http-helper";
