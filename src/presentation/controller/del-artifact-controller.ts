@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DelArtifactRepo, DelArtifactRepoResult } from "../../data/artifact/protocols/del-artifact-repo";
-import { InvalidParamError, MissingParamError } from "../errors";
+import { InvalidParamError } from "../errors";
 import { badRequest, ok, serverError } from "../helpers/http-helper";
 import { Controller, HttpResponse, Validation } from "../protocols";
 
@@ -17,14 +18,12 @@ export class DelArtifactController implements Controller {
             const error = this.validation.validate(req)
             if (error) return badRequest(error)
             const { id } = req
-            if (!id) return badRequest(new MissingParamError('id'))
-            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del(id)
+            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del(id!)
             if (!isOK) return badRequest(new InvalidParamError('id'))
             return ok(true)
         } catch (error) {
             return serverError(error as Error)
         }
-        
     }
 }
 

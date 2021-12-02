@@ -2,7 +2,7 @@ import { ValidationSpy } from "../../../tests/mocks/mock-validation"
 import { throwError } from "../../../tests/mocks/test-helper"
 import { DelArtifactRepo } from "../../data/artifact/protocols/del-artifact-repo"
 import { DelArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError, MissingParamError, ServerError } from "../errors"
+import { InvalidParamError, ServerError } from "../errors"
 import { serverError } from "../helpers/http-helper"
 import { DelArtifactController, Request } from "./del-artifact-controller"
 
@@ -18,14 +18,6 @@ const makeSut = () => {
 }
 
 describe ('Delete Artifact Controller', () => {
-
-    test('Should return 400 if no id is provided', async () => {
-        const { sut } = makeSut();
-        const httpRequest: Request = {}
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new MissingParamError('id'));
-    })
 
     test('Should call Validation with correct data', async () => {
         const { sut, validationStub } = makeSut();
