@@ -103,15 +103,15 @@ describe('isAllowedValidation', () => {
     test('Should return a InvalidParamError if substats values indicate more than max upgrade rolls', () => {
       const sut = new isAllowedSubStatValueValidation()
       const error = sut.validate({
-        level: 20,
+        level: 6,
         substats: [
-          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*3*10)/10},
-          {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
-          {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*3*10)/10},
-          {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0]*3)}
+          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+          {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*2)},
+          {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*2*10)/10},
+          {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])}
         ]
       })
-        expect(error).toEqual(new InvalidParamError('Invalid # of upgrades: 8 (max: 5)'))
+        expect(error).toEqual(new InvalidParamError('Invalid # of upgrades: 2 (max: 1)'))
     })
 
     test('Should not return if validation succeeds', () => {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { allowedMainStats, allowedSubStats } from "../../data/artifact/utils/combinations";
 import substatsValues from "../../data/artifact/utils/gen-substat-values-possibilities.json"
-import { MainStat, SubStat, SubStats, Type } from "../../data/artifact/utils/enums";
+import { MainStat, SubStat, Type } from "../../data/artifact/utils/enums";
 import { InvalidParamError } from "../../presentation/errors";
 import { Validation } from "../../presentation/protocols";
 
@@ -46,7 +46,7 @@ export class isAllowedSubStatValueValidation implements Validation {
             }
             if (!found) result = new InvalidParamError(`substat ${index+1} value (${sub.value} for ${sub.substat})`)
         })
-        const maxUpgradeRolls = Math.ceil(input.level/4)
+        const maxUpgradeRolls = Math.floor(input.level/4)
         if (upgrades > maxUpgradeRolls) result = new InvalidParamError(`Invalid # of upgrades: ${upgrades} (max: ${maxUpgradeRolls})`)
 
         return result
