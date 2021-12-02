@@ -85,6 +85,20 @@ describe('isAllowedValidation', () => {
   })
 
   describe('isAllowedSubStatValueValidation', () => {
+    test('Should return a InvalidParamError if validation fails', () => {
+      const sut = new isAllowedSubStatValueValidation()
+      const error = sut.validate({
+        level: 20,
+        substats: [
+          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
+          {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
+          {substat: Stats.CR, value: 7.7},
+          {substat: Stats.HPFlat, value: Math.round(upgradeTiers.HP[0]*3)},
+        ]
+      })
+        expect(error).toEqual(new InvalidParamError('substat 3 value (7.7 for CRIT Rate%)'))
+    })
+
     test('Should not return if validation succeeds', () => {
       const sut = new isAllowedSubStatValueValidation()
       const error = sut.validate({
