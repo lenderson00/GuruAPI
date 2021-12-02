@@ -1,13 +1,7 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { allLevels, allowedMainStats, allowedSubStats, allSets, allTypes } from "../../data/artifact/utils/combinations";
-import { Level, MainStat, Set, SubStat, Type } from "../../data/artifact/utils/enums";
-import { InvalidParamError, MissingParamError } from "../errors";
-import { badRequest, ok } from "../helpers/http-helper";
-import { Controller } from "../protocols/controller";
-import { HttpResponse } from "../protocols/http";
-import substatsValues from "../../data/artifact/utils/gen-substat-values-possibilities.json"
+import { Controller, HttpResponse, Validation } from "../protocols";
+import { badRequest, ok, serverError } from "../helpers/http-helper";
 import { AddArtifact, AddArtifactParams, AddArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { Validation } from "../protocols";
+
 export class AddArtifactController implements Controller {
     private readonly addArtifact: AddArtifact
     private readonly validation: Validation
@@ -18,34 +12,14 @@ export class AddArtifactController implements Controller {
     }
     
     async handle (request: Request): Promise<HttpResponse> {
-
-        const error = this.validation.validate(request)
-        if (error) return badRequest(error)
-        
-        if (request.substats!.length > 4) return badRequest(new InvalidParamError('# of substats'))
-
-        // TS workaround to allow for substat values indexing
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const sv: { [key: string]: { [key2: number|string]: any} } = substatsValues;
-        let rolls = 0;
-
-        for (const sub of request.substats!) {
-            if (!allowedSubStats[request.mainstat as MainStat].includes(sub.substat as SubStat)) return badRequest(new InvalidParamError(`substat: ${sub.substat}`))
-            let found: number|undefined = undefined;
-            rollLoop: for (let i = 1; i < 7; i++) {
-                found = sv[sub.substat][i].includes(sub.value) || found
-                if (found) {
-                    rolls += i-1;
-                    break rollLoop;
-                }
-            }
-            if (!found) return badRequest(new InvalidParamError(`substat value: ${sub.substat}`))
+        try {
+            const error = this.validation.validate(request)
+            if (error) return badRequest(error)
+            const isOk: AddArtifactResult = await this.addArtifact.add(request as AddArtifactParams);
+            return ok(isOk);
+        } catch (error) {
+            return serverError(error as Error)
         }
-        if (rolls > 5) {
-            return badRequest(new InvalidParamError(`Invalid # of rolls: ${rolls}`));
-        }
-        const isOk: AddArtifactResult = await this.addArtifact.add(request as AddArtifactParams);
-        return ok(isOk);
     }
     
 }
