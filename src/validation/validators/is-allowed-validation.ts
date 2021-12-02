@@ -16,14 +16,13 @@ export class isAllowedSubStatValidation implements Validation {
         let result = null
         const subs = input.substats.map((x:{ substat: SubStat; }) => x.substat)
         subs.forEach((sub: SubStat, index: number)  => {
-            // Error if substat is now allowed due to mainstat
-            if (!allowedSubStats[input.mainstat as MainStat].includes(sub)) {
+            if (!allowedSubStats[input.mainstat as MainStat].includes(sub)) { // Error if substat is now allowed due to mainstat
                 result =  new InvalidParamError(`substat ${index+1} (${sub})`)
             }
-            // Error if there is substat duplication
-            if (subs.indexOf(sub) != index) {
+            if (subs.indexOf(sub) != index) { // Error if there is substat duplication
                 result =  new InvalidParamError(`substat ${index+1} (${sub})`)
             }
+            if (sub.length > 4) result =  new InvalidParamError('cannot have more than 4 substats')
         });
         return result
       }
