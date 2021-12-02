@@ -7,6 +7,7 @@ import { GetArtifactController } from "../../../presentation/controller/get-arti
 import { makeDelArtifactValidation } from "./del-artifact-validation-controller"
 import { makeLogControllerDecorator } from "../decorators/log-controller-decorator-factory"
 import { makeAddArtifactValidation } from "./add-artifact-validation-controller"
+import { makeGetArtifactValidation } from "./get-artifact-validation-controller"
 
 export const makeAddArtifactController = () => {
     const addArtifactRepo = new ArtifactMongo()
@@ -24,6 +25,6 @@ export const makeDelArtifactController = () => {
 export const makeGetArtifactController = () => {
     const getArtifactRepo = new ArtifactMongo()
     const getArtifactDB = new GetArtifactDB(getArtifactRepo)
-    const getArtifactController = new GetArtifactController(getArtifactDB)
+    const getArtifactController = new GetArtifactController(getArtifactDB, makeGetArtifactValidation())
     return makeLogControllerDecorator(getArtifactController)
 }
