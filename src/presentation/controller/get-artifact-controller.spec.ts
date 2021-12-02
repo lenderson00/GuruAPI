@@ -1,8 +1,9 @@
+import { ValidationSpy } from "../../../tests/mocks/mock-validation"
 import { throwError } from "../../../tests/mocks/test-helper"
 import { upgradeTiers } from "../../data/artifact/utils/chances"
 import { Sets, Stats, Types } from "../../data/artifact/utils/enums"
 import { GetArtifact, GetArtifactResults, GetFullArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError, MissingParamError, ServerError } from "../errors"
+import { InvalidParamError, ServerError } from "../errors"
 import { serverError } from "../helpers/http-helper"
 import { GetArtifactController, Request } from "./get-artifact-controller"
 
@@ -15,21 +16,21 @@ const makeSut = () => {
             return new Promise((res) => res({found: [], notFound: []} as GetFullArtifactResult))
         }
     }
-   
-    const sut = new GetArtifactController(getArtifactStub)
-    return { sut, getArtifactStub }
+    const validationStub = new ValidationSpy()
+    const sut = new GetArtifactController(getArtifactStub, validationStub)
+    return { sut, getArtifactStub, validationStub }
 }
 
 describe ('Get Artifact Controller', () => {
 
-    test('Should return 400 if no id is provided', async () => {
-        const { sut } = makeSut();
-        const httpRequest: Request = {}
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new MissingParamError('ids'));
+    test('Should call Validation with correct data', async () => {
+        const { sut, validationStub } = makeSut();
+        const validateSpy = jest.spyOn(validationStub, 'validate')
+        const httpRequest: Request = { ids: ['any_id']}
+        await sut.handle(httpRequest);
+        expect(validateSpy).toHaveBeenCalledWith(httpRequest);
     })
-
+    
     test('Should call GetArtifact with correct data', async () => {
         const { sut, getArtifactStub } = makeSut();
         const getArtifactSpy = jest.spyOn(getArtifactStub, 'get')
