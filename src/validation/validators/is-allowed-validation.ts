@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { allowedMainStats, allowedSubStats } from "../../data/artifact/utils/combinations";
-import { MainStat, SubStat, Type } from "../../data/artifact/utils/enums";
+import substatsValues from "../../data/artifact/utils/gen-substat-values-possibilities.json"
+import { MainStat, SubStat, SubStats, Type } from "../../data/artifact/utils/enums";
 import { InvalidParamError } from "../../presentation/errors";
 import { Validation } from "../../presentation/protocols";
 
@@ -30,7 +31,24 @@ export class isAllowedSubStatValidation implements Validation {
 
 export class isAllowedSubStatValueValidation implements Validation {
     validate (input: any): Error | null {
-        
-        return null
+        const sv: { [key: string]: { [key2: number|string]: any} } = substatsValues;
+        let rolls = 0;
+        let result = null
+
+        input.substats.forEach((sub: { substat: SubStat; value: number; }, index: number) => {
+            let found: number|undefined = undefined;
+            rollLoop: for (let i = 1; i < 7; i++) {
+                found = sv[sub.substat][i].includes(sub.value) || found
+                if (found) {
+                    rolls += i-1;
+                    break rollLoop;
+                }
+            }
+            if (!found) result = new InvalidParamError(`substat ${index+1} value (${sub.value} for ${sub.substat})`)
+        })
+        /* if (rolls > 5) {
+            result = new InvalidParamError(`Invalid # of rolls: ${rolls}`)
+        } */
+        return result
       }
 }
