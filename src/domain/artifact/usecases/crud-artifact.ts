@@ -1,4 +1,5 @@
 import { Level, MainStat, Set, SubStat, Type } from "../../../data/artifact/utils/enums"
+import { Character } from "../../../data/character/character"
 export interface AddArtifact {
     add: (data: AddArtifactParams) => Promise<AddArtifactResult>
 }
@@ -64,3 +65,18 @@ export type GetFullArtifactResult = {
     }[]
     notFound: string[]
 }
+
+export interface UpdArtifact {
+    update: (data: UpdArtifactParams) => Promise<UpdArtifactResult>
+}
+
+export type UpdArtifactParams = {
+    set: Set
+    type: Type
+    level: Level
+    mainstat: MainStat
+    substats: {substat: SubStat, value: number}[]
+    char: Character
+}
+
+export type UpdArtifactResult = boolean
