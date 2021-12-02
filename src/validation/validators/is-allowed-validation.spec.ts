@@ -27,44 +27,59 @@ describe('isAllowedValidation', () => {
 
   describe('isAllowedSubStatValidation', () => {
     test('Should return a InvalidParamError if validation fails', () => {
-    const sut = new isAllowedSubStatValidation()
-    const error = sut.validate({
+      const sut = new isAllowedSubStatValidation()
+      const error = sut.validate({
         mainstat: Stats.HPFlat,
         substats: [
-            {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
-            {substat: Stats.HPFlat, value: Math.round(upgradeTiers.HP[0]*3)},
-            {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
-            {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0]*2)},
+          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
+          {substat: Stats.HPFlat, value: Math.round(upgradeTiers.HP[0]*3)},
+          {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+          {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0]*2)},
         ]
-    })
-      expect(error).toEqual(new InvalidParamError('substat 2 (HP)'))
+      })
+        expect(error).toEqual(new InvalidParamError('substat 2 (HP)'))
     })
 
     test('Should return a InvalidParamError if there is substat duplication', () => {
-        const sut = new isAllowedSubStatValidation()
-        const error = sut.validate({
-            mainstat: Stats.HPFlat,
-            substats: [
-                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
-                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.HP[0]*3)},
-                {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
-                {substat: Stats.DEF, value: Math.round(upgradeTiers.DEF[0]*2)},
-            ]
-        })
-          expect(error).toEqual(new InvalidParamError('substat 4 (DEF%)'))
-        })
+      const sut = new isAllowedSubStatValidation()
+      const error = sut.validate({
+        mainstat: Stats.HPFlat,
+        substats: [
+          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
+          {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.HP[0]*3)},
+          {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+          {substat: Stats.DEF, value: Math.round(upgradeTiers.DEF[0]*2)},
+        ]
+      })
+        expect(error).toEqual(new InvalidParamError('substat 4 (DEF%)'))
+    })
+
+    test('Should return a InvalidParamError if there are more than 4 substats', () => {
+      const sut = new isAllowedSubStatValidation()
+      const error = sut.validate({
+        mainstat: Stats.HPFlat,
+        substats: [
+          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+          {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.HP[0])},
+          {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+          {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0])},
+          {substat: Stats.CD, value: Math.round(upgradeTiers['CRIT DMG%'][0]*10)/10},
+        ]
+      })
+        expect(error).toEqual(new InvalidParamError('cannot have more than 4 substats'))
+    })
 
     test('Should not return if validation succeeds', () => {
       const sut = new isAllowedSubStatValidation()
       const error = sut.validate({
         mainstat: Stats.HPFlat,
         substats: [
-            {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
-            {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
-            {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
-            {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0]*2)},
+          {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
+          {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
+          {substat: Stats.DEF, value: Math.round(upgradeTiers["DEF%"][0]*10)/10},
+          {substat: Stats.DEFFlat, value: Math.round(upgradeTiers.DEF[0]*2)},
         ]
-    })
+      })
       expect(error).toBeFalsy()
     })
   })
