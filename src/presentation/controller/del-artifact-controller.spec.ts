@@ -1,3 +1,4 @@
+import { ValidationSpy } from "../../../tests/mocks/mock-validation"
 import { throwError } from "../../../tests/mocks/test-helper"
 import { DelArtifactRepo } from "../../data/artifact/protocols/del-artifact-repo"
 import { DelArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
@@ -11,9 +12,9 @@ const makeSut = () => {
             return new Promise((res) => res(true as DelArtifactResult))
         }
     }
-   
-    const sut = new DelArtifactController(delArtifactStub)
-    return { sut, delArtifactStub }
+    const validationStub = new ValidationSpy()
+    const sut = new DelArtifactController(delArtifactStub, validationStub)
+    return { sut, delArtifactStub, validationStub }
 }
 
 describe ('Delete Artifact Controller', () => {
@@ -24,6 +25,14 @@ describe ('Delete Artifact Controller', () => {
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(400);
         expect(httpResponse.body).toEqual(new MissingParamError('id'));
+    })
+
+    test('Should call Validation with correct data', async () => {
+        const { sut, validationStub } = makeSut();
+        const validateSpy = jest.spyOn(validationStub, 'validate')
+        const httpRequest: Request = {}
+        await sut.handle(httpRequest);
+        expect(validateSpy).toHaveBeenCalledWith(httpRequest);
     })
 
     test('Should call DelArtifactRepo with correct data', async () => {
