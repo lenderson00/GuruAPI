@@ -32,25 +32,7 @@ const makeFakeRequest = (): Request => ({
 describe ('Add Artifact Controller', () => {
     
     // Set, type, mainstat and substats should be part of their combinations
-    
-    test('Should return 400 if mainstat is invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest()
-        httpRequest.mainstat = Stats.CD // Only Stats.HP is allowed for Type Flower!
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new InvalidParamError('mainstat'));
-    })
-    
-    test('Should return 400 if any substat is invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest()
-        httpRequest.substats![3].substat = 'invalid_substat' as Stats;
-        const httpResponse = await sut.handle(httpRequest);
-        expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new InvalidParamError('substat: invalid_substat'));
-    }) 
-    
+        
     test('Should return 400 if any substat value is invalid', async () => {
         const { sut } = makeSut();
         const httpRequest = makeFakeRequest()

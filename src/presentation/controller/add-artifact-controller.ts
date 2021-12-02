@@ -22,10 +22,6 @@ export class AddArtifactController implements Controller {
         const error = this.validation.validate(request)
         if (error) return badRequest(error)
         
-        if (!allSets.includes(request.set as Set)) return badRequest(new InvalidParamError('set'))
-        if (!allTypes.includes(request.type as Type)) return badRequest(new InvalidParamError('type'))
-        if (!allLevels.includes(request.level as Level)) return badRequest(new InvalidParamError('level'))
-        if (!allowedMainStats[request.type as Type].includes(request.mainstat as never)) return badRequest(new InvalidParamError('mainstat'))
         if (request.substats!.length > 4) return badRequest(new InvalidParamError('# of substats'))
 
         // TS workaround to allow for substat values indexing
