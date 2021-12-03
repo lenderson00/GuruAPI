@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Validation } from '../../presentation/protocols'
 import { MissingParamError } from '../../presentation/errors'
 

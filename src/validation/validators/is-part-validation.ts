@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Validation } from '../../presentation/protocols'
 import { InvalidParamError } from '../../presentation/errors'
 import { Set, Type, Level, MainStat, SubStat } from '../../data/artifact/utils/enums'
