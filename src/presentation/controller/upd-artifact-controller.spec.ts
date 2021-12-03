@@ -1,6 +1,8 @@
 import { upgradeTiers } from "../../data/artifact/utils/chances"
 import { Sets, Types, Stats } from "../../data/artifact/utils/enums"
 import { UpdArtifact, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
+import { MissingParamError } from "../errors"
+import { badRequest } from "../helpers"
 import { UpdArtifactController, Request } from "./upd-artifact-controller"
 
 const makeSut = () => {
@@ -27,7 +29,15 @@ const makeFakeRequest = (): Request => ({
     ]
 })
 
-describe ('Add Artifact Controller', () => {
+describe ('Upd Artifact Controller', () => {
+    test('Should return 400 if no id is provided', async () => {
+        const { sut } = makeSut();
+        const httpRequest = makeFakeRequest();
+        delete httpRequest.id
+        const HttpResponse = await sut.handle(httpRequest);
+        expect(HttpResponse).toEqual(badRequest(new MissingParamError('id')));
+    })
+
     test('Should call UpdArtifactDB with correct data', async () => {
         const { sut, updArtifactStub } = makeSut();
         const updArtifactSpy = jest.spyOn(updArtifactStub, 'update')
