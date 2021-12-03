@@ -9,17 +9,18 @@ Controlador
     Passo-a-passo
         - Recebe a req e verifica se as informações estão no padrão esperado
             - Se não, Bad Request (400)
-        - Usa o ID da req para puxar as infos do artefato na base
-        - Valida se dados alterados fazem sentido de existir
-            - Se não, Bad Request (400)
-        - Se sim, chama o Data com TODAS as informações do artefato já com os campos novos atualizados
-        - Se receber erro, retorna Internal Server Error (500)
+        - Chama o UpdArtifactDB com os dados recebidos
+        - Se receber objeto error, retorna Bad Request InvalidParamError com o erro
+        - Se UpdArtifactDB throws, retorna Internal Server Error (500)
         - Se receber true, retorna com status OK (200) e true
 
 Data
+    - Usa o ID da req para puxar as infos do artefato na base
+    - Valida se dados alterados fazem sentido de existir
+        - Se não, retorna InvalidParamError com o erro
     - Recalcula os valores de score default
     - Adiciona campo de "Date modified" com a data/hora da req
-    - Chama o Infra com estes novos campos somados à todas as infos básicas ajustadas do artefato
+    - Se sim, Chama o Infra com estes novos campos somados à todas as infos básicas ajustadas do artefato
     - Se receber erro de infra, throw error
     - Se receber true, retorna true
 

@@ -79,4 +79,4 @@ export type UpdArtifactParams = {
     char: Character
 }
 
-export type UpdArtifactResult = boolean
+export type UpdArtifactResult = boolean | Error

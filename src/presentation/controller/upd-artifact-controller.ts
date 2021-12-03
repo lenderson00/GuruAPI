@@ -1,25 +1,39 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Character } from "../../data/character/character";
-import { GetArtifact, GetArtifactResults, UpdArtifact, UpdArtifactParams, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
+import { UpdArtifact, UpdArtifactParams, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
+import { RequiredFieldValidation } from "../../validation/validators";
+import { isArtifactLevelValidation, isArtifactMainStatValidation, isArtifactSetValidation, isArtifactSubStatValidation, isArtifactTypeValidation } from "../../validation/validators/is-part-validation";
 import { badRequest, ok } from "../helpers";
-import { Controller, HttpResponse, Validation } from "../protocols";
+import { Controller, HttpResponse } from "../protocols";
 
 export class UpdArtifactController implements Controller {
     private readonly updArtifact: UpdArtifact
-    private readonly getArtifact: GetArtifact
-    private readonly validation: Validation
 
-    constructor (updArtifact: UpdArtifact, getArtifact: GetArtifact, validation: Validation) {
+    constructor (updArtifact: UpdArtifact) {
         this.updArtifact = updArtifact
-        this.getArtifact = getArtifact;
-        this.validation = validation
     }
 
     async handle (request: Request): Promise<HttpResponse> {
-        const error = this.validation.validate(request)
+        
+        let error = (new RequiredFieldValidation('id')).validate(request)
         if (error) return badRequest(error)
-        const asisArtifact: GetArtifactResults = await this.getArtifact.get({ids: [request.id!]})
+        if (request.set) error = (new isArtifactSetValidation).validate(request)
+        if (error) return badRequest(error)
+        if (request.type) error = (new isArtifactTypeValidation).validate(request)
+        if (error) return badRequest(error)
+        if (request.level) error = (new isArtifactLevelValidation).validate(request)
+        if (error) return badRequest(error)
+        if (request.mainstat) error = (new isArtifactMainStatValidation).validate(request)
+        if (error) return badRequest(error)
+        if (request.substats) {
+            request.substats.forEach(sub => {
+                error = (new isArtifactSubStatValidation).validate(sub)
+                if (error) return badRequest(error)
+            })
+        }
+
         const isOk: UpdArtifactResult = await this.updArtifact.update(request as UpdArtifactParams)
+        if (isOk instanceof Error) return badRequest(isOk)
         return ok(isOk)
     }
 }
