@@ -25,12 +25,11 @@ export class UpdArtifactController implements Controller {
         if (error) return badRequest(error)
         if (request.mainstat) error = (new isArtifactMainStatValidation).validate(request)
         if (error) return badRequest(error)
-        if (request.substats) {
+        if (request.substats)
             request.substats.forEach(sub => {
-                error = (new isArtifactSubStatValidation).validate(sub)
-                if (error) return badRequest(error)
+                error = error || (new isArtifactSubStatValidation).validate(sub)
             })
-        }
+        if (error) return badRequest(error)
 
         const isOk: UpdArtifactResult = await this.updArtifact.update(request as UpdArtifactParams)
         if (isOk instanceof Error) return badRequest(isOk)
