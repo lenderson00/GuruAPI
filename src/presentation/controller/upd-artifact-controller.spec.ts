@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { throwError } from "../../../tests/mocks/test-helper"
 import { upgradeTiers } from "../../data/artifact/utils/chances"
 import { Sets, Types, Stats } from "../../data/artifact/utils/enums"
 import { UpdArtifact, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError, MissingParamError } from "../errors"
-import { badRequest } from "../helpers"
+import { InvalidParamError, MissingParamError, ServerError } from "../errors"
+import { badRequest, serverError } from "../helpers"
 import { UpdArtifactController, Request } from "./upd-artifact-controller"
 
 const makeSut = () => {
@@ -93,5 +94,13 @@ describe ('Upd Artifact Controller', () => {
         const httpRequest = makeFakeRequest();
         const HttpResponse = await sut.handle(httpRequest);
         expect(HttpResponse).toEqual(badRequest(new InvalidParamError('mainstat')));
+    })
+
+    test('Should return 500 if UpdArtifact throws', async () => {
+        const { sut, updArtifactStub } = makeSut();
+        jest.spyOn(updArtifactStub, 'update').mockImplementationOnce(throwError)
+        const httpRequest: Request = makeFakeRequest()
+        const httpResponse = await sut.handle(httpRequest);
+        expect(httpResponse).toEqual(serverError(new ServerError()))
     })
 })
