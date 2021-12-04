@@ -103,4 +103,12 @@ describe ('Upd Artifact Controller', () => {
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse).toEqual(serverError(new ServerError()))
     })
+
+    test('Should return 200 if UpdArtifact returns true', async () => {
+        const { sut } = makeSut();
+        const httpRequest: Request = makeFakeRequest()
+        const httpResponse = await sut.handle(httpRequest);
+        expect(httpResponse.statusCode).toBe(200)
+        expect(httpResponse.body).toBe(true)
+    })
 })
