@@ -86,4 +86,12 @@ describe ('Upd Artifact Controller', () => {
         await sut.handle(httpRequest);
         expect(updArtifactSpy).toHaveBeenCalledWith(httpRequest);
     })
+
+    test('Should return 400 if UpdArtifactDB returns an error', async () => {
+        const { sut, updArtifactStub } = makeSut();
+        jest.spyOn(updArtifactStub, 'update').mockReturnValueOnce(new Promise(resolve => resolve(new InvalidParamError('mainstat'))))
+        const httpRequest = makeFakeRequest();
+        const HttpResponse = await sut.handle(httpRequest);
+        expect(HttpResponse).toEqual(badRequest(new InvalidParamError('mainstat')));
+    })
 })
