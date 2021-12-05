@@ -16,10 +16,14 @@ const makeFakeRepoResponse: GetArtifactResults = {
         id: 'valid_id',
         set: Sets.AP,
         type: Types.Flower,
-        level: 20,
-        mainstat: Stats.ATKFlat,
-        mainstatValue: 311,
-        substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
+        level: 0,
+        mainstat: Stats.HPFlat,
+        mainstatValue: 717,
+        substats: [
+            {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
+            {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
+            {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]}
+        ],
         scoreDflt: 200
     }],
     notFound: []}
@@ -66,10 +70,14 @@ describe ('Get-Artifact-DB Usecase', () => {
                 id: 'valid_id',
                 set: Sets.AP,
                 type: Types.Flower,
-                level: 20,
-                mainstat: Stats.ATKFlat,
-                mainstatValue: 311,
-                substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
+                level: 0,
+                mainstat: Stats.HPFlat,
+                mainstatValue: 717,
+                substats: [
+                    {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
+                    {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
+                    {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]}
+                ],
                 scoreDflt: 200
             }],
             notFound: ["invalid_id1","invalid_id2"]})

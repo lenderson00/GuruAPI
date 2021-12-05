@@ -1,4 +1,3 @@
-import { ValidationSpy } from "../../../../tests/mocks/mock-validation"
 import { UpdArtifactParams } from "../../../domain/artifact/usecases/crud-artifact"
 import { upgradeTiers } from "../utils/chances"
 import { Sets, Types, Stats } from "../utils/enums"
@@ -14,25 +13,49 @@ const makeSut = () => {
 }
 
 const mockUpdArtifactParams = (): UpdArtifactParams => ({
-    id: '123456789012345678901234',
+    id: 'valid_id',
     set: Sets.AP,
     type: Types.Flower,
     level: 20,
     mainstat: Stats.HPFlat,
     substats: [
-        {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
-        {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
+        {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]*3},
+        {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]*2},
         {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]},
-        {substat: Stats.CR, value: upgradeTiers["CRIT Rate%"][0]}
+        {substat: Stats.CR, value: upgradeTiers["CRIT Rate%"][0]*2}
     ]
 })
 
 describe ('Upd-Artifact-DB Usecase', () => {
     test('Should call GetArtifactRepo with correct values', async () => {
         const { sut, getArtifactRepoStub } = makeSut()
-        const gelArtifactSpy = jest.spyOn(getArtifactRepoStub, 'get')
+        const getArtifactSpy = jest.spyOn(getArtifactRepoStub, 'get')
         await sut.update(mockUpdArtifactParams())
-        expect(gelArtifactSpy).toHaveBeenCalledWith({ ids: ['123456789012345678901234'] })
+        expect(getArtifactSpy).toHaveBeenCalledWith({ ids: ['valid_id'] })
+    })
 
+    test('Should call UpdArtifactRepo with correct values', async () => {
+        const { sut, updArtifactRepoStub } = makeSut()
+        const updArtifactSpy = jest.spyOn(updArtifactRepoStub, 'update')
+        await sut.update(mockUpdArtifactParams())
+        expect(updArtifactSpy).toHaveBeenCalledWith({
+            id: 'valid_id',
+            level: 20,
+            mainstatValue: 4780,
+            substats: [
+                {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]*3},
+                {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]*2},
+                {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]},
+                {substat: Stats.CR, value: upgradeTiers["CRIT Rate%"][0]*2}
+            ],
+            scoreDflt: 451.79999999999995,
+            scoreDfltLvl20Avg: 0,
+            scoreDfltLvl20Max: 0,
+            scoreDfltLvl20Min: 0,
+            scoreDfltLvl20SD: 0,
+            scoreDfltMainstat: 85,
+            scoreDfltSubstats: 366.79999999999995,
+            dtModified: (new Date()).toUTCString()
+        })
     })
 })
