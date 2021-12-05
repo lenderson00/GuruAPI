@@ -1,7 +1,9 @@
 import { upgradeTiers } from "../utils/chances"
 import { Sets, Types, Stats } from "../utils/enums"
-import { AddArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../protocols/add-artifact-repo"
-import { GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult } from "../protocols/get-artifact-repo"
+import {
+    AddArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult,
+    GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult,
+    UpdArtifactRepo, UpdArtifactRepoParams, UpdArtifactRepoResult } from "../protocols"
 
 export class addArtifactRepoSpy implements AddArtifactRepo {
     params!: AddArtifactRepoParams
@@ -62,5 +64,15 @@ export class getArtifactRepoSpy implements GetArtifactRepo {
             dtAdded: new Date('December 17, 2020 03:24:00'),
             dtModified: new Date('August 17, 2021 03:24:00'),
         }]))))
+    }
+}
+
+export class updArtifactRepoSpy implements UpdArtifactRepo {
+    params!: UpdArtifactRepoParams
+    result = true
+    
+    async update (updParams: UpdArtifactRepoParams): Promise<UpdArtifactRepoResult> {
+        this.params = updParams
+        return new Promise((res) => res(true as UpdArtifactRepoResult))
     }
 }

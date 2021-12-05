@@ -71,12 +71,13 @@ export interface UpdArtifact {
 }
 
 export type UpdArtifactParams = {
+    id: string
     set: Set
     type: Type
     level: Level
     mainstat: MainStat
     substats: {substat: SubStat, value: number}[]
-    char: Character
+    /* char: Character */
 }
 
 export type UpdArtifactResult = boolean | Error
