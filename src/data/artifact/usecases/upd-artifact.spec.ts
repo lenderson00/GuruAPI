@@ -66,4 +66,11 @@ describe ('Upd-Artifact-DB Usecase', () => {
         const promise = sut.update(mockUpdArtifactParams())
         await expect(promise).rejects.toThrow()
     })
+
+    test('Should throw if UpdArtifactRepo throws', async () => {
+        const { sut, updArtifactRepoStub } = makeSut()
+        jest.spyOn(updArtifactRepoStub, 'update').mockImplementationOnce(throwError)
+        const promise = sut.update(mockUpdArtifactParams())
+        await expect(promise).rejects.toThrow()
+    })
 })
