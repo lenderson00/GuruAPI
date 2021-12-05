@@ -72,10 +72,10 @@ export class getArtifactRepoSpy implements GetArtifactRepo {
 
 export class updArtifactRepoSpy implements UpdArtifactRepo {
     params!: UpdArtifactRepoParams
-    result = true
+    result: UpdArtifactRepoResult = true
     
     async update (updParams: UpdArtifactRepoParams): Promise<UpdArtifactRepoResult> {
         this.params = updParams
-        return new Promise((res) => res(true as UpdArtifactRepoResult))
+        return new Promise((res) => res(this.result))
     }
 }

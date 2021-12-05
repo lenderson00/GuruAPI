@@ -21,6 +21,6 @@ export class UpdArtifactDB implements UpdArtifact {
         if (data.substats) artifact.substats = data.substats
         const updRepoData = await artifact.updateRepoData()
         const UpdResult = await this.updArtifactRepo.update(updRepoData)
-        return false
+        return UpdResult
     }
 }
