@@ -2,7 +2,7 @@ import { upgradeTiers } from "../utils/chances"
 import { Sets, Types, Stats } from "../utils/enums"
 import {
     AddArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult,
-    GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult,
+    GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResults,
     UpdArtifactRepo, UpdArtifactRepoParams, UpdArtifactRepoResult } from "../protocols"
 
 export class addArtifactRepoSpy implements AddArtifactRepo {
@@ -20,18 +20,21 @@ export class getArtifactRepoSpy implements GetArtifactRepo {
     params!: GetArtifactRepoParams
     result = true
     
-    async get (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResult> {
+    async get (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResults> {
         this.params = artifactData
         return new Promise((res) => res(new Promise((res) => res([{
             id: 'valid_id',
             set: Sets.AP,
             type: Types.Flower,
-            level: 20,
-            mainstat: Stats.ATKFlat,
-            mainstatValue: 311,
-            substats: [{substat: Stats.CD, value: Math.round(upgradeTiers[Stats.CD][3]*10)/10}],
+            level: 0,
+            mainstat: Stats.HPFlat,
+            mainstatValue: 717,
+            substats: [
+                {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
+                {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
+                {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]}
+            ],
             scoreDflt: 200,
-            
             scoreMainstat: 100,
             scoreSubstats: 100,
             scoreLvl20Min: 500,
@@ -43,7 +46,7 @@ export class getArtifactRepoSpy implements GetArtifactRepo {
         }]))))
     }
 
-    async getFull (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResult> {
+    async getFull (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResults> {
         this.params = artifactData
         return new Promise((res) => res(new Promise((res) => res([{
             id: 'valid_id',

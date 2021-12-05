@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { AddArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../../../../data/artifact/protocols/add-artifact-repo"
 import { DelArtifactRepo, DelArtifactRepoParams, DelArtifactRepoResult } from "../../../../data/artifact/protocols/del-artifact-repo";
-import { GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult } from "../../../../data/artifact/protocols/get-artifact-repo";
+import { GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResults } from "../../../../data/artifact/protocols/get-artifact-repo";
 import { MongoHelper } from "./mongo-helper";
 
 export class ArtifactMongo implements AddArtifactRepo, DelArtifactRepo, GetArtifactRepo {
@@ -18,7 +18,7 @@ export class ArtifactMongo implements AddArtifactRepo, DelArtifactRepo, GetArtif
         return result.deletedCount === 1
     }
 
-    async get (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResult> {
+    async get (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResults> {
         const artifactCollection = MongoHelper.getCollection('artifacts')
         const id: ObjectId[] = []
         artifactData.ids.forEach(item => id.push(new ObjectId(item)))
@@ -27,6 +27,6 @@ export class ArtifactMongo implements AddArtifactRepo, DelArtifactRepo, GetArtif
             const { _id, ...resultWithoutId } = x
             return Object.assign({},resultWithoutId,{ id: String(_id) })
         })
-        return result as GetArtifactRepoResult
+        return result as GetArtifactRepoResults
     }
 }

@@ -3,8 +3,10 @@ import { mainStatValues, upgradeTiers } from "./chances";
 import { Level, MainStat, Set, SubStat, Type } from "./enums";
 import { AddArtifactRepoParams } from "../protocols/add-artifact-repo";
 import { dfltWeights, ScoreWeightMap } from "./scoring";
+import { GetArtifactRepoResult, UpdArtifactRepoParams } from "../protocols";
 
 export class Artifact {
+    private _id: string | undefined;
     private _set: Set;
     private _type: Type;
     private _level: Level;
@@ -13,11 +15,22 @@ export class Artifact {
     private _substats: { substat: SubStat; value: number; }[];
 
     private _scoreWeights: ScoreWeightMap = dfltWeights;
+    private _scoreDfltWeights: ScoreWeightMap = dfltWeights;
+    private _scoreDflt: number | undefined;
+    private _scoreDfltMainstat: number | undefined;
+    private _scoreDfltSubstats: number | undefined;
     private _score: number | undefined;
     private _scoreMainstat: number | undefined;
     private _scoreSubstats: number | undefined;
     
-    constructor (params: AddArtifactParams) {
+    constructor (params: GetArtifactRepoResult)
+    constructor (params: AddArtifactParams)
+    constructor (params: any) {
+        if (params.id) {
+            this._id = params.id
+            this._mainstatValue = params.mainstatValue
+            this._scoreDflt = params.scoreDflt
+        }
         this._set = params.set
         this._type = params.type
         this._level = params.level
@@ -46,7 +59,35 @@ export class Artifact {
         }
     }
 
+    public async updateRepoData (): Promise<UpdArtifactRepoParams> {
+        const date = new Date
+        if (this.id) {
+            return {
+                id: this.id,
+                level: this.level,
+                mainstatValue: this.mainstatValue,
+                substats: this.substats,
+                scoreDflt: this.scoreDflt,
+                scoreDfltMainstat: this.scoreDfltMainstat,
+                scoreDfltSubstats: this.scoreDfltSubstats,
+                scoreDfltLvl20Min: 0, // TO DO
+                scoreDfltLvl20Avg: 0, // TO DO
+                scoreDfltLvl20Max: 0, // TO DO
+                scoreDfltLvl20SD: 0, // TO DO
+                dtModified: date.toUTCString(),
+            }
+        } else {
+            throw(new Error('Missing Artifact ID'))
+        }        
+    }
+
     // GETTERS AND SETTERS
+    public get id(): string|undefined {
+        return this._id;
+    }
+    public set id(value: string|undefined) {
+        this._id = value;
+    }
     public get set(): Set {
         return this._set;
     }
@@ -72,7 +113,6 @@ export class Artifact {
         this._mainstat = value;
     }
     public get mainstatValue(): number {
-        if (this._mainstatValue) return this._mainstatValue
         return (this._level/20)*(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])+mainStatValues[this._mainstat][0]
     }
     public set mainstatValue(value: number) {
@@ -86,6 +126,39 @@ export class Artifact {
     public set substats(value: { substat: SubStat; value: number; }[]) {
         this._substats = value;
     }
+
+    public get scoreDfltWeights(): ScoreWeightMap {
+        return this._scoreDfltWeights;
+    }
+    public set scoreDfltWeights(value: ScoreWeightMap) {
+        this._scoreDfltWeights = value;
+    }
+    public get scoreDflt(): number {
+        this._scoreDflt = this.scoreDfltMainstat + this.scoreDfltSubstats
+        return this._scoreDflt
+    }
+    public set scoreDflt(value: number) {
+        this._scoreDflt = value;
+    }
+    public get scoreDfltMainstat(): number {
+        this._scoreDfltMainstat = this._scoreWeights.mainStatWeight[this._mainstat] * this.mainstatValue / mainStatValues[this._mainstat][1]
+        return this._scoreDfltMainstat;
+    }
+    private set scoreDfltMainstat(value: number) {
+        this._scoreDfltMainstat = value;
+    }
+    public get scoreDfltSubstats(): number {
+        let sumWeight = 0
+        this._substats.forEach((sub) => {
+            sumWeight += this._scoreDfltWeights.subStatWeight[sub.substat] * sub.value / upgradeTiers[sub.substat][3]
+        })
+        this._scoreDfltSubstats = sumWeight
+        return this._scoreDfltSubstats;
+    }
+    private set scoreDfltSubstats(value: number) {
+        this._scoreDfltSubstats = value;
+    }
+    
     public get scoreWeights(): ScoreWeightMap {
         return this._scoreWeights;
     }
@@ -93,7 +166,6 @@ export class Artifact {
         this._scoreWeights = value;
     }
     public get score(): number {
-        if (this._score) return this._score;
         this._score = this.scoreMainstat + this.scoreSubstats
         return this._score
     }
@@ -101,7 +173,6 @@ export class Artifact {
         this._score = value;
     }
     public get scoreMainstat(): number {
-        if (this._scoreMainstat) return this._scoreMainstat;
         this._scoreMainstat = this._scoreWeights.mainStatWeight[this._mainstat] * this.mainstatValue / mainStatValues[this._mainstat][1]
         return this._scoreMainstat;
     }
@@ -109,7 +180,6 @@ export class Artifact {
         this._scoreMainstat = value;
     }
     public get scoreSubstats(): number {
-        if (this._scoreSubstats) return this._scoreSubstats;
         let sumWeight = 0
         this._substats.forEach((sub) => {
             sumWeight += this._scoreWeights.subStatWeight[sub.substat] * sub.value / upgradeTiers[sub.substat][3]

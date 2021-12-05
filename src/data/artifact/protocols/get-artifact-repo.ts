@@ -1,5 +1,5 @@
 export interface GetArtifactRepo {
-    get: (artifactData: GetArtifactRepoParams) => Promise<GetArtifactRepoResult>
+    get: (artifactData: GetArtifactRepoParams) => Promise<GetArtifactRepoResults>
 }
 
 export type GetArtifactRepoParams = {
@@ -9,4 +9,6 @@ export type GetArtifactRepoParams = {
 export type GetArtifactRepoResult = {
     id: string,
     [key: string]: unknown
-}[]
+}
+
+export type GetArtifactRepoResults = GetArtifactRepoResult[]
