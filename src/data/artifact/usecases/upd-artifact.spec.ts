@@ -1,3 +1,4 @@
+import { throwError } from "../../../../tests/mocks/test-helper"
 import { UpdArtifactParams } from "../../../domain/artifact/usecases/crud-artifact"
 import { upgradeTiers } from "../utils/chances"
 import { Sets, Types, Stats } from "../utils/enums"
@@ -57,5 +58,12 @@ describe ('Upd-Artifact-DB Usecase', () => {
             scoreDfltSubstats: 366.79999999999995,
             dtModified: (new Date()).toUTCString()
         })
+    })
+
+    test('Should throw if GetArtifactRepo throws', async () => {
+        const { sut, getArtifactRepoStub } = makeSut()
+        jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(throwError)
+        const promise = sut.update(mockUpdArtifactParams())
+        await expect(promise).rejects.toThrow()
     })
 })
