@@ -62,6 +62,41 @@ describe ('Upd-Artifact-DB Usecase', () => {
         })
     })
 
+    test('Should call Artifact import with correct values', async () => {
+        const { sut, artifactStub } = makeSut()
+        const artifactSpy = jest.spyOn(artifactStub, 'import')
+        await sut.update(mockUpdArtifactParams())
+        expect(artifactSpy).toHaveBeenCalledWith({
+            id: 'valid_id',
+            set: Sets.AP,
+            type: Types.Flower,
+            level: 0,
+            mainstat: Stats.HPFlat,
+            mainstatValue: 717,
+            substats: [
+                {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
+                {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
+                {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]}
+            ],
+            scoreDflt: 200,
+            scoreMainstat: 100,
+            scoreSubstats: 100,
+            scoreLvl20Min: 500,
+            scoreLvl20Avg: 600,
+            scoreLvl20Max: 700,
+            scoreLvl20SD: 50,
+            dtAdded: new Date('December 17, 2020 03:24:00'),
+            dtModified: new Date('August 17, 2021 03:24:00'),
+        })
+    })
+
+    test('Should call Artifact updateRepoData', async () => {
+        const { sut, artifactStub } = makeSut()
+        const artifactSpy = jest.spyOn(artifactStub, 'updateRepoData')
+        await sut.update(mockUpdArtifactParams())
+        expect(artifactSpy).toHaveBeenCalled()
+    })
+
     test('Should throw if GetArtifactRepo throws', async () => {
         const { sut, getArtifactRepoStub } = makeSut()
         jest.spyOn(getArtifactRepoStub, 'get').mockImplementationOnce(throwError)
@@ -72,6 +107,20 @@ describe ('Upd-Artifact-DB Usecase', () => {
     test('Should throw if UpdArtifactRepo throws', async () => {
         const { sut, updArtifactRepoStub } = makeSut()
         jest.spyOn(updArtifactRepoStub, 'update').mockImplementationOnce(throwError)
+        const promise = sut.update(mockUpdArtifactParams())
+        await expect(promise).rejects.toThrow()
+    })
+
+    test('Should throw if Artifact import throws', async () => {
+        const { sut, artifactStub } = makeSut()
+        jest.spyOn(artifactStub, 'import').mockImplementationOnce(throwError)
+        const promise = sut.update(mockUpdArtifactParams())
+        await expect(promise).rejects.toThrow()
+    })
+
+    test('Should throw if Artifact updateRepoData throws', async () => {
+        const { sut, artifactStub } = makeSut()
+        jest.spyOn(artifactStub, 'updateRepoData').mockImplementationOnce(throwError)
         const promise = sut.update(mockUpdArtifactParams())
         await expect(promise).rejects.toThrow()
     })
