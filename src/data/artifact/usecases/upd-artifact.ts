@@ -18,6 +18,10 @@ export class UpdArtifactDB implements UpdArtifact {
         const getResult = await this.getArtifactRepo.get({ ids: [data.id] })
         if (getResult.length == 0) return new InvalidParamError('id')
         this.artifactUtil.import(getResult[0])
+        if (data.set) {
+            if (data.set != this.artifactUtil.set) return new InvalidParamError('set')
+            if (!this.artifactUtil.set) this.artifactUtil.set = data.set
+        }
         if (data.level) this.artifactUtil.level = data.level
         if (data.mainstatValue) this.artifactUtil.mainstatValue = data.mainstatValue
         if (data.substats) this.artifactUtil.substats = data.substats
