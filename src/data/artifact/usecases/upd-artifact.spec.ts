@@ -3,7 +3,7 @@ import { UpdArtifactParams } from "../../../domain/artifact/usecases/crud-artifa
 import { InvalidParamError } from "../../../presentation/errors"
 import { Artifact } from "../utils/artifact"
 import { upgradeTiers } from "../utils/chances"
-import { Sets, Types, Stats } from "../utils/enums"
+import { Sets, Types, Stats, MainStats } from "../utils/enums"
 import { getArtifactRepoSpy, updArtifactRepoSpy } from "./mock-artifact-db"
 import { UpdArtifactDB } from "./upd-artifact"
 
@@ -132,6 +132,22 @@ describe ('Upd-Artifact-DB Usecase', () => {
         params.set = Sets.BC
         const result = await sut.update(params)
         expect(result).toEqual(new InvalidParamError('set'))
+    })
+
+    test('Should return InvalidParamError if type is different from DB', async () => {
+        const { sut } = makeSut()
+        const params = mockUpdArtifactParams()
+        params.type = Types.Sands
+        const result = await sut.update(params)
+        expect(result).toEqual(new InvalidParamError('type'))
+    })
+
+    test('Should return InvalidParamError if mainstat is different from DB', async () => {
+        const { sut } = makeSut()
+        const params = mockUpdArtifactParams()
+        params.mainstat = Stats.EM
+        const result = await sut.update(params)
+        expect(result).toEqual(new InvalidParamError('mainstat'))
     })
 
     test('Should return false if UpdArtifactRepo returns false', async () => {
