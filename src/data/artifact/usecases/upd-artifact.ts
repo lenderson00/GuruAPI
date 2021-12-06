@@ -22,6 +22,14 @@ export class UpdArtifactDB implements UpdArtifact {
             if (data.set != this.artifactUtil.set) return new InvalidParamError('set')
             if (!this.artifactUtil.set) this.artifactUtil.set = data.set
         }
+        if (data.type) {
+            if (data.type != this.artifactUtil.type) return new InvalidParamError('type')
+            if (!this.artifactUtil.type) this.artifactUtil.type = data.type
+        }
+        if (data.mainstat) {
+            if (data.mainstat != this.artifactUtil.mainstat) return new InvalidParamError('mainstat')
+            if (!this.artifactUtil.mainstat) this.artifactUtil.mainstat = data.mainstat
+        }
         if (data.level) this.artifactUtil.level = data.level
         if (data.mainstatValue) this.artifactUtil.mainstatValue = data.mainstatValue
         if (data.substats) this.artifactUtil.substats = data.substats
