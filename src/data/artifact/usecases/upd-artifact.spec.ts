@@ -1,5 +1,6 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
 import { UpdArtifactParams } from "../../../domain/artifact/usecases/crud-artifact"
+import { InvalidParamError } from "../../../presentation/errors"
 import { Artifact } from "../utils/artifact"
 import { upgradeTiers } from "../utils/chances"
 import { Sets, Types, Stats } from "../utils/enums"
@@ -125,14 +126,13 @@ describe ('Upd-Artifact-DB Usecase', () => {
         await expect(promise).rejects.toThrow()
     })
 
-    /* test('Should return invalidParamError if artifact updated mainstat is not allowed', async () => {
+    test('Should return InvalidParamError if set is different from DB', async () => {
         const { sut } = makeSut()
-        const data = mockUpdArtifactParams()
-        data.mainstat = Stats.ATKFlat
-        const result = await sut.update(data)
-        expect(result).toEqual(new InvalidParamError('mainstat'))
-
-    }) */
+        const params = mockUpdArtifactParams()
+        params.set = Sets.BC
+        const result = await sut.update(params)
+        expect(result).toEqual(new InvalidParamError('set'))
+    })
 
     test('Should return false if UpdArtifactRepo returns false', async () => {
         const { sut, updArtifactRepoStub } = makeSut()
