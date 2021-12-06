@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { SubStat } from "../../data/artifact/utils/enums";
 import { Character } from "../../data/character/character";
 import { UpdArtifact, UpdArtifactParams, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
 import { RequiredFieldValidation } from "../../validation/validators";
@@ -27,7 +28,7 @@ export class UpdArtifactController implements Controller {
             if (error) return badRequest(error)
             if (request.substats)
                 request.substats.forEach(sub => {
-                    error = error || (new isArtifactSubStatValidation).validate(sub)
+                    error = error || (new isArtifactSubStatValidation).validate({ substats: [sub]})
                 })
             if (error) return badRequest(error)
     
@@ -47,6 +48,6 @@ export interface Request {
     type?: string
     level?: number
     mainstat?: string
-    substats?: {substat: string, value: number}[]
+    substats?: {substat: SubStat, value: number}[]
     char?: Character
 }

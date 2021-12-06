@@ -8,10 +8,11 @@ import { makeDelArtifactValidation } from "./del-artifact-validation-controller"
 import { makeLogControllerDecorator } from "../decorators/log-controller-decorator-factory"
 import { makeAddArtifactValidation } from "./add-artifact-validation-controller"
 import { makeGetArtifactValidation } from "./get-artifact-validation-controller"
+import { Artifact } from "../../../data/artifact/utils/artifact"
 
 export const makeAddArtifactController = () => {
     const addArtifactRepo = new ArtifactMongo()
-    const addArtifact = new AddArtifactDB(addArtifactRepo)
+    const addArtifact = new AddArtifactDB(addArtifactRepo, new Artifact)
     const addArtifactController = new AddArtifactController(addArtifact, makeAddArtifactValidation())
     return makeLogControllerDecorator(addArtifactController)
 }

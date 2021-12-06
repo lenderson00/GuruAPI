@@ -3,7 +3,7 @@ import { UpdArtifactParams } from "../../../domain/artifact/usecases/crud-artifa
 import { InvalidParamError } from "../../../presentation/errors"
 import { Artifact } from "../utils/artifact"
 import { upgradeTiers } from "../utils/chances"
-import { Sets, Types, Stats, MainStats } from "../utils/enums"
+import { Sets, Types, Stats } from "../utils/enums"
 import { getArtifactRepoSpy, updArtifactRepoSpy } from "./mock-artifact-db"
 import { UpdArtifactDB } from "./upd-artifact"
 
@@ -47,10 +47,10 @@ describe ('Upd-Artifact-DB Usecase', () => {
             level: 20,
             mainstatValue: 4780,
             substats: [
-                {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]*3},
-                {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]*2},
-                {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]},
-                {substat: Stats.CR, value: upgradeTiers["CRIT Rate%"][0]*2}
+                {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*3*10)/10},
+                {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*2)},
+                {substat: Stats.CD, value: Math.round(upgradeTiers["CRIT DMG%"][0]*10)/10},
+                {substat: Stats.CR, value: Math.round(upgradeTiers["CRIT Rate%"][0]*2*10)/10}
             ],
             scoreDflt: 451.79999999999995,
             scoreDfltLvl20Avg: 0,
@@ -63,32 +63,18 @@ describe ('Upd-Artifact-DB Usecase', () => {
         })
     })
 
-    test('Should call Artifact import with correct values', async () => {
+    test('Should call Artifact import', async () => {
         const { sut, artifactStub } = makeSut()
         const artifactSpy = jest.spyOn(artifactStub, 'import')
         await sut.update(mockUpdArtifactParams())
-        expect(artifactSpy).toHaveBeenCalledWith({
-            id: 'valid_id',
-            set: Sets.AP,
-            type: Types.Flower,
-            level: 0,
-            mainstat: Stats.HPFlat,
-            mainstatValue: 717,
-            substats: [
-                {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
-                {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
-                {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]}
-            ],
-            scoreDflt: 200,
-            scoreMainstat: 100,
-            scoreSubstats: 100,
-            scoreLvl20Min: 500,
-            scoreLvl20Avg: 600,
-            scoreLvl20Max: 700,
-            scoreLvl20SD: 50,
-            dtAdded: new Date('December 17, 2020 03:24:00'),
-            dtModified: new Date('August 17, 2021 03:24:00'),
-        })
+        expect(artifactSpy).toHaveBeenCalled()
+    })
+
+    test('Should call Artifact validate', async () => {
+        const { sut, artifactStub } = makeSut()
+        const artifactSpy = jest.spyOn(artifactStub, 'validate')
+        await sut.update(mockUpdArtifactParams())
+        expect(artifactSpy).toHaveBeenCalled()
     })
 
     test('Should call Artifact updateRepoData', async () => {

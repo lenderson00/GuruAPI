@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AddArtifactParams } from "../../../domain/artifact/usecases/crud-artifact";
-import { mainStatValues, upgradeTiers } from "./chances";
+import { mainRoundDecimal, mainStatValues, subsRoundDecimal, upgradeTiers } from "./chances";
 import { Level, MainStat, Set, SubStat, Type } from "./enums";
 import { AddArtifactRepoParams } from "../protocols/add-artifact-repo";
 import { dfltWeights, ScoreWeightMap } from "./scoring";
 import { GetArtifactRepoResult, UpdArtifactRepoParams } from "../protocols";
 import { MissingParamError } from "../../../presentation/errors";
+import { ValidationComposite } from "../../../validation/validators";
 
 export class Artifact {
     private _id: string | undefined = undefined;
@@ -40,6 +42,11 @@ export class Artifact {
         this._substats = params.substats
     }
 
+    public validate (validation: ValidationComposite): Error | null {
+        const inInvalid = validation.validate(this)
+        return inInvalid
+    }
+
     public async createRepoData (): Promise<AddArtifactRepoParams> {
         const date = new Date
         let repoData: AddArtifactRepoParams
@@ -47,7 +54,7 @@ export class Artifact {
         if (this.set != undefined) { 
         if (this.type != undefined) { 
         if (this.level != undefined) { 
-        if (this.mainstat != undefined) { 
+        if (this.mainstat != undefined) {
         if (this.substats != undefined) {
             repoData = {
                 set: this.set,
@@ -140,7 +147,7 @@ export class Artifact {
     }
     public get mainstatValue(): number | undefined {
         if (this._level == undefined || this._mainstat == undefined) return undefined
-        else return (this._level/20)*(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])+mainStatValues[this._mainstat][0]
+        else return Math.round(((this._level/20)*(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])+mainStatValues[this._mainstat][0]) * (mainRoundDecimal[this._mainstat] ? 10 : 1)) / (mainRoundDecimal[this._mainstat] ? 10 : 1)
     }
     public set mainstatValue(value: number | undefined) {
         this._mainstatValue = value;
@@ -149,7 +156,11 @@ export class Artifact {
         this._level = Math.round(20*(value-mainStatValues[this._mainstat][0])/(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])) as Level
     }
     public get substats(): { substat: SubStat; value: number; }[] | undefined {
-        return this._substats;
+        const result: { substat: SubStat; value: number; }[] = []
+        this._substats?.forEach(sub => {
+            result.push({ substat: sub.substat, value: Math.round(sub.value * (subsRoundDecimal[sub.substat] ? 10 : 1)) / (subsRoundDecimal[sub.substat] ? 10 : 1) })
+        })
+        return result;
     }
     public set substats(value: { substat: SubStat; value: number; }[] | undefined) {
         this._substats = value;

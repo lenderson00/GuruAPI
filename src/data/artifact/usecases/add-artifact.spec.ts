@@ -20,10 +20,10 @@ const mockAddAccountParams = (): AddArtifactParams => ({
     level: 20,
     mainstat: Stats.HPFlat,
     substats: [
-        {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
-        {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
-        {substat: Stats.CD, value: upgradeTiers["CRIT DMG%"][0]},
-        {substat: Stats.CR, value: upgradeTiers["CRIT Rate%"][0]}
+        {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
+        {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0])},
+        {substat: Stats.CD, value: Math.round(upgradeTiers["CRIT DMG%"][0]*10)/10},
+        {substat: Stats.CR, value: Math.round(upgradeTiers["CRIT Rate%"][0]*10)/10}
     ]
 })
 

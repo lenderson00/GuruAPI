@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { throwError } from "../../../tests/mocks/test-helper"
 import { upgradeTiers } from "../../data/artifact/utils/chances"
-import { Sets, Types, Stats } from "../../data/artifact/utils/enums"
+import { Sets, Types, Stats, SubStat } from "../../data/artifact/utils/enums"
 import { UpdArtifact, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
 import { InvalidParamError, MissingParamError, ServerError } from "../errors"
 import { badRequest, serverError } from "../helpers"
@@ -75,7 +75,7 @@ describe ('Upd Artifact Controller', () => {
     test('Should return 400 if substat is provided but invalid', async () => {
         const { sut } = makeSut();
         const httpRequest = makeFakeRequest();
-        httpRequest.substats![1].substat = 'invalid_substat'
+        httpRequest.substats![1].substat = 'invalid_substat' as SubStat
         const HttpResponse = await sut.handle(httpRequest);
         expect(HttpResponse).toEqual(badRequest(new InvalidParamError('substat')));
     })

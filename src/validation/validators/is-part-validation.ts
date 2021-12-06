@@ -25,6 +25,12 @@ export class isArtifactLevelValidation extends isPartValidation<Level> {
 export class isArtifactMainStatValidation extends isPartValidation<MainStat> {
   constructor () { super('mainstat', allMainStats) }
 }
-export class isArtifactSubStatValidation extends isPartValidation<SubStat> {
-  constructor () { super('substat', allSubStats) }
+export class isArtifactSubStatValidation implements Validation {
+  validate (input: { substats: { substat: SubStat, value: number }[]}): Error | null {
+    let error: InvalidParamError | null = null
+    input.substats.forEach(sub => {
+      if (!allSubStats.includes(sub.substat)) error = error || new InvalidParamError('substat')
+    })
+    return error
+  }
 }

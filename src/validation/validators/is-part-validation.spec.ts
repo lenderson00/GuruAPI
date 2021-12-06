@@ -1,6 +1,6 @@
 import { isArtifactLevelValidation, isArtifactMainStatValidation, isArtifactSetValidation, isArtifactSubStatValidation, isArtifactTypeValidation, isPartValidation } from './is-part-validation'
 import { InvalidParamError } from '../../presentation/errors'
-import { Sets, Stats, Types } from '../../data/artifact/utils/enums'
+import { Sets, Stats, SubStat, Types } from '../../data/artifact/utils/enums'
 
 const field = 'any_field'
 const array = ['data1','data2', 'data3']
@@ -84,13 +84,13 @@ describe('isPartValidation', () => {
   describe('is-artifact-substat Validation', () => {
     test('Should return a InvalidParamError if validation fails', () => {
       const sut = new isArtifactSubStatValidation()
-      const error = sut.validate({ substat: Stats.Electro, value: 7.8 })
+      const error = sut.validate({ substats: [{ substat: Stats.Electro as SubStat, value: 7.8 }]})
       expect(error).toEqual(new InvalidParamError('substat'))
     })
 
     test('Should not return if validation succeeds', () => {
       const sut = new isArtifactSubStatValidation()
-      const error = sut.validate({ substat: Stats.EM, value: 28 })
+      const error = sut.validate({ substats: [{ substat: Stats.EM as SubStat, value: 28 }]})
       expect(error).toBeFalsy()
     })
   })

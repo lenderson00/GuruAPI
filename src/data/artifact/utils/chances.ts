@@ -310,6 +310,28 @@ const subsValuesTop: Record<SubStats, number> =
     [Stats.EM]: mainStatValues[Stats.EM][1]/8,
   };
 
+  export const mainRoundDecimal: Record<MainStat, boolean> =
+{
+  [Stats.HPFlat]: false,
+  [Stats.ATKFlat]: false,
+  [Stats.HP]: true,
+  [Stats.ATK]: true,
+  [Stats.DEF]: true,
+  [Stats.ER]: true,
+  [Stats.EM]: false,
+  [Stats.CR]: true,
+  [Stats.CD]: true,
+  [Stats.HB]: true,
+  [Stats.Pyro]: true,
+  [Stats.Electro]: true,
+  [Stats.Cryo]: true,
+  [Stats.Hydro]: true,
+  [Stats.Anemo]: true,
+  [Stats.Geo]: true,
+  //[Stats.Dendro]: true,
+  [Stats.Physical]: true,
+};
+
 export const subsRoundDecimal: Record<SubStats, boolean> =
 {
   [Stats.HPFlat]: false,
