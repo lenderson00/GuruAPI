@@ -1,5 +1,6 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
 import { UpdArtifactParams } from "../../../domain/artifact/usecases/crud-artifact"
+import { Artifact } from "../utils/artifact"
 import { upgradeTiers } from "../utils/chances"
 import { Sets, Types, Stats } from "../utils/enums"
 import { getArtifactRepoSpy, updArtifactRepoSpy } from "./mock-artifact-db"
@@ -8,9 +9,10 @@ import { UpdArtifactDB } from "./upd-artifact"
 const makeSut = () => {
     const updArtifactRepoStub = new updArtifactRepoSpy()
     const getArtifactRepoStub = new getArtifactRepoSpy()
+    const artifactStub = new Artifact()
     /* const validationStub = new ValidationSpy() */
-    const sut = new UpdArtifactDB(updArtifactRepoStub, getArtifactRepoStub)
-    return { sut, updArtifactRepoStub, getArtifactRepoStub }
+    const sut = new UpdArtifactDB(updArtifactRepoStub, getArtifactRepoStub, artifactStub)
+    return { sut, updArtifactRepoStub, getArtifactRepoStub, artifactStub }
 }
 
 const mockUpdArtifactParams = (): UpdArtifactParams => ({
@@ -74,16 +76,25 @@ describe ('Upd-Artifact-DB Usecase', () => {
         await expect(promise).rejects.toThrow()
     })
 
-    test('Should return true on success', async () => {
+    /* test('Should return invalidParamError if artifact updated mainstat is not allowed', async () => {
         const { sut } = makeSut()
-        const isValid = await sut.update(mockUpdArtifactParams())
-        expect(isValid).toBe(true)
-    })
+        const data = mockUpdArtifactParams()
+        data.mainstat = Stats.ATKFlat
+        const result = await sut.update(data)
+        expect(result).toEqual(new InvalidParamError('mainstat'))
+
+    }) */
 
     test('Should return false if UpdArtifactRepo returns false', async () => {
         const { sut, updArtifactRepoStub } = makeSut()
         jest.spyOn(updArtifactRepoStub, 'update').mockImplementationOnce(async () => new Promise((res) => res(false)))
         const isValid = await sut.update(mockUpdArtifactParams())
         expect(isValid).toBe(false)
+    })
+
+    test('Should return true on success', async () => {
+        const { sut } = makeSut()
+        const isValid = await sut.update(mockUpdArtifactParams())
+        expect(isValid).toBe(true)
     })
 })

@@ -4,14 +4,16 @@ import { AddArtifactRepo } from "../protocols/add-artifact-repo"
 
 export class AddArtifactDB implements AddArtifact {
     private readonly addArtifactRepo: AddArtifactRepo
+    private readonly artifactUtil: Artifact
 
-    constructor (addArtifactRepo: AddArtifactRepo) {
+    constructor (addArtifactRepo: AddArtifactRepo, artifactUtil: Artifact) {
         this.addArtifactRepo = addArtifactRepo
+        this.artifactUtil = artifactUtil
     }
     
     async add (data: AddArtifactParams): Promise<AddArtifactResult> {
-        const artifact = new Artifact(data)
-        const repoData = await artifact.createRepoData()
+        this.artifactUtil.import(data)
+        const repoData = await this.artifactUtil.createRepoData()
         const isValid: AddArtifactResult = await this.addArtifactRepo.add(repoData)
         return isValid
     }
