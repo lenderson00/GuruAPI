@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { UpdArtifactRepoParams, UpdArtifactRepoResult } from "../../../../data/artifact/protocols";
 import { AddArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../../../../data/artifact/protocols/add-artifact-repo"
 import { DelArtifactRepo, DelArtifactRepoParams, DelArtifactRepoResult } from "../../../../data/artifact/protocols/del-artifact-repo";
 import { GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResults } from "../../../../data/artifact/protocols/get-artifact-repo";
@@ -28,5 +29,10 @@ export class ArtifactMongo implements AddArtifactRepo, DelArtifactRepo, GetArtif
             return Object.assign({},resultWithoutId,{ id: String(_id) })
         })
         return result as GetArtifactRepoResults
+    }
+
+    async update (artifactData: UpdArtifactRepoParams): Promise<UpdArtifactRepoResult> {
+        
+        return true
     }
 }

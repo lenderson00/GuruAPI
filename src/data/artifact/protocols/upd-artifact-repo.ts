@@ -8,7 +8,7 @@ export interface UpdArtifactRepo {
 export type UpdArtifactRepoParams = {
     id: string
     level: Level
-    mainstatValue?: number
+    mainstatValue: number
     substats: {substat: SubStat, value: number}[]
     dtModified: string
     scoreDflt: number
