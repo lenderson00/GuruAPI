@@ -5,6 +5,7 @@ import env from "../../../../main/config/env"
 import { Sets, Stats, Types } from "../../../../data/artifact/utils/enums";
 import { upgradeTiers } from "../../../../data/artifact/utils/chances";
 import { AddArtifactRepoParams } from "../../../../data/artifact/protocols/add-artifact-repo";
+import { UpdArtifactRepoParams } from "../../../../data/artifact/protocols";
 
 const makeSut = () : ArtifactMongo => {
     return new ArtifactMongo()
@@ -13,9 +14,9 @@ const makeSut = () : ArtifactMongo => {
 const mockAddArtifactParams = (): AddArtifactRepoParams => ({
     set: Sets.AP,
     type: Types.Flower,
-    level: 20,
+    level: 0,
     mainstat: Stats.HPFlat,
-    mainstatValue: 4780,
+    mainstatValue: 717,
     substats: [
         {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
         {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
@@ -32,6 +33,26 @@ const mockAddArtifactParams = (): AddArtifactRepoParams => ({
     dtAdded: "any_date",
     dtModified: "any_date",
 })
+
+const mockUpdArtifactParams = (): UpdArtifactRepoParams => ({
+    id: '123456789012345678901234',
+    level: 20,
+    mainstatValue: 4780,
+    substats: [
+        {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]},
+        {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]},
+        {substat: Stats.DEF, value: upgradeTiers["DEF%"][0]},
+        {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]},
+    ],
+    dtModified: (new Date).toUTCString(),
+    scoreDflt: 1000,
+    scoreDfltMainstat: 500,
+    scoreDfltSubstats: 500,
+    scoreDfltLvl20Min: 1000,
+    scoreDfltLvl20Avg: 1000,
+    scoreDfltLvl20Max: 1000,
+    scoreDfltLvl20SD: 0
+    })
 
 let artifactCollection: Collection
 
@@ -93,5 +114,31 @@ describe('Artifact-Mongo', () => {
             expect(result).toEqual([])
         })
     })
+
+    describe('update()', () => {
+
+
+        beforeAll(async () => {
+            await artifactCollection.deleteMany({})
+            const fakeArtifact = mockAddArtifactParams()
+            const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
+            await artifactCollection.insertOne(insertedArtifact)
+        })
+
+        afterAll(async () => {
+            await artifactCollection.deleteMany({})
+        })    
+
+        /* test('Should return empty array if id was not found', async () => {
+            const sut = makeSut()
+            const result = await sut.get({ ids: ['012345678901234567890123'] }) // invalid ID
+            expect(result).toEqual([])
+        }) */
+
+        test('Should return true if update was successful', async () => {
+            const sut = makeSut()
+            const result = await sut.update(mockUpdArtifactParams())
+            expect(result).toBe(true)
+        })    
+    })
 })
-3-3
