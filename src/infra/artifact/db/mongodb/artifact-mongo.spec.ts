@@ -90,6 +90,13 @@ describe('Artifact-Mongo', () => {
             const isValid = await sut.del(id)
             expect(isValid).toBe(true)
         })
+        
+        test('Should return false on fail', async () => {
+            const sut = makeSut()
+            const id = '012345678901234567890123'
+            const isValid = await sut.del(id)
+            expect(isValid).toBe(false)
+        })
     })
 
 
@@ -131,7 +138,7 @@ describe('Artifact-Mongo', () => {
             await artifactCollection.deleteMany({})
         })
 
-        test('Should return false if update was successful', async () => {
+        test('Should return false if update fails', async () => {
             const sut = makeSut()
             const params = mockUpdArtifactParams()
             params.id = '012345678901234567890123'
