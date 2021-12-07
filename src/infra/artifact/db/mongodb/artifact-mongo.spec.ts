@@ -67,11 +67,6 @@ describe('Artifact-Mongo', () => {
         await MongoHelper.disconnect()
     })
 
-    /* beforeEach(async () => {
-        artifactCollection = MongoHelper.getCollection('artifacts')
-        await artifactCollection.deleteMany({})
-    }) */
-
     describe('add()', () => {
         test('Should return true on success', async () => {
             const sut = makeSut()
@@ -81,14 +76,22 @@ describe('Artifact-Mongo', () => {
         })
     })
 
-    /* describe('del()', () => {
+    describe('del()', () => {
+        beforeAll(async () => {
+            await artifactCollection.deleteMany({})
+            const fakeArtifact = mockAddArtifactParams()
+            const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
+            await artifactCollection.insertOne(insertedArtifact)
+        })
+        
         test('Should return true on success', async () => {
             const sut = makeSut()
-            const id = 'valid_id'
+            const id = '123456789012345678901234'
             const isValid = await sut.del(id)
             expect(isValid).toBe(true)
         })
-    }) */
+    })
+
 
     describe('get()', () => {
         beforeAll(async () => {
@@ -115,9 +118,8 @@ describe('Artifact-Mongo', () => {
         })
     })
 
+
     describe('update()', () => {
-
-
         beforeAll(async () => {
             await artifactCollection.deleteMany({})
             const fakeArtifact = mockAddArtifactParams()
@@ -127,13 +129,15 @@ describe('Artifact-Mongo', () => {
 
         afterAll(async () => {
             await artifactCollection.deleteMany({})
-        })    
+        })
 
-        /* test('Should return empty array if id was not found', async () => {
+        test('Should return false if update was successful', async () => {
             const sut = makeSut()
-            const result = await sut.get({ ids: ['012345678901234567890123'] }) // invalid ID
-            expect(result).toEqual([])
-        }) */
+            const params = mockUpdArtifactParams()
+            params.id = '012345678901234567890123'
+            const result = await sut.update(params)
+            expect(result).toBe(false)
+        })
 
         test('Should return true if update was successful', async () => {
             const sut = makeSut()
