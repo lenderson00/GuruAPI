@@ -105,6 +105,13 @@ describe ('Upd-Artifact-DB Usecase', () => {
         await expect(promise).rejects.toThrow()
     })
 
+    test('Should throw if Artifact validate throws', async () => {
+        const { sut, artifactStub } = makeSut()
+        jest.spyOn(artifactStub, 'validate').mockImplementationOnce(throwError)
+        const promise = sut.update(mockUpdArtifactParams())
+        await expect(promise).rejects.toThrow()
+    })
+
     test('Should throw if Artifact updateRepoData throws', async () => {
         const { sut, artifactStub } = makeSut()
         jest.spyOn(artifactStub, 'updateRepoData').mockImplementationOnce(throwError)
