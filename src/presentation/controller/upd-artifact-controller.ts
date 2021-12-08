@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { SubStat } from "../../data/artifact/utils/enums";
 import { Character } from "../../data/character/character";
 import { UpdArtifact, UpdArtifactParams, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
@@ -16,15 +15,15 @@ export class UpdArtifactController implements Controller {
 
     async handle (request: Request): Promise<HttpResponse> {
         try {
-            let error = (new RequiredFieldValidation('id')).validate(request)
+            let error = (new RequiredFieldValidation('id')).validate(request as Record<string,unknown>)
             if (error) return badRequest(error)
-            if (request.set) error = (new isArtifactSetValidation).validate(request)
+            if (request.set) error = (new isArtifactSetValidation).validate(request as Record<string,unknown>)
             if (error) return badRequest(error)
-            if (request.type) error = (new isArtifactTypeValidation).validate(request)
+            if (request.type) error = (new isArtifactTypeValidation).validate(request as Record<string,unknown>)
             if (error) return badRequest(error)
-            if (request.level) error = (new isArtifactLevelValidation).validate(request)
+            if (request.level) error = (new isArtifactLevelValidation).validate(request as Record<string,unknown>)
             if (error) return badRequest(error)
-            if (request.mainstat) error = (new isArtifactMainStatValidation).validate(request)
+            if (request.mainstat) error = (new isArtifactMainStatValidation).validate(request as Record<string,unknown>)
             if (error) return badRequest(error)
             if (request.substats)
                 request.substats.forEach(sub => {

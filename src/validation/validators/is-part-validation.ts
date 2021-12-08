@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Validation } from '../../presentation/protocols'
 import { InvalidParamError } from '../../presentation/errors'
 import { Set, Type, Level, MainStat, SubStat } from '../../data/artifact/utils/enums'
@@ -7,8 +6,8 @@ import { allSets, allTypes, allLevels, allMainStats, allSubStats } from '../../d
 export class isPartValidation<T> implements Validation {
   constructor (private readonly fieldName: string, private readonly arrayName: Array<T>) {}
 
-  validate (input: any): Error | null {
-    if (!this.arrayName.includes(input[this.fieldName])) return new InvalidParamError(this.fieldName)
+  validate (input: Record<string,unknown>): Error | null {
+    if (!this.arrayName.includes(input[this.fieldName] as T)) return new InvalidParamError(this.fieldName)
     return null
   }
 }
