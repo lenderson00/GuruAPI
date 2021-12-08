@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, HttpResponse } from '../../presentation/protocols'
 import { LogErrorRepository } from '../../data/db/log'
 
@@ -8,7 +7,7 @@ export class LogControllerDecorator implements Controller {
     private readonly logErrorRepository: LogErrorRepository
   ) {}
 
-  async handle (request: any): Promise<HttpResponse> {
+  async handle (request: unknown): Promise<HttpResponse> {
     const httpResponse = await this.controller.handle(request)
     if (httpResponse.statusCode === 500) {
       await this.logErrorRepository.logError(httpResponse.body.stack)
