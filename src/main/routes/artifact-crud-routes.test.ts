@@ -54,7 +54,7 @@ describe('Artifact CRUD Routes', () => {
         .send({
             set: Sets.AP,
             type: Types.Flower,
-            level: 20,
+            level: 0,
             mainstat: Stats.HPFlat,
             substats: [
                 {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*10)/10},
