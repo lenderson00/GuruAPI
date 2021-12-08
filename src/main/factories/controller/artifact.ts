@@ -9,6 +9,8 @@ import { makeLogControllerDecorator } from "../decorators/log-controller-decorat
 import { makeAddArtifactValidation } from "./add-artifact-validation-controller"
 import { makeGetArtifactValidation } from "./get-artifact-validation-controller"
 import { Artifact } from "../../../data/artifact/utils/artifact"
+import { UpdArtifactDB } from "../../../data/artifact/usecases/upd-artifact"
+import { UpdArtifactController } from "../../../presentation/controller/upd-artifact-controller"
 
 export const makeAddArtifactController = () => {
     const addArtifactRepo = new ArtifactMongo()
@@ -28,4 +30,13 @@ export const makeGetArtifactController = () => {
     const getArtifactDB = new GetArtifactDB(getArtifactRepo)
     const getArtifactController = new GetArtifactController(getArtifactDB, makeGetArtifactValidation())
     return makeLogControllerDecorator(getArtifactController)
+}
+
+export const makeUpdArtifactController = () => {
+    const updArtifactRepo = new ArtifactMongo()
+    const getArtifactRepo = new ArtifactMongo()
+    const artifactUtil = new Artifact()
+    const updArtifactDB = new UpdArtifactDB(updArtifactRepo, getArtifactRepo, artifactUtil)
+    const updArtifactController = new UpdArtifactController(updArtifactDB)
+    return makeLogControllerDecorator(updArtifactController)
 }
