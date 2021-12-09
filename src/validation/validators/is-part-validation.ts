@@ -1,6 +1,6 @@
 import { Validation } from '../../presentation/protocols'
 import { InvalidParamError } from '../../presentation/errors'
-import { Set, Type, Level, MainStat, SubStat } from '../../data/artifact/utils/enums'
+import { Set, Type, Level, MainStat, SubStatSlot } from '../../data/artifact/utils/enums'
 import { allSets, allTypes, allLevels, allMainStats, allSubStats } from '../../data/artifact/utils/combinations'
 
 export class isPartValidation<T> implements Validation {
@@ -25,7 +25,7 @@ export class isArtifactMainStatValidation extends isPartValidation<MainStat> {
   constructor () { super('mainstat', allMainStats) }
 }
 export class isArtifactSubStatValidation implements Validation {
-  validate (input: { substats: { substat: SubStat, value: number }[]}): Error | null {
+  validate (input: { substats: SubStatSlot[]}): Error | null {
     let error: InvalidParamError | null = null
     input.substats.forEach(sub => {
       if (!allSubStats.includes(sub.substat)) error = error || new InvalidParamError('substat')

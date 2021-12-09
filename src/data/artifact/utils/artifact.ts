@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AddArtifactParams } from "../../../domain/artifact/usecases/crud-artifact";
 import { mainRoundDecimal, mainStatValues, subsRoundDecimal, upgradeTiers } from "./chances";
-import { Level, MainStat, Set, SubStat, Type } from "./enums";
+import { Level, MainStat, Set, SubStatSlot, Type } from "./enums";
 import { AddArtifactRepoParams } from "../protocols/add-artifact-repo";
 import { dfltWeights, ScoreWeightMap } from "./scoring";
 import { GetArtifactRepoResult, UpdArtifactRepoParams } from "../protocols";
@@ -16,7 +16,7 @@ export class Artifact {
     private _level: Level | undefined = undefined;
     private _mainstat: MainStat | undefined = undefined;
     private _mainstatValue: undefined|number = undefined;
-    private _substats: { substat: SubStat; value: number; }[] | undefined = undefined;
+    private _substats: SubStatSlot[] | undefined = undefined;
 
     private _scoreWeights: ScoreWeightMap = dfltWeights;
     private _scoreDfltWeights: ScoreWeightMap = dfltWeights;
@@ -159,14 +159,14 @@ export class Artifact {
         if (this._mainstat != undefined && this._level != undefined && value != undefined)
         this._level = Math.round(20*(value-mainStatValues[this._mainstat][0])/(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])) as Level
     }
-    public get substats(): { substat: SubStat; value: number; }[] | undefined {
-        const result: { substat: SubStat; value: number; }[] = []
+    public get substats(): SubStatSlot[] | undefined {
+        const result: SubStatSlot[] = []
         this._substats?.forEach(sub => {
             result.push({ substat: sub.substat, value: Math.round(sub.value * (subsRoundDecimal[sub.substat] ? 10 : 1)) / (subsRoundDecimal[sub.substat] ? 10 : 1) })
         })
         return result;
     }
-    public set substats(value: { substat: SubStat; value: number; }[] | undefined) {
+    public set substats(value: SubStatSlot[] | undefined) {
         this._substats = value;
     }
 

@@ -1,4 +1,4 @@
-import { Level, MainStat, Set, SubStat, Type } from "../utils/enums"
+import { Level, MainStat, Set, SubStatSlot, Type } from "../utils/enums"
 import { Character } from "../../character/character"
 
 export interface AddArtifactRepo {
@@ -11,7 +11,7 @@ export type AddArtifactRepoParams = {
     level: Level
     mainstat: MainStat
     mainstatValue: number
-    substats: {substat: SubStat, value: number}[]
+    substats: SubStatSlot[]
     scoreDflt: number
     scoreDfltMainstat: number
     scoreDfltSubstats: number

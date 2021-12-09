@@ -1,5 +1,4 @@
-import { Level, MainStat, Set, SubStat, Type } from "../../../data/artifact/utils/enums"
-import { Character } from "../../../data/character/character"
+import { Level, MainStat, Set, SubStatSlot, Type } from "../../../data/artifact/utils/enums"
 export interface AddArtifact {
     add: (data: AddArtifactParams) => Promise<AddArtifactResult>
 }
@@ -9,7 +8,7 @@ export type AddArtifactParams = {
     type: Type
     level: Level
     mainstat: MainStat
-    substats: {substat: SubStat, value: number}[]
+    substats: SubStatSlot[]
 }
 
 export type AddArtifactResult = boolean
@@ -32,7 +31,7 @@ export type GetArtifactResult = {
     level: Level
     mainstat: MainStat
     mainstatValue: number
-    substats: {substat: SubStat, value: number}[]
+    substats: SubStatSlot[]
     scoreDflt: number
 }
 
@@ -52,7 +51,7 @@ export type GetFullArtifactResult = {
         level: Level
         mainstat: MainStat
         mainstatValue: number
-        substats: {substat: SubStat, value: number}[]
+        substats: SubStatSlot[]
         scoreDflt: number
         scoreDfltMainstat: number
         scoreDfltSubstats: number
@@ -77,7 +76,7 @@ export type UpdArtifactParams = {
     level?: Level
     mainstat?: MainStat
     mainstatValue?: number
-    substats?: {substat: SubStat, value: number}[]
+    substats?: SubStatSlot[]
     /* char: Character */
 }
 

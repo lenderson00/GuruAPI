@@ -1,4 +1,4 @@
-import { SubStat } from "../../data/artifact/utils/enums";
+import { SubStatSlot } from "../../data/artifact/utils/enums";
 import { Character } from "../../data/character/character";
 import { UpdArtifact, UpdArtifactParams, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
 import { RequiredFieldValidation } from "../../validation/validators";
@@ -47,6 +47,6 @@ export interface Request {
     type?: string
     level?: number
     mainstat?: string
-    substats?: {substat: SubStat, value: number}[]
+    substats?: SubStatSlot[]
     char?: Character
 }
