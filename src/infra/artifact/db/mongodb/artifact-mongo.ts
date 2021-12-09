@@ -35,7 +35,6 @@ export class ArtifactMongo implements AddArtifactRepo, DelArtifactRepo, GetArtif
         const artifactCollection = MongoHelper.getCollection('artifacts')
         const { id, ...updateData } = artifactData
         const result = await artifactCollection.updateOne({ _id: new ObjectId(id) }, { $set: updateData})
-        console.log(result)
         return (result.matchedCount == 1 && result.modifiedCount == 1)
     }
 }
