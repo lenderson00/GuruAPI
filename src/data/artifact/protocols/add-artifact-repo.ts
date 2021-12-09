@@ -10,15 +10,15 @@ export type AddArtifactRepoParams = {
     type: Type
     level: Level
     mainstat: MainStat
-    mainstatValue?: number
+    mainstatValue: number
     substats: {substat: SubStat, value: number}[]
     scoreDflt: number
     scoreDfltMainstat: number
     scoreDfltSubstats: number
-    scoreDfltLvl20Min?: number
-    scoreDfltLvl20Avg?: number
-    scoreDfltLvl20Max?: number
-    scoreDfltLvl20SD?: number
+    scoreDfltLvl20Min: number
+    scoreDfltLvl20Avg: number
+    scoreDfltLvl20Max: number
+    scoreDfltLvl20SD: number
     dtAdded: string
     dtModified: string
     user?: string
