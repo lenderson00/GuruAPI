@@ -56,12 +56,12 @@ export class Artifact {
         if (this.level != undefined) { 
         if (this.mainstat != undefined) {
         if (this.substats != undefined) {
-            repoData = {
+             repoData = {
                 set: this.set,
                 type: this.type,
                 level: this.level,
                 mainstat: this.mainstat,
-                mainstatValue: this.mainstatValue,
+                mainstatValue: this.mainstatValue!,
                 substats: this.substats,
                 scoreDflt: this.scoreDflt!,
                 scoreDfltMainstat: this.scoreDfltMainstat!,
@@ -146,8 +146,12 @@ export class Artifact {
         this._mainstat = value;
     }
     public get mainstatValue(): number | undefined {
-        if (this._level == undefined || this._mainstat == undefined) return undefined
-        else return Math.round(((this._level/20)*(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])+mainStatValues[this._mainstat][0]) * (mainRoundDecimal[this._mainstat] ? 10 : 1)) / (mainRoundDecimal[this._mainstat] ? 10 : 1)
+        let result = undefined
+        if (this._level != undefined && this._mainstat != undefined) {
+            result = Math.round(((this._level/20)*(mainStatValues[this._mainstat][1]-mainStatValues[this._mainstat][0])+mainStatValues[this._mainstat][0]) * (mainRoundDecimal[this._mainstat] ? 10 : 1)) / (mainRoundDecimal[this._mainstat] ? 10 : 1)
+        }
+        this.mainstatValue = result
+        return result
     }
     public set mainstatValue(value: number | undefined) {
         this._mainstatValue = value;
