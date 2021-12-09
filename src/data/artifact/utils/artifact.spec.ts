@@ -2,6 +2,7 @@ import { Artifact } from "./artifact"
 import { upgradeTiers } from "./chances"
 import { Sets, Stats, Types } from "./enums"
 import { makeArtifactValidation } from '../../../validation/validators/artifact-validation'
+import { MissingParamError } from "../../../presentation/errors"
 
 const makeSut = () => {
     const sut = new Artifact()
@@ -41,6 +42,35 @@ describe ('Artifact Util', () => {
             jest.spyOn(validation, 'validate').mockReturnValueOnce(new Error('any_error'))
             const isInvalid = sut.validate(validation)
             expect(isInvalid).toEqual(new Error('any_error'))
+        })
+    })
+
+    describe ('createRepoData', () => {
+        test('Should throw MissingParamError if basic param is missing', async () => {
+            const { sut } = makeSut()
+            sut.set = undefined
+            const promise = sut.createRepoData()
+            expect(promise).rejects.toThrowError(new MissingParamError('set'))
+        })
+
+        test('Should return AddArtifactRepoParams on success', async () => {
+            const { sut } = makeSut()
+            const result = await sut.createRepoData()
+            expect(result.set).not.toBeUndefined()
+            expect(result.type).not.toBeUndefined()
+            expect(result.level).not.toBeUndefined()
+            expect(result.mainstat).not.toBeUndefined()
+            expect(result.mainstatValue).not.toBeUndefined()
+            expect(result.substats).not.toBeUndefined()
+            expect(result.scoreDflt).not.toBeUndefined()
+            expect(result.scoreDfltMainstat).not.toBeUndefined()
+            expect(result.scoreDfltSubstats).not.toBeUndefined()
+            expect(result.scoreDfltLvl20Min).not.toBeUndefined()
+            expect(result.scoreDfltLvl20Avg).not.toBeUndefined()
+            expect(result.scoreDfltLvl20Max).not.toBeUndefined()
+            expect(result.scoreDfltLvl20SD).not.toBeUndefined()
+            expect(result.dtAdded).not.toBeUndefined()
+            expect(result.dtModified).not.toBeUndefined()
         })
     })
 })
