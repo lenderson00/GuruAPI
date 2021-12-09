@@ -23,10 +23,24 @@ const makeSut = () => {
 
 describe ('Artifact Util', () => {
     describe ('Validate', () => {
+        test('Should call Validation Composite with correct value', () => {
+            const { sut, validation } = makeSut()
+            const validationSpy = jest.spyOn(validation, 'validate')
+            sut.validate(validation)
+            expect(validationSpy).toHaveBeenCalledWith(sut)
+        })
+
         test('Should return null on success', () => {
             const { sut, validation } = makeSut()
             const isInvalid = sut.validate(validation)
             expect(isInvalid).toBeNull()
+        })
+
+        test('Should return an error if Validation Composite returns an Error', () => {
+            const { sut, validation } = makeSut()
+            jest.spyOn(validation, 'validate').mockReturnValueOnce(new Error('any_error'))
+            const isInvalid = sut.validate(validation)
+            expect(isInvalid).toEqual(new Error('any_error'))
         })
     })
 })
