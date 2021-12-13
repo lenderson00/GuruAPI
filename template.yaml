@@ -12,8 +12,10 @@ Resources:
   AddArtifactFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello-world/
-      Handler: index.addArtifactFunction
+      CodeUri: dist/src/main/functions/
+      Handler: addArtifactFunction.handler
+      Layers:
+        - !Ref GuruAPILayer
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -23,6 +25,14 @@ Resources:
           Properties:
             Path: /artifact
             Method: post
+  GuruAPILayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: GuruAPILayer
+      Description: Guru API base code
+      ContentUri: dist/
+      CompatibleRuntimes:
+        - nodejs14.x
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
