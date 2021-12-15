@@ -1,13 +1,11 @@
 {
     "extends": "./tsconfig.json",
     "include": [
-      "src",
-      "./package.json",
-      "./template.yaml"
+      "src"
     ],
     "exclude": [
       "tests",
-      "src/**.spec.ts",
-      "src/**.test.ts"
+      "**/*.spec.ts",
+      "**/*.test.ts",
     ]
   }

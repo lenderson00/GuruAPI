@@ -1,0 +1,12 @@
+{
+  "name": "guru-ext-deps",
+  "version": "1.0.0",
+  "description": "AWS Lambda layer with all Guru backend common code",
+  "author": "Eric Oliveira",
+  "license": "ISC",
+  "dependencies": {
+    "js-combinatorics": "^1.5.4",
+    "lodash": "^4.17.21",
+    "mongodb": "^4.1.4"
+  }
+}
