@@ -10,7 +10,6 @@ Globals:
     Runtime: nodejs14.x
     Architectures:
       - x86_64
-    Role: arn:aws:iam::009678277760:user/GuruAPI
 
 Resources:
   AddArtifact:
@@ -21,8 +20,7 @@ Resources:
       FunctionName: Guru-Add-Artifact
       Description: AWS Lambda function for adding an artifact in the DB
       Layers:
-        - !Ref GuruIntDeps
-        - !Ref GuruExtDeps
+        - !Ref GuruLayer
       Events:
         AddArtifactAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -37,8 +35,7 @@ Resources:
       FunctionName: Guru-Del-Artifact
       Description: AWS Lambda function for adding an deleting in the DB
       Layers:
-        - !Ref GuruIntDeps
-        - !Ref GuruExtDeps
+        - !Ref GuruLayer
       Events:
         AddArtifactAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -53,8 +50,7 @@ Resources:
       FunctionName: Guru-Get-Artifact
       Description: AWS Lambda function for fetching an artifact from the DB
       Layers:
-        - !Ref GuruIntDeps
-        - !Ref GuruExtDeps
+        - !Ref GuruLayer
       Events:
         AddArtifactAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -69,29 +65,19 @@ Resources:
       FunctionName: Guru-Upd-Artifact
       Description: AWS Lambda function for upding an artifact in the DB
       Layers:
-        - !Ref GuruIntDeps
-        - !Ref GuruExtDeps
+        - !Ref GuruLayer
       Events:
         AddArtifactAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /artifact/{id}
             Method: patch
-  GuruIntDeps:
+  GuruLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: GuruIntDeps
-      Description: Guru website backend internal dependencies
-      ContentUri: aws/layers/GuruIntDeps/.
-      CompatibleRuntimes:
-        - nodejs14.x
-      RetentionPolicy: Retain
-  GuruExtDeps:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      LayerName: GuruExtDeps
-      Description: Guru website backend external dependencies
-      ContentUri: aws/layers/GuruExtDeps/.
+      LayerName: GuruLayer
+      Description: Guru website backend dependencies and common code
+      ContentUri: aws/layers/GuruLayer/.
       CompatibleRuntimes:
         - nodejs14.x
       RetentionPolicy: Retain

@@ -2,10 +2,14 @@
 /* eslint-disable no-undef */
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var route_adapter = require("main/adapters/express-route-adapter");
-var artifactControllers = require("main/factories/controller/artifact");
+const artifact_1 = require("main/factories/controller/artifact");
+const aws_lambda_route_adapter_1 = require("main/adapters/aws-lambda-route-adapter");
+const MongoHelper_1 = require("infra/artifact/db/mongodb/mongo-helper");
+const env = require("main/config/env");
+
 exports.handler = async (event) => {
-    const fn = (0, route_adapter.adaptRoute)((0, artifactControllers.makeGetArtifactController)());
-    const result = fn.handle(event);
-    return result;
+    await MongoHelper_1.MongoHelper.connect(env.mongoUrl)
+    const GetArtifactRouteController = aws_lambda_route_adapter_1.adaptRoute(artifact_1.makeGetArtifactController());
+    await MongoHelper_1.MongoHelper.disconnect()
+    return GetArtifactRouteController(event);
 };

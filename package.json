@@ -4,10 +4,10 @@
   "description": "Backend APIs for Genshin Guru Website",
   "main": "index.js",
   "scripts": {
-    "start": "node aws/layers/GuruIntDeps/node_modules/main/server.js",
-    "debug": "nodemon -L --watch ./aws/layers/GuruIntDeps/node_modules --inspect=0.0.0.0:9222 --nolazy ./aws/layers/GuruIntDeps/node_modules/main/server.js",
-    "build": "rimraf aws/layers/GuruIntDeps/node_modules && tsc -p tsconfig-build.json",
-    "build:watch": "rimraf aws/layers/GuruIntDeps/node_modules && tsc -p tsconfig-build.json -w",
+    "start": "node aws/layers/GuruLayer/nodejs/node_modules/main/server.js",
+    "debug": "nodemon -L --watch ./aws/layers/GuruLayer/nodejs/node_modules --inspect=0.0.0.0:9222 --nolazy ./aws/layers/GuruIntDeps/node_modules/main/server.js",
+    "build": "rimraf aws/layers/GuruLayer/nodejs/node_modules && tsc -p tsconfig-build.json",
+    "build:watch": "rimraf aws/layers/GuruLayer/nodejs/node_modules && tsc -p tsconfig-build.json -w",
     "dev": "sucrase-node src/main/server.ts",
     "pilot": "sucrase-node index.ts",
     "gen:subvalues": "sucrase-node src/data/artifact/gen-substat-values-possibilities.ts",
@@ -39,6 +39,7 @@
     "faker": "^5.5.3",
     "git-commit-msg-linter": "^3.2.8",
     "husky": "^7.0.4",
+    "jest": "^27.3.1",
     "lint-staged": "^11.2.6",
     "rimraf": "^3.0.2",
     "sucrase": "^3.20.3",
@@ -49,7 +50,6 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "jest": "^27.3.1",
     "js-combinatorics": "^1.5.4",
     "lodash": "^4.17.21",
     "mongodb": "^4.1.4"
