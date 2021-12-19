@@ -1,5 +1,6 @@
-import AWS, { DynamoDB } from "aws-sdk"
-import env from "../../../../main/config/env"
+import AWS from "aws-sdk"
+import { TableName } from "aws-sdk/clients/dynamodb"
+import env from "../../../main/config/env"
 
 export class DynamoHelper {
     private readonly dynamo: AWS.DynamoDB
@@ -37,6 +38,16 @@ export class DynamoHelper {
             }
         })
         .promise()
+    }
+
+    async deleteAllFromTable(tableName: TableName): Promise<void> {
+        const result = await this.dynamo.scan({TableName: tableName}).promise()
+        result.Items?.forEach( item => {
+            this.dynamo.deleteItem({
+                TableName: env.aws.dynamoArtifactTableName,
+                Key: { userid: item.userid, dtAdded: item.dtAdded }
+            }).promise()
+        })
     }
 }
 

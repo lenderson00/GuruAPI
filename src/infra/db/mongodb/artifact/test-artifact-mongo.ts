@@ -1,6 +1,6 @@
 import { Collection, ObjectId } from "mongodb";
 import { ArtifactMongo } from "./artifact-mongo";
-import { MongoHelper } from "./mongo-helper";
+import { MongoHelper } from "../mongo-helper";
 import env from "../../../../main/config/env"
 import { Sets, Stats, Types } from "../../../../data/artifact/utils/enums";
 import { upgradeTiers } from "../../../../data/artifact/utils/chances";
@@ -58,7 +58,7 @@ let artifactCollection: Collection
 
 describe('Artifact-Mongo', () => {
     beforeAll(async () => {
-        await MongoHelper.connect(env.mongoUrl)
+        await MongoHelper.connect(env.mongoURL)
         artifactCollection = MongoHelper.getCollection('artifacts')
     })
     

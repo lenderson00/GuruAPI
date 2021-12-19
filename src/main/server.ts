@@ -1,7 +1,7 @@
-import { MongoHelper } from '../infra/artifact/db/mongodb/mongo-helper'
+import { MongoHelper } from '../infra/db/mongodb/mongo-helper'
 import env from './config/env'
 
-MongoHelper.connect(env.mongoUrl)
+MongoHelper.connect(env.mongoURL)
   .then(async () => {
     const { setupApp } = await import('./config/app')
     const app = await setupApp()

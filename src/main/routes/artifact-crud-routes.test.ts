@@ -1,4 +1,4 @@
-import { MongoHelper } from '../../infra/artifact/db/mongodb/mongo-helper'
+import { MongoHelper } from '../../infra/db/mongodb/mongo-helper'
 import { setupApp } from '../config/app'
 import { Collection, ObjectId } from 'mongodb'
 import { Express } from 'express'
@@ -36,7 +36,7 @@ const mockAddArtifactParams = (): AddArtifactRepoParams => ({
 
 describe('Artifact CRUD Routes', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(env.mongoUrl)
+    await MongoHelper.connect(env.mongoURL)
     app = await setupApp()
   })
 

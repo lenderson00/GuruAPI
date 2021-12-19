@@ -1,19 +1,24 @@
-import { ObjectId } from "mongodb";
 import { UpdArtifactRepo, UpdArtifactRepoParams, UpdArtifactRepoResult } from "../../../../data/artifact/protocols";
 import { AddArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from "../../../../data/artifact/protocols/add-artifact-repo"
 import { DelArtifactRepo, DelArtifactRepoParams, DelArtifactRepoResult } from "../../../../data/artifact/protocols/del-artifact-repo";
 import { GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResults } from "../../../../data/artifact/protocols/get-artifact-repo";
-import { MongoHelper } from "./mongo-helper";
+import AWS from 'aws-sdk'
+import { DynamoHelper } from "../dynamo-helper";
+import env from "../../../../main/config/env";
 
-export class ArtifactMongo implements AddArtifactRepo, DelArtifactRepo, GetArtifactRepo, UpdArtifactRepo {
-    
+export class ArtifactDynamo implements AddArtifactRepo/* , DelArtifactRepo, GetArtifactRepo, UpdArtifactRepo */ {
+    private readonly dynamoHelper = new DynamoHelper()
+    private readonly dynamo = this.dynamoHelper.getLocalDynamo()
+
     async add (artifactData: AddArtifactRepoParams): Promise<AddArtifactRepoResult> {
-        const artifactCollection = MongoHelper.getCollection('artifacts')
-        const result = await artifactCollection.insertOne(artifactData)
-        return result.insertedId !== null
+        await this.dynamo.putItem({
+            TableName: env.aws.dynamoArtifactTableName,
+            Item: AWS.DynamoDB.Converter.marshall(artifactData),
+        }).promise()
+        return true
     }
 
-    async del (id: DelArtifactRepoParams): Promise<DelArtifactRepoResult> {
+    /* async del (id: DelArtifactRepoParams): Promise<DelArtifactRepoResult> {
         const artifactCollection = MongoHelper.getCollection('artifacts')
         const result = await artifactCollection.deleteOne( { "_id" : new ObjectId(id) } )
         return result.deletedCount == 1
@@ -36,5 +41,5 @@ export class ArtifactMongo implements AddArtifactRepo, DelArtifactRepo, GetArtif
         const { id, ...updateData } = artifactData
         const result = await artifactCollection.updateOne({ _id: new ObjectId(id) }, { $set: updateData})
         return (result.matchedCount == 1 && result.modifiedCount == 1)
-    }
+    } */
 }

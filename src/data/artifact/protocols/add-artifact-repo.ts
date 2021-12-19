@@ -21,7 +21,7 @@ export type AddArtifactRepoParams = {
     scoreDfltLvl20SD: number
     dtAdded: string
     dtModified: string
-    user?: string
+    userid?: string
     char?: Character
 }
 
