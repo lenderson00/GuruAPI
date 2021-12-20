@@ -101,33 +101,32 @@ describe('Artifact-Dynamo', () => {
     })
 
 
-    /* describe('get()', () => {
+    describe('get()', () => {
         beforeAll(async () => {
-            await artifactCollection.deleteMany({})
-            const fakeArtifact = mockAddArtifactParams()
-            const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
-            await artifactCollection.insertOne(insertedArtifact)
+            await dynamoHelper.deleteAllFromTable(env.aws.dynamoArtifactTableName)
+            await dynamo.putItem({
+                TableName: env.aws.dynamoArtifactTableName,
+                Item: AWS.DynamoDB.Converter.marshall(mockAddArtifactParams()),
+            }).promise()
         })
 
-        afterAll(async () => {
-            await artifactCollection.deleteMany({})
-        })
-
-        test('Should read an artifact document by id', async () => {
+        test('Should read an artifact document by key', async () => {
             const sut = makeSut()
-            const result = await sut.get({ ids: ['123456789012345678901234'] })
+            const result = await sut.get({ keys: [
+                { userid: 'any_userid', dtAdded: 'any_date' }
+            ]})
             expect(result.length).toBe(1)
         })        
 
-        test('Should return empty array if id was not found', async () => {
+        /* test('Should return empty array if id was not found', async () => {
             const sut = makeSut()
             const result = await sut.get({ ids: ['012345678901234567890123'] }) // invalid ID
             expect(result).toEqual([])
-        })
+        }) */
     })
 
 
-    describe('update()', () => {
+    /* describe('update()', () => {
         beforeAll(async () => {
             await artifactCollection.deleteMany({})
             const fakeArtifact = mockAddArtifactParams()
