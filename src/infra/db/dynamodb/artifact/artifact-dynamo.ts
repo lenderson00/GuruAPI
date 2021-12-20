@@ -6,9 +6,8 @@ import AWS from 'aws-sdk'
 import { DynamoHelper } from "../dynamo-helper";
 import env from "../../../../main/config/env";
 
-export class ArtifactDynamo implements AddArtifactRepo/* , DelArtifactRepo, GetArtifactRepo, UpdArtifactRepo */ {
-    private readonly dynamoHelper = new DynamoHelper()
-    private readonly dynamo = this.dynamoHelper.getLocalDynamo()
+export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo/* , GetArtifactRepo, UpdArtifactRepo */ {
+    constructor(private readonly dynamo: AWS.DynamoDB) {}
 
     async add (artifactData: AddArtifactRepoParams): Promise<AddArtifactRepoResult> {
         await this.dynamo.putItem({

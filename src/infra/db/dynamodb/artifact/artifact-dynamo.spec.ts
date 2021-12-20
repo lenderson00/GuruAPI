@@ -8,7 +8,7 @@ import env from "../../../../main/config/env";
 import AWS from "aws-sdk";
 
 const makeSut = () : ArtifactDynamo => {
-    return new ArtifactDynamo()
+    return new ArtifactDynamo(dynamoHelper.getLocalDynamo())
 }
 
 const mockAddArtifactParams = (): AddArtifactRepoParams => ({
@@ -93,12 +93,11 @@ describe('Artifact-Dynamo', () => {
             expect(isValid).toBe(true)
         })
         
-        /* test('Should return false on fail', async () => {
+        test('Should return false on fail', async () => {
             const sut = makeSut()
-            const id = '012345678901234567890123'
-            const isValid = await sut.del(id)
+            const isValid = await sut.del({ userid: 'invalid_userid', dtAdded: 'invalid_date' })
             expect(isValid).toBe(false)
-        }) */
+        })
     })
 
 
