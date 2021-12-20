@@ -3,11 +3,17 @@ export interface GetArtifactRepo {
 }
 
 export type GetArtifactRepoParams = {
-    ids: string[]
+    keys: ArtifactKey[]
+}
+
+export type ArtifactKey = {
+    userid: string,
+    dtAdded: string,
 }
 
 export type GetArtifactRepoResult = {
-    id: string,
+    userid: string,
+    dtAdded: string,
     [key: string]: unknown
 }
 
