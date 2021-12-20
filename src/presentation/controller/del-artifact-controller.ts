@@ -17,8 +17,8 @@ export class DelArtifactController implements Controller {
         try {
             const error = this.validation.validate(req)
             if (error) return badRequest(error)
-            const { id } = req
-            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del(id!)
+            const { userid, dtAdded } = req
+            const isOK: DelArtifactRepoResult = await this.delArtifactRepo.del({ userid: userid!, dtAdded: dtAdded! })
             if (!isOK) return badRequest(new InvalidParamError('id'))
             return ok(true)
         } catch (error) {
@@ -28,5 +28,6 @@ export class DelArtifactController implements Controller {
 }
 
 export type Request = {
-    id?: string
+    userid: string,
+    dtAdded: string
 }

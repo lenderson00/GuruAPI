@@ -18,13 +18,16 @@ export class ArtifactDynamo implements AddArtifactRepo/* , DelArtifactRepo, GetA
         return true
     }
 
-    /* async del (id: DelArtifactRepoParams): Promise<DelArtifactRepoResult> {
-        const artifactCollection = MongoHelper.getCollection('artifacts')
-        const result = await artifactCollection.deleteOne( { "_id" : new ObjectId(id) } )
-        return result.deletedCount == 1
+    async del (key: DelArtifactRepoParams): Promise<DelArtifactRepoResult> {
+        const result = await this.dynamo.deleteItem({
+            TableName: env.aws.dynamoArtifactTableName,
+            Key: AWS.DynamoDB.Converter.marshall(key),
+            ReturnValues: 'ALL_OLD'
+        }).promise()
+        return 'Attributes' in result
     }
 
-    async get (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResults> {
+    /* async get (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResults> {
         const artifactCollection = MongoHelper.getCollection('artifacts')
         const id: ObjectId[] = []
         artifactData.ids.forEach(item => id.push(new ObjectId(item)))
