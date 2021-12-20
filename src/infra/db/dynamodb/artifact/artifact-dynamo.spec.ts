@@ -5,6 +5,7 @@ import { AddArtifactRepoParams } from "../../../../data/artifact/protocols/add-a
 import { UpdArtifactRepoParams } from "../../../../data/artifact/protocols";
 import { DynamoHelper } from "../dynamo-helper";
 import env from "../../../../main/config/env";
+import AWS from "aws-sdk";
 
 const makeSut = () : ArtifactDynamo => {
     return new ArtifactDynamo()
@@ -78,31 +79,30 @@ describe('Artifact-Dynamo', () => {
         })
     })
 
-    /* describe('del()', () => {
+    describe('del()', () => {
         beforeAll(async () => {
-            await artifactCollection.deleteMany({})
-            const fakeArtifact = mockAddArtifactParams()
-            const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
-            await artifactCollection.insertOne(insertedArtifact)
+            await dynamo.putItem({
+                TableName: env.aws.dynamoArtifactTableName,
+                Item: AWS.DynamoDB.Converter.marshall(mockAddArtifactParams()),
+            }).promise()
         })
         
         test('Should return true on success', async () => {
             const sut = makeSut()
-            const id = '123456789012345678901234'
-            const isValid = await sut.del(id)
+            const isValid = await sut.del({ userid: 'any_userid', dtAdded: 'any_date' })
             expect(isValid).toBe(true)
         })
         
-        test('Should return false on fail', async () => {
+        /* test('Should return false on fail', async () => {
             const sut = makeSut()
             const id = '012345678901234567890123'
             const isValid = await sut.del(id)
             expect(isValid).toBe(false)
-        })
+        }) */
     })
 
 
-    describe('get()', () => {
+    /* describe('get()', () => {
         beforeAll(async () => {
             await artifactCollection.deleteMany({})
             const fakeArtifact = mockAddArtifactParams()

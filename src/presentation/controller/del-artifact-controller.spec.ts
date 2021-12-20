@@ -22,7 +22,7 @@ describe ('Delete Artifact Controller', () => {
     test('Should call Validation with correct data', async () => {
         const { sut, validationStub } = makeSut();
         const validateSpy = jest.spyOn(validationStub, 'validate')
-        const httpRequest: Request = {}
+        const httpRequest: Request = { userid: 'any_id', dtAdded: 'any_date'}
         await sut.handle(httpRequest);
         expect(validateSpy).toHaveBeenCalledWith(httpRequest);
     })
@@ -30,15 +30,15 @@ describe ('Delete Artifact Controller', () => {
     test('Should call DelArtifactRepo with correct data', async () => {
         const { sut, delArtifactStub } = makeSut();
         const delArtifactSpy = jest.spyOn(delArtifactStub, 'del')
-        const httpRequest: Request = { id: 'any_id'}
+        const httpRequest: Request = { userid: 'any_id', dtAdded: 'any_date'}
         await sut.handle(httpRequest);
-        expect(delArtifactSpy).toHaveBeenCalledWith(httpRequest.id);
+        expect(delArtifactSpy).toHaveBeenCalledWith({ userid: httpRequest.userid, dtAdded: httpRequest.dtAdded });
     })
 
     test('Should return 400 if id is invalid', async () => {
         const { sut, delArtifactStub } = makeSut();
         jest.spyOn(delArtifactStub, 'del').mockReturnValueOnce(new Promise((resolve) => resolve(false)))
-        const httpRequest: Request = { id: 'invalid_id' }
+        const httpRequest: Request = { userid: 'invalid_id', dtAdded: 'any_date' }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.body).toEqual(new InvalidParamError('id'))
     })
@@ -46,14 +46,14 @@ describe ('Delete Artifact Controller', () => {
     test('Should return 500 if DelArtifactRepo throws', async () => {
         const { sut, delArtifactStub } = makeSut();
         jest.spyOn(delArtifactStub, 'del').mockImplementationOnce(throwError)
-        const httpRequest: Request = { id: 'invalid_id' }
+        const httpRequest: Request = { userid: 'invalid_id', dtAdded: 'any_date' }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse).toEqual(serverError(new ServerError()))
     })
 
     test('Should return 200 if successful', async () => {
         const { sut } = makeSut();
-        const httpRequest = { id: 'valid_id' }
+        const httpRequest = { userid: 'valid_id', dtAdded: 'valid_date' }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(200);
         expect(httpResponse.body).toEqual(true);
