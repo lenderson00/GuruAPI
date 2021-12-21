@@ -21,12 +21,14 @@ const makeSut = () => {
     return { sut, getArtifactStub, validationStub }
 }
 
+const validRequest: Request = { keys: [{ userid: 'any_id', dtAdded: 'any_date' }]}
+
 describe ('Get Artifact Controller', () => {
 
     test('Should call Validation with correct data', async () => {
         const { sut, validationStub } = makeSut();
         const validateSpy = jest.spyOn(validationStub, 'validate')
-        const httpRequest: Request = { ids: ['any_id']}
+        const httpRequest: Request = validRequest
         await sut.handle(httpRequest);
         expect(validateSpy).toHaveBeenCalledWith(httpRequest);
     })
@@ -34,24 +36,24 @@ describe ('Get Artifact Controller', () => {
     test('Should call GetArtifact with correct data', async () => {
         const { sut, getArtifactStub } = makeSut();
         const getArtifactSpy = jest.spyOn(getArtifactStub, 'get')
-        const httpRequest: Request = { ids: ['any_id']}
+        const httpRequest: Request = validRequest
         await sut.handle(httpRequest);
-        expect(getArtifactSpy).toHaveBeenCalledWith({ ids: httpRequest.ids });
+        expect(getArtifactSpy).toHaveBeenCalledWith({ keys: httpRequest.keys });
     })
 
     test('Should return 400 if id is invalid', async () => {
         const { sut, getArtifactStub } = makeSut();
-        jest.spyOn(getArtifactStub, 'get').mockReturnValueOnce(new Promise(resolve => resolve({found: [], notFound: ['invalid_id']})))
-        const httpRequest: Request = { ids: ['invalid_id'] }
+        jest.spyOn(getArtifactStub, 'get').mockReturnValueOnce(new Promise(resolve => resolve({found: [], notFound: [{ userid: 'any_id', dtAdded: 'invalid_date' }]})))
+        const httpRequest: Request = { keys: [{ userid: 'any_id', dtAdded: 'invalid_date' }]}
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(400);
-        expect(httpResponse.body).toEqual(new InvalidParamError('ids'))
+        expect(httpResponse.body).toEqual(new InvalidParamError('date added'))
     })
 
     test('Should return 500 if GetArtifact throws', async () => {
         const { sut, getArtifactStub } = makeSut();
         jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(throwError)
-        const httpRequest: Request = { ids: ['invalid_id'] }
+        const httpRequest: Request = validRequest
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse).toEqual(serverError(new ServerError()))
     })
@@ -60,7 +62,8 @@ describe ('Get Artifact Controller', () => {
         const { sut, getArtifactStub } = makeSut();
         const getResponse: GetArtifactResults = {
             found: [{
-                id: 'valid_id',
+                userid: 'valid_id',
+                dtAdded: 'valid_date',
                 set: Sets.AP,
                 type: Types.Flower,
                 level: 20,
@@ -72,7 +75,7 @@ describe ('Get Artifact Controller', () => {
             notFound: []
         }
         jest.spyOn(getArtifactStub, 'get').mockImplementationOnce(async () => new Promise((res) => res(getResponse)))
-        const httpRequest = { ids: ['valid_id'] }
+        const httpRequest = { keys: [{ userid: 'valid_id', dtAdded: 'valid_date' }]}
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse.statusCode).toBe(200);
         expect(httpResponse.body).toEqual(getResponse);

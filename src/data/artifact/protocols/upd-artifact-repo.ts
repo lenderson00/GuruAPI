@@ -6,7 +6,8 @@ export interface UpdArtifactRepo {
 }
 
 export type UpdArtifactRepoParams = {
-    id: string
+    userid: string
+    dtAdded: string
     level?: Level
     mainstatValue?: number
     substats?: SubStatSlot[]

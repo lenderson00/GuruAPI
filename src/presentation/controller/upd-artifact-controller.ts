@@ -15,15 +15,15 @@ export class UpdArtifactController implements Controller {
 
     async handle (request: Request): Promise<HttpResponse> {
         try {
-            let error = (new RequiredFieldValidation('id')).validate(request as Record<string,unknown>)
+            let error = (new RequiredFieldValidation('id')).validate(request)
             if (error) return badRequest(error)
-            if (request.set) error = (new isArtifactSetValidation).validate(request as Record<string,unknown>)
+            if (request.set) error = (new isArtifactSetValidation).validate(request)
             if (error) return badRequest(error)
-            if (request.type) error = (new isArtifactTypeValidation).validate(request as Record<string,unknown>)
+            if (request.type) error = (new isArtifactTypeValidation).validate(request)
             if (error) return badRequest(error)
-            if (request.level) error = (new isArtifactLevelValidation).validate(request as Record<string,unknown>)
+            if (request.level) error = (new isArtifactLevelValidation).validate(request)
             if (error) return badRequest(error)
-            if (request.mainstat) error = (new isArtifactMainStatValidation).validate(request as Record<string,unknown>)
+            if (request.mainstat) error = (new isArtifactMainStatValidation).validate(request)
             if (error) return badRequest(error)
             if (request.substats)
                 request.substats.forEach(sub => {
@@ -42,7 +42,8 @@ export class UpdArtifactController implements Controller {
 }
 
 export interface Request {
-    id?: string
+    userid: string
+    dtAdded: string
     set?: string
     type?: string
     level?: number

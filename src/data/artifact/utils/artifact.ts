@@ -10,7 +10,8 @@ import { MissingParamError } from "../../../presentation/errors";
 import { ValidationComposite } from "../../../validation/validators";
 
 export class Artifact {
-    private _id: string | undefined = undefined;
+    private _userid: string | undefined = undefined;
+    private _dtAdded: string | undefined = undefined;
     private _set: Set | undefined = undefined;
     private _type: Type | undefined = undefined;
     private _level: Level | undefined = undefined;
@@ -30,16 +31,16 @@ export class Artifact {
     public import (params: GetArtifactRepoResult): void
     public import (params: AddArtifactParams): void
     public import (params: any): void {
-        if (params.id) {
-            this._id = params.id
-            this._mainstatValue = params.mainstatValue
-            this._scoreDflt = params.scoreDflt
-        }
-        this._set = params.set
-        this._type = params.type
-        this._level = params.level
-        this._mainstat = params.mainstat
-        this._substats = params.substats
+        if (params.userid) this.userid = params.userid
+        if (params.dtAdded) this.dtAdded = params.dtAdded
+        if (params.set) this.set = params.set
+        if (params.type) this.type = params.type
+        if (params.level) this.level = params.level
+        if (params.mainstat) this.mainstat = params.mainstat
+        if (params.substats) this.substats = params.substats
+        if (params.mainstatValue) this.mainstatValue = params.mainstatValue
+        else this._mainstatValue = this.mainstatValue
+        this._scoreDflt = this.scoreDflt 
     }
 
     public validate (validation: ValidationComposite): Error | null {
@@ -57,6 +58,7 @@ export class Artifact {
         if (this.mainstat != undefined) {
         if (this.substats != undefined) {
              repoData = {
+                userid: this.userid,
                 set: this.set,
                 type: this.type,
                 level: this.level,
@@ -70,8 +72,8 @@ export class Artifact {
                 scoreDfltLvl20Avg: 0, // TO DO
                 scoreDfltLvl20Max: 0, // TO DO
                 scoreDfltLvl20SD: 0, // TO DO
-                dtAdded: date.toUTCString(),
-                dtModified: date.toUTCString(),
+                dtAdded: date.toISOString(),
+                dtModified: date.toISOString(),
             }
             return repoData
         } else missingParam = 'substat'
@@ -86,12 +88,14 @@ export class Artifact {
         const date = new Date
         let repoData: UpdArtifactRepoParams
         let missingParam: string
-        if (this.id != undefined) { 
+        if (this.userid != undefined) { 
+        if (this.dtAdded != undefined) { 
         if (this.level != undefined) { 
         if (this.mainstatValue != undefined) { 
         if (this.substats != undefined) { 
             repoData = {
-                id: this.id,
+                userid: this.userid,
+                dtAdded: this.dtAdded,
                 level: this.level,
                 mainstatValue: this.mainstatValue,
                 substats: this.substats,
@@ -102,22 +106,29 @@ export class Artifact {
                 scoreDfltLvl20Avg: 0, // TO DO
                 scoreDfltLvl20Max: 0, // TO DO
                 scoreDfltLvl20SD: 0, // TO DO
-                dtModified: date.toUTCString(),
+                dtModified: date.toISOString(),
             }
             return repoData
         } else missingParam = 'substats'
         } else missingParam = 'mainstat value'
         } else missingParam = 'level'
-        } else missingParam = 'id'
+        } else missingParam = 'dtAdded'
+        } else missingParam = 'userid'
         throw new MissingParamError(missingParam)   
     }
 
     // GETTERS AND SETTERS
-    public get id(): string|undefined {
-        return this._id;
+    public get userid(): string|undefined {
+        return this._userid;
     }
-    public set id(value: string|undefined) {
-        this._id = value;
+    public set userid(value: string|undefined) {
+        this._userid = value;
+    }
+    public get dtAdded(): string|undefined {
+        return this._dtAdded;
+    }
+    public set dtAdded(value: string|undefined) {
+        this._dtAdded = value;
     }
     public get set(): Set | undefined {
         return this._set;

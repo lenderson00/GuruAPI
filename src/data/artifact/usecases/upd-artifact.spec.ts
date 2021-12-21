@@ -17,7 +17,8 @@ const makeSut = () => {
 }
 
 const mockUpdArtifactParams = (): UpdArtifactParams => ({
-    id: 'valid_id',
+    userid: 'valid_userid',
+    dtAdded: 'valid_date',
     set: Sets.AP,
     type: Types.Flower,
     level: 20,
@@ -35,7 +36,7 @@ describe ('Upd-Artifact-DB Usecase', () => {
         const { sut, getArtifactRepoStub } = makeSut()
         const getArtifactSpy = jest.spyOn(getArtifactRepoStub, 'get')
         await sut.update(mockUpdArtifactParams())
-        expect(getArtifactSpy).toHaveBeenCalledWith({ ids: ['valid_id'] })
+        expect(getArtifactSpy).toHaveBeenCalledWith({ keys: [{ userid: 'valid_userid', dtAdded: 'valid_date' }] })
     })
 
     test('Should call UpdArtifactRepo with correct values', async () => {
@@ -43,7 +44,7 @@ describe ('Upd-Artifact-DB Usecase', () => {
         const updArtifactSpy = jest.spyOn(updArtifactRepoStub, 'update')
         await sut.update(mockUpdArtifactParams())
         expect(updArtifactSpy).toHaveBeenCalledWith({
-            id: 'valid_id',
+            userid: 'valid_userid',
             level: 20,
             mainstatValue: 4780,
             substats: [
@@ -59,7 +60,8 @@ describe ('Upd-Artifact-DB Usecase', () => {
             scoreDfltLvl20SD: 0,
             scoreDfltMainstat: 85,
             scoreDfltSubstats: 366.79999999999995,
-            dtModified: (new Date()).toUTCString()
+            dtAdded: 'valid_date',
+            dtModified: (new Date()).toISOString()
         })
     })
 

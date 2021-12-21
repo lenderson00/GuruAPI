@@ -20,10 +20,10 @@ export class UpdArtifactDB implements UpdArtifact {
     async update (data: UpdArtifactParams): Promise<UpdArtifactResult> {
         
         // Get AS-IS data from DB
-        const getResult = await this.getArtifactRepo.get({ ids: [data.id] })
+        const getResult = await this.getArtifactRepo.get({ keys: [{ userid: data.userid, dtAdded: data.dtAdded }] })
 
         // Check if ID is invalid
-        if (getResult.length == 0) return new InvalidParamError('id')
+        if (getResult.length == 0) return new InvalidParamError('date added')
         this.artifactUtil.import(getResult[0])
 
         // Check if set is different from DB

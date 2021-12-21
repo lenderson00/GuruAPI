@@ -35,7 +35,8 @@ const mockAddArtifactParams = (): AddArtifactRepoParams => ({
 })
 
 const mockUpdArtifactParams = (): UpdArtifactRepoParams => ({
-    id: '123456789012345678901234',
+    userid: 'valid_userid',
+    dtAdded: 'valid_date',
     level: 20,
     mainstatValue: 4780,
     substats: [

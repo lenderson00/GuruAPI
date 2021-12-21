@@ -1,4 +1,9 @@
 import { Level, MainStat, Set, SubStatSlot, Type } from "../../../data/artifact/utils/enums"
+
+export type ArtifactKey = {
+    userid: string,
+    dtAdded: string,
+}
 export interface AddArtifact {
     add: (data: AddArtifactParams) => Promise<AddArtifactResult>
 }
@@ -21,11 +26,12 @@ export interface GetArtifact {
 }
 
 export type GetArtifactParams = {
-    ids: string[]
+    keys: ArtifactKey[]
 }
 
 export type GetArtifactResult = {
-    id: string
+    userid: string,
+    dtAdded: string,
     set: Set
     type: Type
     level: Level
@@ -37,15 +43,16 @@ export type GetArtifactResult = {
 
 export type GetArtifactResults = {
     found: GetArtifactResult[]
-    notFound: string[]
+    notFound: ArtifactKey[]
 }
 
 export type GetFullArtifactParams = {
-    ids: string[]
+    keys: ArtifactKey[]
 }
 
 export type GetFullArtifactResult = {
     found: Record<string,never>[] | {
+        userid: string,
         set: Set
         type: Type
         level: Level
@@ -62,7 +69,7 @@ export type GetFullArtifactResult = {
         dtAdded: Date
         dtModified: Date
     }[]
-    notFound: string[]
+    notFound: ArtifactKey[]
 }
 
 export interface UpdArtifact {
@@ -70,7 +77,8 @@ export interface UpdArtifact {
 }
 
 export type UpdArtifactParams = {
-    id: string
+    userid: string
+    dtAdded: string
     set?: Set
     type?: Type
     level?: Level

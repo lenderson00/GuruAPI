@@ -23,7 +23,7 @@ export class getArtifactRepoSpy implements GetArtifactRepo {
     async get (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResults> {
         this.params = artifactData
         return new Promise((res) => res(new Promise((res) => res([{
-            id: 'valid_id',
+            userid: 'valid_userid',
             set: Sets.AP,
             type: Types.Flower,
             level: 0,
@@ -41,15 +41,15 @@ export class getArtifactRepoSpy implements GetArtifactRepo {
             scoreLvl20Avg: 600,
             scoreLvl20Max: 700,
             scoreLvl20SD: 50,
-            dtAdded: new Date('December 17, 2020 03:24:00'),
-            dtModified: new Date('August 17, 2021 03:24:00'),
+            dtAdded: 'valid_date',
+            dtModified: new Date('August 17, 2021 03:24:00').toISOString(),
         }]))))
     }
 
     async getFull (artifactData: GetArtifactRepoParams): Promise<GetArtifactRepoResults> {
         this.params = artifactData
         return new Promise((res) => res(new Promise((res) => res([{
-            id: 'valid_id',
+            userid: 'valid_userid',
             set: Sets.AP,
             type: Types.Flower,
             level: 20,
@@ -64,8 +64,8 @@ export class getArtifactRepoSpy implements GetArtifactRepo {
             scoreDfltLvl20Avg: 600,
             scoreDfltLvl20Max: 700,
             scoreDfltLvl20SD: 50,
-            dtAdded: new Date('December 17, 2020 03:24:00'),
-            dtModified: new Date('August 17, 2021 03:24:00'),
+            dtAdded: 'valid_date',
+            dtModified: new Date('August 17, 2021 03:24:00').toISOString(),
         }]))))
     }
 }

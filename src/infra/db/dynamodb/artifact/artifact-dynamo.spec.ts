@@ -36,7 +36,8 @@ const mockAddArtifactParams = (): AddArtifactRepoParams => ({
 })
 
 const mockUpdArtifactParams = (): UpdArtifactRepoParams => ({
-    id: '123456789012345678901234',
+    userid: 'valid_userid',
+    dtAdded: 'valid_date',
     level: 20,
     mainstatValue: 4780,
     substats: [
@@ -118,11 +119,11 @@ describe('Artifact-Dynamo', () => {
             expect(result.length).toBe(1)
         })        
 
-        /* test('Should return empty array if id was not found', async () => {
+        test('Should return empty array if id was not found', async () => {
             const sut = makeSut()
-            const result = await sut.get({ ids: ['012345678901234567890123'] }) // invalid ID
+            const result = await sut.get({ keys: [{ userid: 'valid_id', dtAdded: 'invalid_date' }] }) // invalid ID
             expect(result).toEqual([])
-        }) */
+        })
     })
 
 

@@ -1,4 +1,4 @@
-import { ArtifactKey } from "."
+import { ArtifactKey } from "../../../domain/artifact/usecases/crud-artifact"
 
 export interface DelArtifactRepo {
     del: (artifactData: DelArtifactRepoParams) => Promise<DelArtifactRepoResult>

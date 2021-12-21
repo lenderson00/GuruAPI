@@ -6,7 +6,7 @@ import { allSets, allTypes, allLevels, allMainStats, allSubStats } from '../../d
 export class isPartValidation<T> implements Validation {
   constructor (private readonly fieldName: string, private readonly arrayName: Array<T>) {}
 
-  validate (input: Record<string,unknown>): Error | null {
+  validate (input: Record<string,any>): Error | null {
     if (!this.arrayName.includes(input[this.fieldName] as T)) return new InvalidParamError(this.fieldName)
     return null
   }

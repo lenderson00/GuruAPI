@@ -18,7 +18,8 @@ const makeSut = () => {
 }
 
 const makeFakeRequest = (): Request => ({
-    id: '123456789012345678901234',
+    userid: 'valid_userid',
+    dtAdded: 'valid_date',
     set: Sets.AP,
     type: Types.Flower,
     level: 20,
@@ -32,13 +33,21 @@ const makeFakeRequest = (): Request => ({
 })
 
 describe ('Upd Artifact Controller', () => {
-    test('Should return 400 if no id is provided', async () => {
+    /* test('Should return 400 if no userid is provided', async () => {
         const { sut } = makeSut();
         const httpRequest = makeFakeRequest();
-        delete httpRequest.id
+        delete httpRequest.userid
         const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new MissingParamError('id')));
+        expect(HttpResponse).toEqual(badRequest(new MissingParamError('userid')));
     })
+    
+    test('Should return 400 if no dtAdded is provided', async () => {
+        const { sut } = makeSut();
+        const httpRequest = makeFakeRequest();
+        delete httpRequest.dtAdded
+        const HttpResponse = await sut.handle(httpRequest);
+        expect(HttpResponse).toEqual(badRequest(new MissingParamError('date added')));
+    }) */
 
     test('Should return 400 if set is provided but invalid', async () => {
         const { sut } = makeSut();

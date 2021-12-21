@@ -9,16 +9,15 @@ export class GetArtifactDB implements GetArtifact {
         this.getArtifactRepo = getArtifactRepo
     }
     
-    async get (ids: GetArtifactParams): Promise<GetArtifactResults> {
-        const fields = ['id','set', 'type', 'level', 'mainstat', 'mainstatValue', 'substats', 'scoreDflt']
-        const result = await this.getArtifactRepo.get(ids)
+    async get (keys: GetArtifactParams): Promise<GetArtifactResults> {
+        const fields = ['userid','dtAdded','set', 'type', 'level', 'mainstat', 'mainstatValue', 'substats', 'scoreDflt']
+        const result = await this.getArtifactRepo.get(keys)
         const adjustedResult: GetArtifactResults = {
             found: [],
-            notFound: ids.ids,
+            notFound: keys.keys,
         }
         result.forEach(item => {
-            const itemID = String(item.id)
-            const index = adjustedResult.notFound.indexOf(itemID)
+            const index = adjustedResult.notFound.findIndex(x => x.userid === item.userid && x.dtAdded === item.dtAdded)
             if (index > -1) adjustedResult.notFound.splice(index, 1)
             const found = _.pick(fields, item)
             adjustedResult.found.push(found as unknown as GetArtifactResult)
