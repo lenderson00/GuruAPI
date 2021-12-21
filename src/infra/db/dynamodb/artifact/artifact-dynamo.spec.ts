@@ -46,7 +46,7 @@ const mockUpdArtifactParams = (): UpdArtifactRepoParams => ({
         {substat: Stats.DEF, value: upgradeTiers["DEF%"][0]},
         {substat: Stats.DEFFlat, value: upgradeTiers.DEF[0]},
     ],
-    dtModified: (new Date).toUTCString(),
+    dtModified: (new Date).toISOString(),
     scoreDflt: 1000,
     scoreDfltMainstat: 500,
     scoreDfltSubstats: 500,
@@ -70,13 +70,6 @@ describe('Artifact-Dynamo', () => {
             const addArtifactParams = mockAddArtifactParams()
             const isValid = await sut.add(addArtifactParams)
             expect(isValid).toBe(true)
-            /* const data = await dynamo.scan({ Select: "COUNT", TableName: "table" }).promise();
-            expect(data.Count).toBe(1) */
-        })
-        
-        test('Should have one item on the table', async () => {
-            const data = await dynamo.scan({ Select: "COUNT", TableName: env.aws.dynamoArtifactTableName }).promise();
-            expect(data.Count).toBe(1)
         })
     })
 
@@ -127,24 +120,17 @@ describe('Artifact-Dynamo', () => {
     })
 
 
-    /* describe('update()', () => {
+    describe('update()', () => {
         beforeAll(async () => {
-            await artifactCollection.deleteMany({})
-            const fakeArtifact = mockAddArtifactParams()
-            const insertedArtifact = { _id: new ObjectId('123456789012345678901234'), ... fakeArtifact }
-            await artifactCollection.insertOne(insertedArtifact)
+            await dynamoHelper.deleteAllFromTable(env.aws.dynamoArtifactTableName)
+            await dynamo.putItem({
+                TableName: env.aws.dynamoArtifactTableName,
+                Item: AWS.DynamoDB.Converter.marshall(mockAddArtifactParams()),
+            }).promise()
         })
 
         afterAll(async () => {
-            await artifactCollection.deleteMany({})
-        })
-
-        test('Should return false if update fails', async () => {
-            const sut = makeSut()
-            const params = mockUpdArtifactParams()
-            params.id = '012345678901234567890123'
-            const result = await sut.update(params)
-            expect(result).toBe(false)
+            await dynamoHelper.deleteAllFromTable(env.aws.dynamoArtifactTableName)
         })
 
         test('Should return true if update was successful', async () => {
@@ -152,5 +138,5 @@ describe('Artifact-Dynamo', () => {
             const result = await sut.update(mockUpdArtifactParams())
             expect(result).toBe(true)
         })    
-    }) */
+    })
 })
