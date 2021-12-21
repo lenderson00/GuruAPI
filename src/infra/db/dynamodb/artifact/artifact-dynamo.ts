@@ -6,6 +6,7 @@ import AWS from 'aws-sdk'
 import { DynamoHelper } from "../dynamo-helper";
 import env from "../../../../main/config/env";
 import { BatchGetRequestMap, KeyList } from "aws-sdk/clients/dynamodb";
+import _ from "lodash/fp";
 
 export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo/* , GetArtifactRepo, UpdArtifactRepo */ {
     private readonly tableName = env.aws.dynamoArtifactTableName
@@ -43,10 +44,29 @@ export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo/* , GetA
         return adjResult || []
     }
 
-    /* async update (artifactData: UpdArtifactRepoParams): Promise<UpdArtifactRepoResult> {
-        const artifactCollection = MongoHelper.getCollection('artifacts')
-        const { id, ...updateData } = artifactData
-        const result = await artifactCollection.updateOne({ _id: new ObjectId(id) }, { $set: updateData})
-        return (result.matchedCount == 1 && result.modifiedCount == 1)
-    } */
+    async update (artifactData: UpdArtifactRepoParams): Promise<UpdArtifactRepoResult> {
+        const { userid, dtAdded, ...updateData } = artifactData
+        if (_.isEmpty(updateData)) return true
+
+        let update = 'SET '
+        const attrValues: Record<string,any> = {}
+        const attrNames: Record<string,any> = {}
+
+        for (const prop in updateData) {
+            if (Object.prototype.hasOwnProperty.call(updateData, prop)) {
+                attrValues[`:${prop}`] = updateData[prop as keyof typeof updateData];
+                attrNames[`#attr${prop}`] = `${prop}`;
+                update = update + `#attr${prop} = :${prop}, `
+            }
+        }
+
+        await this.dynamo.updateItem({
+            TableName: this.tableName,
+            Key: AWS.DynamoDB.Converter.marshall({ userid: userid, dtAdded: dtAdded }),
+            UpdateExpression: update.substring(0, update.length - 2),
+            ExpressionAttributeValues: AWS.DynamoDB.Converter.marshall(attrValues),
+            ExpressionAttributeNames: attrNames
+        }).promise()
+        return true
+    }
 }
