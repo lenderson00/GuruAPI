@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { ValidationSpy } from "../../../tests/mocks/mock-validation"
 import { throwError } from "../../../tests/mocks/test-helper"
 import { upgradeTiers } from "../../data/artifact/utils/chances"
 import { Stats, SubStat } from "../../data/artifact/utils/enums"
 import { UpdArtifact, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError, ServerError } from "../errors"
+import { InvalidParamError, MissingParamError, ServerError } from "../errors"
 import { badRequest, serverError } from "../helpers"
 import { UpdArtifactController, Request } from "./upd-artifact-controller"
 
@@ -13,8 +14,9 @@ const makeSut = () => {
             return new Promise((res) => res(true as UpdArtifactResult))
         }
     }
-    const sut = new UpdArtifactController(updArtifactStub)
-    return { sut, updArtifactStub }
+    const validationStub = new ValidationSpy()
+    const sut = new UpdArtifactController(updArtifactStub, validationStub)
+    return { sut, updArtifactStub, validationStub }
 }
 
 const makeFakeRequest = (): Request => ({
@@ -30,60 +32,12 @@ const makeFakeRequest = (): Request => ({
 })
 
 describe ('Upd Artifact Controller', () => {
-    /* test('Should return 400 if no userid is provided', async () => {
-        const { sut } = makeSut();
+    test('Should call Validation with correct data', async () => {
+        const { sut, validationStub } = makeSut();
+        const validationSpy = jest.spyOn(validationStub, 'validate')
         const httpRequest = makeFakeRequest();
-        delete httpRequest.userid
-        const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new MissingParamError('userid')));
-    })
-    
-    test('Should return 400 if no dtAdded is provided', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        delete httpRequest.dtAdded
-        const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new MissingParamError('date added')));
-    }) */
-
-    /* test('Should return 400 if set is provided but invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        httpRequest.set = 'invalid_set'
-        const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new InvalidParamError('set')));
-    }) */
-
-    /* test('Should return 400 if type is provided but invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        httpRequest.type = 'invalid_type'
-        const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new InvalidParamError('type')));
-    }) */
-
-    test('Should return 400 if level is provided but invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        httpRequest.level = 999
-        const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new InvalidParamError('level')));
-    })
-
-    /* test('Should return 400 if mainstat is provided but invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        httpRequest.mainstat = 'invalid_mainstat'
-        const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new InvalidParamError('mainstat')));
-    }) */
-
-    test('Should return 400 if substat is provided but invalid', async () => {
-        const { sut } = makeSut();
-        const httpRequest = makeFakeRequest();
-        httpRequest.substats![1].substat = 'invalid_substat' as SubStat
-        const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new InvalidParamError('substat')));
+        await sut.handle(httpRequest);
+        expect(validationSpy).toHaveBeenCalledWith(httpRequest);
     })
 
     test('Should call UpdArtifactDB with correct data', async () => {
@@ -94,26 +48,30 @@ describe ('Upd Artifact Controller', () => {
         expect(updArtifactSpy).toHaveBeenCalledWith(httpRequest);
     })
 
+    test('Should return 400 if Validation returns an error', async () => {
+        const { sut, validationStub } = makeSut();
+        jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
+        const httpResponse = await sut.handle(makeFakeRequest());
+        expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')));
+    })    
+
     test('Should return 400 if UpdArtifactDB returns an error', async () => {
         const { sut, updArtifactStub } = makeSut();
-        jest.spyOn(updArtifactStub, 'update').mockReturnValueOnce(new Promise(resolve => resolve(new InvalidParamError('mainstat'))))
-        const httpRequest = makeFakeRequest();
-        const HttpResponse = await sut.handle(httpRequest);
-        expect(HttpResponse).toEqual(badRequest(new InvalidParamError('mainstat')));
+        jest.spyOn(updArtifactStub, 'update').mockReturnValueOnce(new Promise(resolve => resolve(new InvalidParamError('level'))))
+        const HttpResponse = await sut.handle(makeFakeRequest());
+        expect(HttpResponse).toEqual(badRequest(new InvalidParamError('level')));
     })
 
     test('Should return 500 if UpdArtifact throws', async () => {
         const { sut, updArtifactStub } = makeSut();
         jest.spyOn(updArtifactStub, 'update').mockImplementationOnce(throwError)
-        const httpRequest: Request = makeFakeRequest()
-        const httpResponse = await sut.handle(httpRequest);
+        const httpResponse = await sut.handle(makeFakeRequest());
         expect(httpResponse).toEqual(serverError(new ServerError()))
     })
 
     test('Should return 200 if UpdArtifact returns true', async () => {
         const { sut } = makeSut();
-        const httpRequest: Request = makeFakeRequest()
-        const httpResponse = await sut.handle(httpRequest);
+        const httpResponse = await sut.handle(makeFakeRequest());
         expect(httpResponse.statusCode).toBe(200)
         expect(httpResponse.body).toBe(true)
     })

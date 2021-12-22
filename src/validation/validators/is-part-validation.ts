@@ -25,9 +25,9 @@ export class isArtifactMainStatValidation extends isPartValidation<MainStat> {
   constructor () { super('mainstat', allMainStats) }
 }
 export class isArtifactSubStatValidation implements Validation {
-  validate (input: { substats: SubStatSlot[]}): Error | null {
+  validate (input: { substats?: SubStatSlot[], [key: string]: unknown}): Error | null {
     let error: InvalidParamError | null = null
-    input.substats.forEach(sub => {
+    input.substats?.forEach(sub => {
       if (!allSubStats.includes(sub.substat)) error = error || new InvalidParamError('substat')
     })
     return error

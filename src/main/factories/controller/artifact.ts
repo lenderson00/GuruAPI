@@ -11,6 +11,7 @@ import { makeGetArtifactValidation } from "./get-artifact-validation-controller"
 import { Artifact } from "../../../data/artifact/utils/artifact"
 import { UpdArtifactDB } from "../../../data/artifact/usecases/upd-artifact"
 import { UpdArtifactController } from "../../../presentation/controller/upd-artifact-controller"
+import { makeUpdArtifactValidation } from "./upd-artifact-validation-controller"
 
 export const makeAddArtifactController = () => {
     const addArtifactRepo = new ArtifactMongo()
@@ -37,6 +38,6 @@ export const makeUpdArtifactController = () => {
     const getArtifactRepo = new ArtifactMongo()
     const artifactUtil = new Artifact()
     const updArtifactDB = new UpdArtifactDB(updArtifactRepo, getArtifactRepo, artifactUtil)
-    const updArtifactController = new UpdArtifactController(updArtifactDB)
+    const updArtifactController = new UpdArtifactController(updArtifactDB, makeUpdArtifactValidation())
     return makeLogControllerDecorator(updArtifactController)
 }
