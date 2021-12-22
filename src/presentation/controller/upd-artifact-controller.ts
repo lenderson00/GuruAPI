@@ -1,7 +1,5 @@
 import { SubStatSlot } from "../../data/artifact/utils/enums";
 import { UpdArtifact, UpdArtifactParams, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
-import { RequiredFieldValidation } from "../../validation/validators";
-import { isArtifactLevelValidation, isArtifactSubStatValidation } from "../../validation/validators/is-part-validation";
 import { badRequest, ok, serverError } from "../helpers";
 import { Controller, HttpResponse, Validation } from "../protocols";
 

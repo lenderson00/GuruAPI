@@ -2,7 +2,7 @@
 import { ValidationSpy } from "../../../tests/mocks/mock-validation"
 import { throwError } from "../../../tests/mocks/test-helper"
 import { upgradeTiers } from "../../data/artifact/utils/chances"
-import { Stats, SubStat } from "../../data/artifact/utils/enums"
+import { Stats } from "../../data/artifact/utils/enums"
 import { UpdArtifact, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
 import { InvalidParamError, MissingParamError, ServerError } from "../errors"
 import { badRequest, serverError } from "../helpers"
