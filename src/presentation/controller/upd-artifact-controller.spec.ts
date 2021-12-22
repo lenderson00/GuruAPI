@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { throwError } from "../../../tests/mocks/test-helper"
 import { upgradeTiers } from "../../data/artifact/utils/chances"
-import { Sets, Types, Stats, SubStat } from "../../data/artifact/utils/enums"
+import { Stats, SubStat } from "../../data/artifact/utils/enums"
 import { UpdArtifact, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError, MissingParamError, ServerError } from "../errors"
+import { InvalidParamError, ServerError } from "../errors"
 import { badRequest, serverError } from "../helpers"
 import { UpdArtifactController, Request } from "./upd-artifact-controller"
 
@@ -20,10 +20,7 @@ const makeSut = () => {
 const makeFakeRequest = (): Request => ({
     userid: 'valid_userid',
     dtAdded: 'valid_date',
-    set: Sets.AP,
-    type: Types.Flower,
     level: 20,
-    mainstat: Stats.HPFlat,
     substats: [
         {substat: Stats.ATK, value: Math.round(upgradeTiers["ATK%"][0]*2*10)/10},
         {substat: Stats.ATKFlat, value: Math.round(upgradeTiers.ATK[0]*3)},
@@ -49,21 +46,21 @@ describe ('Upd Artifact Controller', () => {
         expect(HttpResponse).toEqual(badRequest(new MissingParamError('date added')));
     }) */
 
-    test('Should return 400 if set is provided but invalid', async () => {
+    /* test('Should return 400 if set is provided but invalid', async () => {
         const { sut } = makeSut();
         const httpRequest = makeFakeRequest();
         httpRequest.set = 'invalid_set'
         const HttpResponse = await sut.handle(httpRequest);
         expect(HttpResponse).toEqual(badRequest(new InvalidParamError('set')));
-    })
+    }) */
 
-    test('Should return 400 if type is provided but invalid', async () => {
+    /* test('Should return 400 if type is provided but invalid', async () => {
         const { sut } = makeSut();
         const httpRequest = makeFakeRequest();
         httpRequest.type = 'invalid_type'
         const HttpResponse = await sut.handle(httpRequest);
         expect(HttpResponse).toEqual(badRequest(new InvalidParamError('type')));
-    })
+    }) */
 
     test('Should return 400 if level is provided but invalid', async () => {
         const { sut } = makeSut();
@@ -73,13 +70,13 @@ describe ('Upd Artifact Controller', () => {
         expect(HttpResponse).toEqual(badRequest(new InvalidParamError('level')));
     })
 
-    test('Should return 400 if mainstat is provided but invalid', async () => {
+    /* test('Should return 400 if mainstat is provided but invalid', async () => {
         const { sut } = makeSut();
         const httpRequest = makeFakeRequest();
         httpRequest.mainstat = 'invalid_mainstat'
         const HttpResponse = await sut.handle(httpRequest);
         expect(HttpResponse).toEqual(badRequest(new InvalidParamError('mainstat')));
-    })
+    }) */
 
     test('Should return 400 if substat is provided but invalid', async () => {
         const { sut } = makeSut();

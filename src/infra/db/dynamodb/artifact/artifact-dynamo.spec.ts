@@ -12,7 +12,8 @@ const makeSut = () : ArtifactDynamo => {
 }
 
 const mockAddArtifactParams = (): AddArtifactRepoParams => ({
-    userid: 'any_userid',
+    userid: 'valid_userid',
+    dtAdded: "valid_date",
     set: Sets.AP,
     type: Types.Flower,
     level: 0,
@@ -31,7 +32,6 @@ const mockAddArtifactParams = (): AddArtifactRepoParams => ({
     scoreDfltLvl20Avg: 0,
     scoreDfltLvl20Max: 0,
     scoreDfltLvl20SD: 0,
-    dtAdded: "any_date",
     dtModified: "any_date",
 })
 
@@ -83,7 +83,7 @@ describe('Artifact-Dynamo', () => {
         
         test('Should return true on success', async () => {
             const sut = makeSut()
-            const isValid = await sut.del({ userid: 'any_userid', dtAdded: 'any_date' })
+            const isValid = await sut.del({ userid: 'valid_userid', dtAdded: 'valid_date' })
             expect(isValid).toBe(true)
         })
         
@@ -107,7 +107,7 @@ describe('Artifact-Dynamo', () => {
         test('Should read an artifact document by key', async () => {
             const sut = makeSut()
             const result = await sut.get({ keys: [
-                { userid: 'any_userid', dtAdded: 'any_date' }
+                { userid: 'valid_userid', dtAdded: 'valid_date' }
             ]})
             expect(result.length).toBe(1)
         })        

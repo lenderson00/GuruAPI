@@ -3,12 +3,11 @@ import { AddArtifactRepo, AddArtifactRepoParams, AddArtifactRepoResult } from ".
 import { DelArtifactRepo, DelArtifactRepoParams, DelArtifactRepoResult } from "../../../../data/artifact/protocols/del-artifact-repo";
 import { GetArtifactRepo, GetArtifactRepoParams, GetArtifactRepoResult, GetArtifactRepoResults } from "../../../../data/artifact/protocols/get-artifact-repo";
 import AWS from 'aws-sdk'
-import { DynamoHelper } from "../dynamo-helper";
 import env from "../../../../main/config/env";
 import { BatchGetRequestMap, KeyList } from "aws-sdk/clients/dynamodb";
 import _ from "lodash/fp";
 
-export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo/* , GetArtifactRepo, UpdArtifactRepo */ {
+export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo, GetArtifactRepo, UpdArtifactRepo {
     private readonly tableName = env.aws.dynamoArtifactTableName
     constructor(private readonly dynamo: AWS.DynamoDB) {}
 
@@ -49,8 +48,8 @@ export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo/* , GetA
         if (_.isEmpty(updateData)) return true
 
         let update = 'SET '
-        const attrValues: Record<string,any> = {}
-        const attrNames: Record<string,any> = {}
+        const attrValues: Record<string,unknown> = {}
+        const attrNames: Record<string,string> = {}
 
         for (const prop in updateData) {
             if (Object.prototype.hasOwnProperty.call(updateData, prop)) {

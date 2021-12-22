@@ -1,9 +1,8 @@
 import { throwError } from "../../../../tests/mocks/test-helper"
 import { UpdArtifactParams } from "../../../domain/artifact/usecases/crud-artifact"
-import { InvalidParamError } from "../../../presentation/errors"
 import { Artifact } from "../utils/artifact"
 import { upgradeTiers } from "../utils/chances"
-import { Sets, Types, Stats } from "../utils/enums"
+import { Stats } from "../utils/enums"
 import { getArtifactRepoSpy, updArtifactRepoSpy } from "./mock-artifact-db"
 import { UpdArtifactDB } from "./upd-artifact"
 
@@ -19,10 +18,10 @@ const makeSut = () => {
 const mockUpdArtifactParams = (): UpdArtifactParams => ({
     userid: 'valid_userid',
     dtAdded: 'valid_date',
-    set: Sets.AP,
-    type: Types.Flower,
+    /* set: Sets.AP, */
+    /* type: Types.Flower, */
     level: 20,
-    mainstat: Stats.HPFlat,
+    /* mainstat: Stats.HPFlat, */
     substats: [
         {substat: Stats.ATK, value: upgradeTiers["ATK%"][0]*3},
         {substat: Stats.ATKFlat, value: upgradeTiers.ATK[0]*2},
@@ -45,6 +44,7 @@ describe ('Upd-Artifact-DB Usecase', () => {
         await sut.update(mockUpdArtifactParams())
         expect(updArtifactSpy).toHaveBeenCalledWith({
             userid: 'valid_userid',
+            dtAdded: 'valid_date',
             level: 20,
             mainstatValue: 4780,
             substats: [
@@ -60,7 +60,6 @@ describe ('Upd-Artifact-DB Usecase', () => {
             scoreDfltLvl20SD: 0,
             scoreDfltMainstat: 85,
             scoreDfltSubstats: 366.79999999999995,
-            dtAdded: 'valid_date',
             dtModified: (new Date()).toISOString()
         })
     })
@@ -121,29 +120,29 @@ describe ('Upd-Artifact-DB Usecase', () => {
         await expect(promise).rejects.toThrow()
     })
 
-    test('Should return InvalidParamError if set is different from DB', async () => {
+    /* test('Should return InvalidParamError if set is different from DB', async () => {
         const { sut } = makeSut()
         const params = mockUpdArtifactParams()
         params.set = Sets.BC
         const result = await sut.update(params)
         expect(result).toEqual(new InvalidParamError('set'))
-    })
+    }) */
 
-    test('Should return InvalidParamError if type is different from DB', async () => {
+    /* test('Should return InvalidParamError if type is different from DB', async () => {
         const { sut } = makeSut()
         const params = mockUpdArtifactParams()
         params.type = Types.Sands
         const result = await sut.update(params)
         expect(result).toEqual(new InvalidParamError('type'))
-    })
+    }) */
 
-    test('Should return InvalidParamError if mainstat is different from DB', async () => {
+    /* test('Should return InvalidParamError if mainstat is different from DB', async () => {
         const { sut } = makeSut()
         const params = mockUpdArtifactParams()
         params.mainstat = Stats.EM
         const result = await sut.update(params)
         expect(result).toEqual(new InvalidParamError('mainstat'))
-    })
+    }) */
 
     test('Should return false if UpdArtifactRepo returns false', async () => {
         const { sut, updArtifactRepoStub } = makeSut()

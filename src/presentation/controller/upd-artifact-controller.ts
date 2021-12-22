@@ -1,8 +1,7 @@
 import { SubStatSlot } from "../../data/artifact/utils/enums";
-import { Character } from "../../data/character/character";
 import { UpdArtifact, UpdArtifactParams, UpdArtifactResult } from "../../domain/artifact/usecases/crud-artifact";
 import { RequiredFieldValidation } from "../../validation/validators";
-import { isArtifactLevelValidation, isArtifactMainStatValidation, isArtifactSetValidation, isArtifactSubStatValidation, isArtifactTypeValidation } from "../../validation/validators/is-part-validation";
+import { isArtifactLevelValidation, isArtifactSubStatValidation } from "../../validation/validators/is-part-validation";
 import { badRequest, ok, serverError } from "../helpers";
 import { Controller, HttpResponse } from "../protocols";
 
@@ -15,15 +14,11 @@ export class UpdArtifactController implements Controller {
 
     async handle (request: Request): Promise<HttpResponse> {
         try {
-            let error = (new RequiredFieldValidation('id')).validate(request)
+            let error = (new RequiredFieldValidation('userid')).validate(request)
             if (error) return badRequest(error)
-            if (request.set) error = (new isArtifactSetValidation).validate(request)
-            if (error) return badRequest(error)
-            if (request.type) error = (new isArtifactTypeValidation).validate(request)
+            error = (new RequiredFieldValidation('dtAdded')).validate(request)
             if (error) return badRequest(error)
             if (request.level) error = (new isArtifactLevelValidation).validate(request)
-            if (error) return badRequest(error)
-            if (request.mainstat) error = (new isArtifactMainStatValidation).validate(request)
             if (error) return badRequest(error)
             if (request.substats)
                 request.substats.forEach(sub => {
@@ -44,10 +39,6 @@ export class UpdArtifactController implements Controller {
 export interface Request {
     userid: string
     dtAdded: string
-    set?: string
-    type?: string
     level?: number
-    mainstat?: string
     substats?: SubStatSlot[]
-    char?: Character
 }

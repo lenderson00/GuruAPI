@@ -79,10 +79,7 @@ export interface UpdArtifact {
 export type UpdArtifactParams = {
     userid: string
     dtAdded: string
-    set?: Set
-    type?: Type
     level?: Level
-    mainstat?: MainStat
     mainstatValue?: number
     substats?: SubStatSlot[]
     /* char: Character */

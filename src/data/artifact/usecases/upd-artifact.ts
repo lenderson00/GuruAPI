@@ -27,22 +27,22 @@ export class UpdArtifactDB implements UpdArtifact {
         this.artifactUtil.import(getResult[0])
 
         // Check if set is different from DB
-        if (data.set) {
+        /* if (data.set) {
             if (data.set != this.artifactUtil.set) return new InvalidParamError('set')
             if (!this.artifactUtil.set) this.artifactUtil.set = data.set
-        }
+        } */
 
         // Check if type is different from DB
-        if (data.type) {
+        /* if (data.type) {
             if (data.type != this.artifactUtil.type) return new InvalidParamError('type')
             if (!this.artifactUtil.type) this.artifactUtil.type = data.type
-        }
+        } */
 
         // Check if mainstat is different from DB
-        if (data.mainstat) {
+        /* if (data.mainstat) {
             if (data.mainstat != this.artifactUtil.mainstat) return new InvalidParamError('mainstat')
             if (!this.artifactUtil.mainstat) this.artifactUtil.mainstat = data.mainstat
-        }
+        } */
 
         // Update artifact with received data
         if (data.level) this.artifactUtil.level = data.level

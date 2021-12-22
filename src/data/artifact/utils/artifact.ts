@@ -40,7 +40,7 @@ export class Artifact {
         if (params.substats) this.substats = params.substats
         if (params.mainstatValue) this.mainstatValue = params.mainstatValue
         else this._mainstatValue = this.mainstatValue
-        this._scoreDflt = this.scoreDflt 
+        this._scoreDflt = this.scoreDflt
     }
 
     public validate (validation: ValidationComposite): Error | null {
@@ -85,7 +85,6 @@ export class Artifact {
     }
 
     public async updateRepoData (): Promise<UpdArtifactRepoParams> {
-        const date = new Date
         let repoData: UpdArtifactRepoParams
         let missingParam: string
         if (this.userid != undefined) { 
@@ -106,7 +105,7 @@ export class Artifact {
                 scoreDfltLvl20Avg: 0, // TO DO
                 scoreDfltLvl20Max: 0, // TO DO
                 scoreDfltLvl20SD: 0, // TO DO
-                dtModified: date.toISOString(),
+                dtModified: (new Date).toISOString(),
             }
             return repoData
         } else missingParam = 'substats'
