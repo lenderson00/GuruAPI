@@ -1,6 +1,5 @@
 import { AddArtifactDB } from "../../../data/artifact/usecases/add-artifact"
 import { GetArtifactDB } from "../../../data/artifact/usecases/get-artifact"
-import { ArtifactMongo } from "../../../infra/db/mongodb/artifact/artifact-mongo"
 import { AddArtifactController } from "../../../presentation/controller/add-artifact-controller"
 import { DelArtifactController } from "../../../presentation/controller/del-artifact-controller"
 import { GetArtifactController } from "../../../presentation/controller/get-artifact-controller"
