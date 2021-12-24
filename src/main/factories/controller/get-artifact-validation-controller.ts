@@ -3,6 +3,8 @@ import { Validation } from '../../../presentation/protocols'
 
 export const makeGetArtifactValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-  validations.push(new RequiredFieldValidation('ids'))
+  for (const field of ['userid','dtAdded']) {
+    validations.push(new RequiredFieldValidation(field))
+  }
   return new ValidationComposite(validations)
 }

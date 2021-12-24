@@ -24,6 +24,7 @@ export class AddArtifactController implements Controller {
     
 }
 export interface Request {
+    userid?: string
     set?: string
     type?: string
     level?: number

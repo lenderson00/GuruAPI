@@ -4,6 +4,8 @@ import { Validation } from '../../../presentation/protocols'
 export const makeDelArtifactValidation = (): ValidationComposite => {
   
   const validations: Validation[] = []
-  validations.push(new RequiredFieldValidation('id'))
+  for (const field of ['userid', 'dtAdded']) {
+    validations.push(new RequiredFieldValidation(field))
+  }
   return new ValidationComposite(validations)
 }

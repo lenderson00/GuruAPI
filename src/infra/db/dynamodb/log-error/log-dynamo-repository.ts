@@ -6,7 +6,7 @@ import { DynamoHelper } from '../dynamo-helper'
 const dynamoHelper = new DynamoHelper()
 const dynamo = dynamoHelper.getLocalDynamo()
 
-export class LogMongoRepository implements LogErrorRepository {
+export class LogDynamoRepository implements LogErrorRepository {
   async logError (stack: string): Promise<void> {
     await dynamo.putItem({
       TableName: env.aws.dynamoLogErrorTableName,

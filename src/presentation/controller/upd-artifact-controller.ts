@@ -11,16 +11,6 @@ export class UpdArtifactController implements Controller {
         try {
             const error = this.validation.validate(request)
             if (error) return badRequest(error)
-
-            /* let error = (new RequiredFieldValidation('userid')).validate(request)
-            if (error) return badRequest(error)
-            error = (new RequiredFieldValidation('dtAdded')).validate(request)
-            if (error) return badRequest(error)
-            if (request.level) error = error || (new isArtifactLevelValidation).validate(request)
-            if (error) return badRequest(error)
-            if (request.substats !== undefined) error = error || (new isArtifactSubStatValidation).validate(request as Record<string,any>)
-            if (error) return badRequest(error) */
-    
             const isOk: UpdArtifactResult = await this.updArtifact.update(request as UpdArtifactParams)
             if (isOk instanceof Error) return badRequest(isOk)
             return ok(isOk)    

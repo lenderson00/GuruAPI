@@ -9,6 +9,7 @@ export interface AddArtifact {
 }
 
 export type AddArtifactParams = {
+    userid: string
     set: Set
     type: Type
     level: Level

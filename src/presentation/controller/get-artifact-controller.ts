@@ -15,7 +15,10 @@ export class GetArtifactController implements Controller {
 
     async handle (req: Request): Promise<HttpResponse> {
         try {
-            const validationError = this.validation.validate(req)
+            let validationError: Error | null = null
+            req.keys?.forEach(key => {
+                validationError = validationError || this.validation.validate(key)
+            })
             if (validationError) return badRequest(validationError)
             const keys = req.keys!
             const result: GetArtifactResults = await this.getArtifact.get({keys: keys})

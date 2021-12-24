@@ -14,7 +14,8 @@ const makeSut = () => {
     return { sut, addArtifactRepoStub, artifactUtil }
 }
 
-const mockAddAccountParams = (): AddArtifactParams => ({
+const mockAddArtifactParams = (): AddArtifactParams => ({
+    userid: 'any_userid',
     set: Sets.AP,
     type: Types.Flower,
     level: 20,
@@ -31,8 +32,9 @@ describe ('Add-Artifact-DB Usecase', () => {
     
     test('Should call AddArtifactRepo with correct values', async () => {
         const { sut, addArtifactRepoStub } = makeSut()
-        const AddArtifactParams = mockAddAccountParams()
+        const AddArtifactParams = mockAddArtifactParams()
         await sut.add(AddArtifactParams)
+        expect(addArtifactRepoStub.params.userid).toEqual(AddArtifactParams.userid)
         expect(addArtifactRepoStub.params.set).toEqual(AddArtifactParams.set)
         expect(addArtifactRepoStub.params.type).toEqual(AddArtifactParams.type)
         expect(addArtifactRepoStub.params.level).toEqual(AddArtifactParams.level)
@@ -43,30 +45,32 @@ describe ('Add-Artifact-DB Usecase', () => {
     test('Should call AddArtifactRepo with correct values', async () => {
         const { sut, addArtifactRepoStub } = makeSut()
         const addArtifactRepoSpy = jest.spyOn(addArtifactRepoStub, 'add')
-        await sut.add(mockAddAccountParams())
+        await sut.add(mockAddArtifactParams())
         const artifactUtilMock = new Artifact()
-        artifactUtilMock.import(mockAddAccountParams())
+        artifactUtilMock.import(mockAddArtifactParams())
         const repoData = await artifactUtilMock.createRepoData()
+        repoData.dtAdded = expect.anything()
+        repoData.dtModified = expect.anything()
         expect(addArtifactRepoSpy).toHaveBeenCalledWith(repoData)
     })
     
     test('Should call artifactUtil with correct values', async () => {
         const { sut, artifactUtil } = makeSut()
         const artifactUtilSpy = jest.spyOn(artifactUtil, 'import')
-        await sut.add(mockAddAccountParams())
-        expect(artifactUtilSpy).toHaveBeenCalledWith(mockAddAccountParams())
+        await sut.add(mockAddArtifactParams())
+        expect(artifactUtilSpy).toHaveBeenCalledWith(mockAddArtifactParams())
     })
 
     test('Should throw if AddArtifactRepo throws', async () => {
         const { sut, addArtifactRepoStub } = makeSut()
         jest.spyOn(addArtifactRepoStub, 'add').mockImplementationOnce(throwError)
-        const promise = sut.add(mockAddAccountParams())
+        const promise = sut.add(mockAddArtifactParams())
         await expect(promise).rejects.toThrow()
     })
 
     test('Should return true on success', async () => {
         const { sut } = makeSut()
-        const isValid = await sut.add(mockAddAccountParams())
+        const isValid = await sut.add(mockAddArtifactParams())
         expect(isValid).toBe(true)
     })
 })

@@ -10,10 +10,11 @@ export default {
     port: process.env.PORT || 5050,
     aws: {
         dynamoArtifactTableName: 'guru-artifacts-local',
+        dynamoLogErrorTableName: 'guru-errors-local',
         dynamoAPIVersion: '2012-08-10',
         dynamoEndpoint: process.env.DYNAMO_URL || 'http://localhost:2077',
         region: 'us-east-1',
-        accessKeyId: '',
-        secretAccessKey: ''
+        accessKeyId: 'AKIAQEQG6ZSACYLQR6MK',
+        secretAccessKey: '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'
     }
 }

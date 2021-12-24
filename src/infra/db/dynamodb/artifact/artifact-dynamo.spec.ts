@@ -127,11 +127,11 @@ describe('Artifact-Dynamo', () => {
                 TableName: env.aws.dynamoArtifactTableName,
                 Item: AWS.DynamoDB.Converter.marshall(mockAddArtifactParams()),
             }).promise()
-        })
+        })/* 
 
         afterAll(async () => {
             await dynamoHelper.deleteAllFromTable(env.aws.dynamoArtifactTableName)
-        })
+        }) */
 
         test('Should return true if update was successful', async () => {
             const sut = makeSut()
