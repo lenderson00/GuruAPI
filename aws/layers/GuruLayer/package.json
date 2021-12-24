@@ -5,8 +5,6 @@
   "author": "Eric Oliveira",
   "license": "ISC",
   "dependencies": {
-    "js-combinatorics": "^1.5.4",
-    "lodash": "^4.17.21",
-    "mongodb": "^4.1.4"
+    "lodash": "^4.17.21"
   }
 }

@@ -104,5 +104,7 @@
     "src",
     "tests"
   ],
-  "exclude": []
+  "exclude": [
+    "src/data/artifact/utils/gen-substat-values-possibilities.ts",
+  ]
 }
