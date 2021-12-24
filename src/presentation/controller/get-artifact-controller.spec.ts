@@ -30,7 +30,8 @@ describe ('Get Artifact Controller', () => {
         const validateSpy = jest.spyOn(validationStub, 'validate')
         const httpRequest: Request = validRequest
         await sut.handle(httpRequest);
-        expect(validateSpy).toHaveBeenCalledWith(httpRequest);
+        if (httpRequest.keys)
+        expect(validateSpy).toHaveBeenCalledWith(httpRequest.keys[0]);
     })
     
     test('Should call GetArtifact with correct data', async () => {
@@ -38,7 +39,8 @@ describe ('Get Artifact Controller', () => {
         const getArtifactSpy = jest.spyOn(getArtifactStub, 'get')
         const httpRequest: Request = validRequest
         await sut.handle(httpRequest);
-        expect(getArtifactSpy).toHaveBeenCalledWith({ keys: httpRequest.keys });
+        if (httpRequest.keys)
+        expect(getArtifactSpy).toHaveBeenCalledWith(httpRequest);
     })
 
     test('Should return 400 if id is invalid', async () => {

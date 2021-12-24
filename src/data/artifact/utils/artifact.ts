@@ -31,14 +31,14 @@ export class Artifact {
     public import (params: GetArtifactRepoResult): void
     public import (params: AddArtifactParams): void
     public import (params: any): void {
-        if (params.userid) this.userid = params.userid
-        if (params.dtAdded) this.dtAdded = params.dtAdded
-        if (params.set) this.set = params.set
-        if (params.type) this.type = params.type
-        if (params.level) this.level = params.level
-        if (params.mainstat) this.mainstat = params.mainstat
-        if (params.substats) this.substats = params.substats
-        if (params.mainstatValue) this.mainstatValue = params.mainstatValue
+        if (params.userid != undefined) this.userid = params.userid
+        if (params.dtAdded != undefined) this.dtAdded = params.dtAdded
+        if (params.set != undefined) this.set = params.set
+        if (params.type != undefined) this.type = params.type
+        if (params.level != undefined) this.level = params.level
+        if (params.mainstat != undefined) this.mainstat = params.mainstat
+        if (params.substats != undefined) this.substats = params.substats
+        if (params.level == undefined && params.mainstatValue != undefined) this.mainstatValue = params.mainstatValue
         else this._mainstatValue = this.mainstatValue
         this._scoreDflt = this.scoreDflt
     }
@@ -48,10 +48,27 @@ export class Artifact {
         return inInvalid
     }
 
+    public describe () {
+        return {
+            userid: this.userid,
+            dtAdded: this.dtAdded,
+            set: this.set,
+            type: this.type,
+            level: this.level,
+            mainstat: this.mainstat,
+            mainstatValue: this.mainstatValue,
+            substats: this.substats,
+            scoreDftl: this.scoreDflt,
+            scoreDfltMainstat: this.scoreDfltMainstat,
+            scoreDfltSubstats: this.scoreDfltSubstats
+        }
+    }
+
     public async createRepoData (): Promise<AddArtifactRepoParams> {
         const date = new Date
         let repoData: AddArtifactRepoParams
         let missingParam: string
+        if (this.userid != undefined) { 
         if (this.set != undefined) { 
         if (this.type != undefined) { 
         if (this.level != undefined) { 
@@ -81,6 +98,7 @@ export class Artifact {
         } else missingParam = 'level'
         } else missingParam = 'type'
         } else missingParam = 'set'
+        } else missingParam = 'userid'
         throw new MissingParamError(missingParam)
     }
 

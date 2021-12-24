@@ -1,0 +1,11 @@
+{
+  "name": "scan-artifact",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for scanning artifacts in the DB",
+  "main": "scan-artifact-fn.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Oliveira",
+  "license": "ISC"
+}

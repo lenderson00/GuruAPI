@@ -6,6 +6,7 @@ export interface AddArtifactRepo {
 }
 
 export type AddArtifactRepoParams = {
+    userid: string
     set: Set
     type: Type
     level: Level
@@ -21,8 +22,7 @@ export type AddArtifactRepoParams = {
     scoreDfltLvl20SD: number
     dtAdded: string
     dtModified: string
-    userid?: string
-    char?: Character
+    /* char?: Character */
 }
 
 export type AddArtifactRepoResult = boolean

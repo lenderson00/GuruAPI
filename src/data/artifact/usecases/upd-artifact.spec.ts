@@ -60,7 +60,7 @@ describe ('Upd-Artifact-DB Usecase', () => {
             scoreDfltLvl20SD: 0,
             scoreDfltMainstat: 85,
             scoreDfltSubstats: 366.79999999999995,
-            dtModified: (new Date()).toISOString()
+            dtModified: expect.anything()
         })
     })
 

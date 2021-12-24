@@ -5,6 +5,7 @@
     ],
     "exclude": [
       "tests",
+      "src/data/artifact/utils/gen-substat-values-possibilities.ts",
       "**/*.spec.ts",
       "**/*.test.ts",
     ]

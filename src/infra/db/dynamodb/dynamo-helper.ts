@@ -8,12 +8,12 @@ export class DynamoHelper {
     constructor() {
         this.dynamo = new AWS.DynamoDB({
             apiVersion: env.aws.dynamoAPIVersion,
-            endpoint: env.aws.dynamoEndpoint,
+            /* endpoint: env.aws.dynamoEndpoint, */
             region: env.aws.region,
-            /* credentials: {
+            credentials: {
                 accessKeyId: env.aws.accessKeyId,
                 secretAccessKey: env.aws.secretAccessKey,
-            } */
+            }
         })
     }
 
@@ -40,12 +40,34 @@ export class DynamoHelper {
         .promise()
     }
 
+    async createLogErrorTable(): Promise<void> {
+        await this.dynamo.createTable({
+            AttributeDefinitions: [
+                { AttributeName: 'date', AttributeType: 'S' }
+            ],
+            TableName: env.aws.dynamoLogErrorTableName,
+            KeySchema: [
+                { AttributeName: 'date', KeyType: 'HASH' }
+            ],
+            ProvisionedThroughput: {
+                ReadCapacityUnits: 1,
+                WriteCapacityUnits: 1
+            }
+        })
+        .promise()
+    }
+
     async deleteAllFromTable(tableName: TableName): Promise<void> {
+        const keys = (await this.dynamo.describeTable({TableName: tableName}).promise()).Table?.KeySchema
         const result = await this.dynamo.scan({TableName: tableName}).promise()
-        result.Items?.forEach( item => {
-            this.dynamo.deleteItem({
-                TableName: env.aws.dynamoArtifactTableName,
-                Key: { userid: item.userid, dtAdded: item.dtAdded }
+        result.Items?.forEach( async item => {
+            const tableKeys: Record<string,unknown> = {}
+            const adjItem = AWS.DynamoDB.Converter.unmarshall(item)
+            keys?.forEach(key => tableKeys[key.AttributeName] = adjItem[key.AttributeName])
+
+            await this.dynamo.deleteItem({
+                TableName: tableName,
+                Key: AWS.DynamoDB.Converter.marshall(tableKeys)
             }).promise()
         })
     }

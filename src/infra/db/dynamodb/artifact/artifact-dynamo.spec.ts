@@ -63,6 +63,10 @@ describe('Artifact-Dynamo', () => {
     beforeAll(async () => {
         await dynamoHelper.deleteAllFromTable(env.aws.dynamoArtifactTableName)
     })
+
+    afterAll(async () => {
+        await dynamoHelper.deleteAllFromTable(env.aws.dynamoArtifactTableName)
+    })
     
     describe('add()', () => {
         test('Should return true on success', async () => {
@@ -129,14 +133,33 @@ describe('Artifact-Dynamo', () => {
             }).promise()
         })
 
-        afterAll(async () => {
-            await dynamoHelper.deleteAllFromTable(env.aws.dynamoArtifactTableName)
-        })
-
         test('Should return true if update was successful', async () => {
             const sut = makeSut()
             const result = await sut.update(mockUpdArtifactParams())
             expect(result).toBe(true)
         })    
+    })
+
+
+    describe('scan()', () => {
+        beforeAll(async () => {
+            await dynamoHelper.deleteAllFromTable(env.aws.dynamoArtifactTableName)
+            await dynamo.putItem({
+                TableName: env.aws.dynamoArtifactTableName,
+                Item: AWS.DynamoDB.Converter.marshall(mockAddArtifactParams()),
+            }).promise()
+        })
+        
+        test('Should return array of artifacts if scan was successful', async () => {
+            const sut = makeSut()
+            const result = await sut.scan()
+            expect(result).toEqual([mockAddArtifactParams()])
+        })   
+        
+        test('Should return empty array if scan cannot find artifacts', async () => {
+            const sut = makeSut()
+            const result = await sut.scan({ userid: 'non-existing-userid' })
+            expect(result).toEqual([])
+        }) 
     })
 })

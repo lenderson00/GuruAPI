@@ -37,10 +37,10 @@ Resources:
       Layers:
         - !Ref GuruLayer
       Events:
-        AddArtifactAPI:
+        DelArtifactAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /artifact/{id}
+            Path: /artifact
             Method: delete
   GetArtifact:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -52,11 +52,11 @@ Resources:
       Layers:
         - !Ref GuruLayer
       Events:
-        AddArtifactAPI:
+        GetArtifactAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /artifact/get
-            Method: post
+            Path: /artifact
+            Method: get
   UpdArtifact:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -67,11 +67,26 @@ Resources:
       Layers:
         - !Ref GuruLayer
       Events:
-        AddArtifactAPI:
+        UpdArtifactAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /artifact/{id}
+            Path: /artifact
             Method: patch
+  ScanArtifact:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: aws/functions/scan-artifact
+      Handler: scan-artifact-fn.handler
+      FunctionName: Guru-Scan-Artifact
+      Description: AWS Lambda function for scanning artifacts in the DB
+      Layers:
+        - !Ref GuruLayer
+      Events:
+        ScanArtifactAPI:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /artifact/scan
+            Method: get
   GuruLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:

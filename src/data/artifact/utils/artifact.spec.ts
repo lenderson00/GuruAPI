@@ -7,6 +7,7 @@ import { MissingParamError } from "../../../presentation/errors"
 const makeSut = () => {
     const sut = new Artifact()
     sut.import({
+        userid: 'any_userid',
         set: Sets.AP,
         type: Types.Flower,
         level: 20,
@@ -56,6 +57,7 @@ describe ('Artifact Util', () => {
         test('Should return AddArtifactRepoParams on success', async () => {
             const { sut } = makeSut()
             const result = await sut.createRepoData()
+            expect(result.userid).not.toBeUndefined()
             expect(result.set).not.toBeUndefined()
             expect(result.type).not.toBeUndefined()
             expect(result.level).not.toBeUndefined()

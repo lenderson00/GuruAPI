@@ -6,7 +6,7 @@ import { isAllowedMainStatValidation, isAllowedSubStatValidation, isAllowedSubSt
 export const makeAddArtifactValidation = (): ValidationComposite => {
   
   const validations: Validation[] = []
-  for (const field of ['set', 'type', 'level', 'mainstat', 'substats']) {
+  for (const field of ['userid','set', 'type', 'level', 'mainstat', 'substats']) {
     validations.push(new RequiredFieldValidation(field))
   }
   validations.push(new isArtifactSetValidation())

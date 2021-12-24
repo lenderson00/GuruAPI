@@ -6,6 +6,6 @@ const artifact_1 = require("main/factories/controller/artifact");
 const aws_lambda_route_adapter_1 = require("main/adapters/aws-lambda-route-adapter");
 
 exports.handler = async (event) => {
-    const DelArtifactRouteController = aws_lambda_route_adapter_1.adaptRoute(artifact_1.makeDelArtifactController());
-    return DelArtifactRouteController(event);
+    const ScanArtifactRouteController = aws_lambda_route_adapter_1.adaptRoute(artifact_1.makeScanArtifactController());
+    return ScanArtifactRouteController(event);
 };

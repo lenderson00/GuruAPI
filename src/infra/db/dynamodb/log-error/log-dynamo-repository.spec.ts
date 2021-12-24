@@ -1,10 +1,10 @@
-import { LogMongoRepository } from './log-dynamo-repository'
+import { LogDynamoRepository } from './log-dynamo-repository'
 import faker from 'faker'
 import env from '../../../../main/config/env'
 import { DynamoHelper } from '../dynamo-helper'
 
-const makeSut = (): LogMongoRepository => {
-  return new LogMongoRepository()
+const makeSut = (): LogDynamoRepository => {
+  return new LogDynamoRepository()
 }
 const dynamoHelper = new DynamoHelper()
 const dynamo = dynamoHelper.getLocalDynamo()
