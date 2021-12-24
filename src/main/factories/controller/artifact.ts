@@ -13,6 +13,7 @@ import { UpdArtifactController } from "../../../presentation/controller/upd-arti
 import { makeUpdArtifactValidation } from "./upd-artifact-validation-controller"
 import { ArtifactDynamo } from "../../../infra/db/dynamodb/artifact/artifact-dynamo"
 import { DynamoHelper } from "../../../infra/db/dynamodb/dynamo-helper"
+import { ScanArtifactController } from "../../../presentation/controller/scan-artifact-controller"
 
 const dynamoHelper = new DynamoHelper()
 const dynamo = dynamoHelper.getLocalDynamo()
@@ -44,4 +45,10 @@ export const makeUpdArtifactController = () => {
     const updArtifactDB = new UpdArtifactDB(updArtifactRepo, getArtifactRepo, artifactUtil)
     const updArtifactController = new UpdArtifactController(updArtifactDB, makeUpdArtifactValidation())
     return makeLogControllerDecorator(updArtifactController)
+}
+
+export const makeScanArtifactController = () => {
+    const scanArtifactRepo = new ArtifactDynamo(dynamo)
+    const scanArtifactController = new ScanArtifactController(scanArtifactRepo)
+    return makeLogControllerDecorator(scanArtifactController)
 }
