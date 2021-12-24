@@ -6,8 +6,10 @@ import AWS from 'aws-sdk'
 import env from "../../../../main/config/env";
 import { BatchGetRequestMap, KeyList } from "aws-sdk/clients/dynamodb";
 import _ from "lodash/fp";
+import { ScanArtifactRepo, ScanArtifactRepoParams, ScanArtifactRepoResult } from "../../../../data/artifact/protocols/scan-artifact-repo";
+import { PromiseResult } from "aws-sdk/lib/request";
 
-export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo, GetArtifactRepo, UpdArtifactRepo {
+export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo, GetArtifactRepo, UpdArtifactRepo, ScanArtifactRepo {
     private readonly tableName = env.aws.dynamoArtifactTableName
     constructor(private readonly dynamo: AWS.DynamoDB) {}
 
@@ -67,5 +69,39 @@ export class ArtifactDynamo implements AddArtifactRepo, DelArtifactRepo, GetArti
             ExpressionAttributeNames: attrNames
         }).promise()
         return true
+    }
+    
+    async scan (filter?: ScanArtifactRepoParams): Promise<ScanArtifactRepoResult> {
+        let data: PromiseResult<AWS.DynamoDB.ScanOutput, AWS.AWSError>
+        let filterExp = ''
+        const attrValues: Record<string,string> = {}
+        
+        if (filter?.userid == undefined && filter?.dtAdded == undefined) {
+            data = await this.dynamo.scan({
+                TableName: env.aws.dynamoArtifactTableName
+            }).promise()
+        } else {
+            if (filter.userid != undefined) {
+                attrValues[':id'] = filter.userid
+                if (filter.dtAdded != undefined) {
+                    filterExp = 'userid = :id and dtAdded = :dt'
+                    attrValues[':dt'] = filter.dtAdded
+                } else {
+                    filterExp = 'userid = :id'
+                }
+            } else {
+                if (filter.dtAdded != undefined) {
+                    filterExp = 'dtAdded = :dt'
+                    attrValues[':dt'] = filter.dtAdded
+                }
+            }
+            data = await this.dynamo.scan({
+                TableName: env.aws.dynamoArtifactTableName,
+                FilterExpression: filterExp,
+                ExpressionAttributeValues: AWS.DynamoDB.Converter.marshall(attrValues)
+            }).promise()
+        }
+        const result = data.Items?.map((item: AWS.DynamoDB.AttributeMap) => AWS.DynamoDB.Converter.unmarshall(item))
+        return result || []
     }
 }
