@@ -7,6 +7,7 @@ export const adaptRoute = (controller: Controller) => {
       ...JSON.parse(event.body || '{}'),
       /* ...JSON.parse(event.pathParameters || '{}'), */
       ...event.queryStringParameters
+
       /* ...(JSON.parse(event.multiValueQueryStringParameters || '{}')), */
       /* ...(JSON.parse(event.stageVariables || '{}')) */
     }
