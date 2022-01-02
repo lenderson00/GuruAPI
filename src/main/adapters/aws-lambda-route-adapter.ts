@@ -1,12 +1,12 @@
 import { Controller } from '../../presentation/protocols'
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import { APIGatewayProxyResult } from 'aws-lambda'
 
 export const adaptRoute = (controller: Controller) => {
   return async (event: any): Promise<APIGatewayProxyResult> => {
     const request = {
-      ...JSON.parse(event.body || '{}')
-      /* ...(JSON.parse(event.pathParameters || '{}')), */
-      /* ...(JSON.parse(event.queryStringParameters || '{}')) */
+      ...JSON.parse(event.body || '{}'),
+      /* ...JSON.parse(event.pathParameters || '{}'), */
+      ...event.queryStringParameters
       /* ...(JSON.parse(event.multiValueQueryStringParameters || '{}')), */
       /* ...(JSON.parse(event.stageVariables || '{}')) */
     }

@@ -9,12 +9,12 @@ export default {
     /* mongoURL: process.env.MONGO_URL */ /* || getMongodbConnString(), 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000', */
     port: process.env.PORT || 5050,
     aws: {
-        dynamoArtifactTableName: 'guru-artifacts-local',
-        dynamoLogErrorTableName: 'guru-errors-local',
+        dynamoArtifactTableName: process.env.ARTIFACT_TABLE_NAME || 'guru-artifacts-local',
+        dynamoLogErrorTableName: process.env.LOGERROR_TABLE_NAME || 'guru-errors-local',
         dynamoAPIVersion: '2012-08-10',
         dynamoEndpoint: process.env.DYNAMO_URL || 'http://localhost:2077',
-        region: 'us-east-1',
-        accessKeyId: process.env.ACCESS_KEY,
-        secretAccessKey: process.env.SECRET_KEY
+        region: process.env.DYNAMO_URL || 'us-east-1',
+        accessKeyId: process.env.ACCESS_KEY || '',
+        secretAccessKey: process.env.SECRET_KEY || ''
     }
 }
