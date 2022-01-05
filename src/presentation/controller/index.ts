@@ -1,0 +1,5 @@
+export * from './add-artifact-controller'
+export * from './del-artifact-controller'
+export * from './get-artifact-controller'
+export * from './scan-artifact-controller'
+export * from './upd-artifact-controller'

@@ -1,5 +1,3 @@
-import { Level, MainStat, Set, SubStatSlot, Type } from "../utils/enums"
-
 export interface ScanArtifactRepo {
     scan: (filter?: ScanArtifactRepoParams) => Promise<ScanArtifactRepoResult>
 }

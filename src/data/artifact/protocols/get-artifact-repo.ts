@@ -1,17 +1,17 @@
-import { ArtifactKey } from "../../../domain/artifact/usecases/crud-artifact"
+import { ArtifactKey } from '@/domain/artifact/usecases/crud-artifact'
 
 export interface GetArtifactRepo {
-    get: (artifactData: GetArtifactRepoParams) => Promise<GetArtifactRepoResults>
+  get: (artifactData: GetArtifactRepoParams) => Promise<GetArtifactRepoResults>
 }
 
 export type GetArtifactRepoParams = {
-    keys: ArtifactKey[]
+  keys: ArtifactKey[]
 }
 
 export type GetArtifactRepoResult = {
-    userid: string,
-    dtAdded: string,
-    [key: string]: unknown
+  userid: string
+  dtAdded: string
+  [key: string]: unknown
 }
 
 export type GetArtifactRepoResults = GetArtifactRepoResult[]

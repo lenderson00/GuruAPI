@@ -1,6 +1,6 @@
 import AWS from "aws-sdk"
 import { TableName } from "aws-sdk/clients/dynamodb"
-import env from "../../../main/config/env"
+import env from "@/main/config/env"
 
 export class DynamoHelper {
     private readonly dynamo: AWS.DynamoDB

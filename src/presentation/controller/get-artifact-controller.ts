@@ -13,7 +13,7 @@ export class GetArtifactController implements Controller {
         this.validation = validation
     }
 
-    async handle (req: Request): Promise<HttpResponse> {
+    async handle (req: GetArtifactController.Request): Promise<HttpResponse> {
         try {
             let validationError: Error | null = null
             req.keys?.forEach(key => {
@@ -30,6 +30,8 @@ export class GetArtifactController implements Controller {
     }
 }
 
-export type Request = {
-    keys?: ArtifactKey[]
+export namespace GetArtifactController {
+    export type Request = {
+        keys?: ArtifactKey[]
+    }
 }

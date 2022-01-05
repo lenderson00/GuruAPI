@@ -1,0 +1,15 @@
+{
+  "extends": "standard-with-typescript",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/return-await": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-unsafe-optional-chaining": "off",
+    "no-nonoctal-decimal-escape": "off",
+    "no-non-null-assertion": "off"
+  }
+}

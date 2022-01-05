@@ -11,7 +11,7 @@ export class AddArtifactController implements Controller {
         this.validation = validation
     }
     
-    async handle (request: Request): Promise<HttpResponse> {
+    async handle (request: AddArtifactController.Request): Promise<HttpResponse> {
         try {
             const error = this.validation.validate(request)
             if (error) return badRequest(error)
@@ -23,11 +23,14 @@ export class AddArtifactController implements Controller {
     }
     
 }
-export interface Request {
-    userid?: string
-    set?: string
-    type?: string
-    level?: number
-    mainstat?: string
-    substats?: {substat: string, value: number}[]
+
+export namespace AddArtifactController {
+    export type Request = {
+        userid?: string
+        set?: string
+        type?: string
+        level?: number
+        mainstat?: string
+        substats?: {substat: string, value: number}[]
+    }
 }

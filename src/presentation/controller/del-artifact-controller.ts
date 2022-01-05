@@ -13,7 +13,7 @@ export class DelArtifactController implements Controller {
         this.validation = validation
     }
 
-    async handle (req: Request): Promise<HttpResponse> {
+    async handle (req: DelArtifactController.Request): Promise<HttpResponse> {
         try {
             const error = this.validation.validate(req)
             if (error) return badRequest(error)
@@ -27,7 +27,9 @@ export class DelArtifactController implements Controller {
     }
 }
 
-export type Request = {
-    userid: string,
-    dtAdded: string
+export namespace DelArtifactController {
+    export type Request = {
+        userid: string,
+        dtAdded: string
+    }
 }

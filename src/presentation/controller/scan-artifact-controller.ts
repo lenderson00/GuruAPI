@@ -5,7 +5,7 @@ import { ScanArtifactRepo, ScanArtifactRepoParams, ScanArtifactRepoResult } from
 export class ScanArtifactController implements Controller {
     constructor (private readonly scanArtifactRepo: ScanArtifactRepo) {}
     
-    async handle (request: Request): Promise<HttpResponse> {
+    async handle (request: ScanArtifactController.Request): Promise<HttpResponse> {
         try {
             const result: ScanArtifactRepoResult = await this.scanArtifactRepo.scan(request as ScanArtifactRepoParams);
             return ok(result);
@@ -15,7 +15,10 @@ export class ScanArtifactController implements Controller {
     }
     
 }
-export interface Request {
-    userid?: string
-    dtAdded?: string
+
+export namespace ScanArtifactController {
+    export type Request = {
+        userid?: string
+        dtAdded?: string
+    }
 }

@@ -7,7 +7,7 @@ export class UpdArtifactController implements Controller {
 
     constructor (private readonly updArtifact: UpdArtifact, private readonly validation: Validation) {}
 
-    async handle (request: Request): Promise<HttpResponse> {
+    async handle (request: UpdArtifactController.Request): Promise<HttpResponse> {
         try {
             const error = this.validation.validate(request)
             if (error) return badRequest(error)
@@ -20,10 +20,11 @@ export class UpdArtifactController implements Controller {
         
     }
 }
-
-export interface Request {
-    userid?: string
-    dtAdded?: string
-    level?: number
-    substats?: SubStatSlot[]
+export namespace UpdArtifactController {
+    export type Request = {
+        userid?: string
+        dtAdded?: string
+        level?: number
+        substats?: SubStatSlot[]
+    }
 }

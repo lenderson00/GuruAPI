@@ -1,4 +1,4 @@
-import { Controller } from '../../presentation/protocols'
+import { Controller } from '@/presentation/protocols'
 import { APIGatewayProxyResult } from 'aws-lambda'
 
 export const adaptRoute = (controller: Controller) => {
